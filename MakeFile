@@ -1,0 +1,46 @@
+PROJ_NAME = tetris
+
+BUILD_DIR = build/
+
+OBJ_DIR = obj
+
+CPP_SOURCE = $(wildcard src/*.cpp)
+
+H_SOURCE = $(wildcard headers/*.hpp)
+
+OBJ = $(patsubst %.cpp, %.o, $(subst src, obj, $(CPP_SOURCE)))
+
+T = $(subst *.cpp, *.o, $(OBJ))
+
+CC = g++
+
+CC_FLAGS =  -c -Wall
+
+SFML = -lsfml-graphics -lsfml-system -lsfml-window 
+
+INC = -I ../SFML-2.5.1/include -I headers/
+
+LIB = -L ../SFML-2.5.1/lib
+
+RM = del
+
+all: $(PROJ_NAME)
+
+$(PROJ_NAME): $(OBJ)
+	@ echo 'Building binary using GPP linker : $@'
+	$(CC) $^ $(SFML) $(INC) $(LIB) -o "$(BUILD_DIR)$@"
+	@ echo 'Finished build binary: $@'
+
+$(OBJ_DIR)/%.o: src/%.cpp headers/%.hpp
+	@ echo 'Building target using GCC compiler: $<'
+	$(CC) $< $(CC_FLAGS) $(INC) -o $@
+
+obj/main.o: src/main.cpp $(HPP_SOURCE)
+	@ echo 'Building target using GCC compiler $<'
+	$(CC) $< $(CC_FLAGS) $(INC) -o $@
+
+clean:
+	@ $(RM) obj\*.o
+	@ rmdir obj
+
+.PHONY: all clean
