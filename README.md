@@ -1,2 +1,3 @@
 # Tetris-Clone
-A simple Tetris Clone game made with SFML
+##__-- Working In Progress --__
+A simple Tetris Clone game made with SFML 

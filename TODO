@@ -1,7 +1,13 @@
-*TODO: Game logic, make the pieces fall, and fix on the grid // Need to make the tetromino collide with the grid // Check BoxCollision Class and debugg, don't recognizing minos collision don't know why -- I was clening the vector on the main loop but the vector was setted outside the loop -- Back to game logic // Made the Update function who make handle the movement and make the tetrominos moves down, need to know how to know when the tetromino is on the floor and
-fix it to the ground adding to one Vector of minos and calling the destructor of the class, also need to make the spawn function who will be called after that, and at the beginning of the game.
+*TODO: Game logic, make the pieces fall, and fix on the grid // Need to make the tetromino collide with the grid 
+// Check BoxCollision Class and debugg, don't recognizing minos collision don't know why -- I was clening the vector on
+ the main loop but the vector was setted outside the loop -- Back to game logic // Made the Update function who make
+ handle the movement and make the tetrominos moves down, need to know how to know when the tetromino is on the floor and
+fix it to the ground adding to one Vector of minos and calling the destructor of the class, also need to make the spawn
+function who will be called after that, and at the beginning of the game.
 
 TODO: See if can use array instead of vector on tetrominos class : Row:27
+
+TODO: Tetromino class has a lot of public fuction who could be private.
 
 TODO: Put a Icon on the window, and to the .exe aswell.
 
