@@ -97,6 +97,7 @@ void Mino::setRect()
 void Mino::setPosition(sf::Vector2f newPosition)
 {
     spr.setPosition(newPosition);
+	updateCollision();
 }
 
 void Mino::setPosition(float x, float y)

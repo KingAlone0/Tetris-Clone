@@ -14,8 +14,9 @@ enum TilesType
 
 enum class Directions
 {
-	Left,
-	Right,
-	Down,
-	Up // Debbug purpose only. __DELETE__
+	Left = 0,
+	Right = 1,
+	Down = 2,
+	Up = 3, // Debbug purpose only. __DELETE__
+	None = 9
 };

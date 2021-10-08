@@ -4,7 +4,27 @@
 
 Tetromino::Tetromino(TilesType Type): Type(Type)
 {
-    if (Type != TilesType::Grid)
+    setMinoType();
+    setTetrominoGeometry();
+}
+Tetromino::Tetromino(const Tetromino& tetromino)
+{
+	Type = tetromino.Type;
+    setMinoType();
+    setTetrominoGeometry();
+    setPosition(tPos);
+}
+
+Tetromino::Tetromino(TilesType Type, sf::Vector2f Position): Type(Type), tPos(Position)
+{
+    setMinoType();
+    setTetrominoGeometry();
+    setPosition(tPos);
+}
+
+void Tetromino::setMinoType()
+{
+	if (Type != TilesType::Grid)
     {
         Mino* tMino;
 		for (int x = 0; x < 4; x++)
@@ -14,25 +34,6 @@ Tetromino::Tetromino(TilesType Type): Type(Type)
 		}
 		
     }
-    
-    
-    setTetrominoGeometry();
-}
-
-Tetromino::Tetromino(TilesType Type, sf::Vector2f Position): Type(Type)
-{
-    if (Type != TilesType::Grid)
-    {
-		Mino* tMino;
-		for (int x = 0; x < 4; x++)
-		{
-			tMino = new Mino(Type);
-			mino.push_back(*tMino);
-		}
-    }
-	
-    setTetrominoGeometry();
-    setPosition(Position);
 }
 
 void Tetromino::setTetrominoGeometry()
@@ -105,7 +106,7 @@ void Tetromino::setTetrominoGeometry()
         mino[1].setSpriteLocation(sf::Vector2f(16.f, 16.f));
         mino[1].setIndex(4, 1, 1);
         mino[2].setSpriteLocation(sf::Vector2f(16.f, 0.f));
-        mino[2].setIndex(1, 1, 0);
+        mino[2].setIndex(1, 0, 1);
         mino[3].setSpriteLocation(sf::Vector2f(32.f, 16.f));
         mino[3].setIndex(5, 1, 2);
         break;
@@ -129,7 +130,7 @@ void Tetromino::setPosition(sf::Vector2f newPosition = sf::Vector2f(0.f, 0.f))
     }
 }
 
-void Tetromino::handleMovement(Directions d, std::vector<Mino> Minos)
+void Tetromino::handleMovement(Directions d, std::vector<Mino>& Minos)
 {
 	sf::Vector2f direction;
 	if (d == Directions::Left)
@@ -150,15 +151,20 @@ void Tetromino::handleMovement(Directions d, std::vector<Mino> Minos)
 		if (d != Directions::Left && d != Directions::Right) {
 			direction = d == Directions::Down ? sf::Vector2f(0.f, -16.f) : sf::Vector2f(0.f, 16.f);
 		}
-		
 		for (int i = 0; i < 4; ++i) {
 			mino[i].handleMovement(direction);
+		}
+		//Minos.push_back(m);// NOTE(AloneTheKing): Need to delete the class now.
+		//this->~Tetromino();
+		
+		if (d == Directions::Down) {
+			onFloor = true;
 		}
 	}
 	
 }
 
-bool Tetromino::canMove(const std::vector<Mino>& Minos)
+bool Tetromino::canMove(std::vector<Mino>& Minos)
 {
     //for (int i = 0; i < 4; ++i){
     for (Mino m : mino) {
@@ -230,7 +236,7 @@ void Tetromino::updateRotationPosition()
     }
 }
 
-void Tetromino::checkInput(std::vector<Tetromino*> t)
+void Tetromino::checkInput(const std::vector<Tetromino*>& t) // __DELETE__ >? 
 {
 	
 	std::vector<Mino> m;
@@ -259,31 +265,53 @@ void Tetromino::checkInput(std::vector<Tetromino*> t)
 	}
 }
 
-void Tetromino::checkInput(const std::vector<Mino>& t)
+void Tetromino::checkInput(std::vector<Mino>& t)
 {
 	
 	if (keyboard.checkInput(sf::Keyboard::Key::Left)) {
 		handleMovement(Directions::Left, t);
 	}
-	if (keyboard.checkInput(sf::Keyboard::Key::Right)) {
+	else if (keyboard.checkInput(sf::Keyboard::Key::Right)) {
 		handleMovement(Directions::Right, t);
 	}
-	if (keyboard.checkInput(sf::Keyboard::Key::Down)) {
+	else if (keyboard.checkInput(sf::Keyboard::Key::Down)) {
 		handleMovement(Directions::Down, t);
 	}
-	if (keyboard.checkInput(sf::Keyboard::Key::Up)) {
+	else if (keyboard.checkInput(sf::Keyboard::Key::Up)) {
 		handleMovement(Directions::Up, t); // Debugg purpose only __DELETE__
 	}
-	if (keyboard.checkInput(sf::Keyboard::Key::R)) {
+	else if (keyboard.checkInput(sf::Keyboard::Key::R)) {
 		rotateTetromino();
 	}
 }
 
 
-void Tetromino::Update(const std::vector<Mino>& Minos)
+// NOTE(AloneTheKing): Need to make a fuction canMove how will move down and check if canMove if can't return false; and put mino[,] in std::vector of Minos, probably so i'll need to not pass as const, just as reference
+void Tetromino::Update(std::vector<Mino>& Minos)
 {
 	checkInput(Minos);
-	handleMovement(Directions::Down, Minos);
-	
-	//handleMovement(Directions::Down);
+	if (!onFloor) {
+		//handleMovement(Directions::Down, Minos);
+	}
 }
+
+
+Tetromino& Tetromino::operator=(const Tetromino& t)
+{
+	if (this == &t)
+		return *this;
+	
+	mino.clear();
+	
+	Type = t.Type;
+	onFloor = false;
+	setMinoType();
+	setTetrominoGeometry();
+	setPosition(t.tPos);
+	nRotation = 0;
+	
+	return *this;
+}
+
+
+
