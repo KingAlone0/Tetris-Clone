@@ -128,7 +128,11 @@ void Mino::handleMovement(sf::Vector2f direction)
     updateCollision();
 }
 
-
+void Mino::moveDown()
+{
+	spr.move(sf::Vector2f(0.f, 16.f));
+	updateCollision();
+}
 
 bool Mino::canMove(std::vector<Mino> Minos)
 {
@@ -162,7 +166,7 @@ void Mino::updateIndex(unsigned char nIndex)
 
 unsigned char Mino::updateIndexPosition(short int degree)
 {
-	unsigned char nIndex;
+	short int nIndex;
     if (degree == 0) 
     {
         nIndex = position_index.y * 3 + position_index.x;
@@ -179,7 +183,14 @@ unsigned char Mino::updateIndexPosition(short int degree)
     {
         nIndex = 2 - position_index.y + (position_index.x * 3);
     }
-	
+	index = nIndex;
 	return nIndex;
 	//updateIndex(nIndex);
+}
+
+short int Mino::getIndex() const
+{
+	std::cout << "Index: " << index << std::endl;
+	std::cout << "tIndex: " << (int)tIndex << std::endl;
+	return index;
 }

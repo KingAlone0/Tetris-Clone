@@ -12,7 +12,7 @@ class Mino
     sf::Sprite spr;
     TilesType Type;
     sf::IntRect sprPlace;
-	unsigned char index;
+	short int index;
 	unsigned char tIndex;
     sf::Vector2i position_index;
 	sf::Vector2i rotatedPosition;
@@ -46,10 +46,11 @@ class Mino
     bool canMove(std::vector<Mino> Minos); // Could use a static vector of Mino and at the construction add a mino to it
     void updateCollision();
     
-    public:
     void setIndex(short int i, short int x, short int y);
+	short int getIndex() const;
 	unsigned char updateIndexPosition(short int degree);
 	unsigned char getIndexRotation() const { return tIndex; }
+	void moveDown();
     
     // void testIndexUpdate();
     private:

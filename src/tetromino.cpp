@@ -90,23 +90,23 @@ void Tetromino::setTetrominoGeometry()
         mino[3].setSpriteLocation(sf::Vector2f(32.f, 0.f));
         mino[3].setIndex(2, 2, 0);
         break;
-        case TilesType::S:
+        case TilesType::Z:
         mino[0].setSpriteLocation(sf::Vector2f(16.f, 0.f));
-        mino[0].setIndex(1, 0, 1);
+        mino[0].setIndex(7, 2, 1);
         mino[1].setSpriteLocation(sf::Vector2f(16.f, 16.f));
         mino[1].setIndex(4, 1, 1);
         mino[2].setSpriteLocation(sf::Vector2f(0.f, 16.f));
         mino[2].setIndex(3, 1, 0);
         mino[3].setSpriteLocation(sf::Vector2f(32.f, 0.f));
-        mino[3].setIndex(2, 2, 0);
+        mino[3].setIndex(9, 2, 2);
         break;
-        case TilesType::Z:
+        case TilesType::S:
         mino[0].setSpriteLocation(sf::Vector2f(0.f, 0.f));
-        mino[0].setIndex(0, 0, 0);
+        mino[0].setIndex(6, 2, 0);
         mino[1].setSpriteLocation(sf::Vector2f(16.f, 16.f));
         mino[1].setIndex(4, 1, 1);
         mino[2].setSpriteLocation(sf::Vector2f(16.f, 0.f));
-        mino[2].setIndex(1, 0, 1);
+        mino[2].setIndex(7, 2, 1);
         mino[3].setSpriteLocation(sf::Vector2f(32.f, 16.f));
         mino[3].setIndex(5, 1, 2);
         break;
@@ -130,6 +130,40 @@ void Tetromino::setPosition(sf::Vector2f newPosition = sf::Vector2f(0.f, 0.f))
     }
 }
 
+void Tetromino::hardDrop(std::vector<Mino>& minos)
+{
+	sf::Clock c;
+	sf::Time  t;
+	auto m_p = mino[1].getPosition(); // Tetromino position based on first mino poisition.
+	sf::Vector2f gridFloor(0.f, 24.f * TILE);
+	
+	if (minos.size() >= 55)
+	{
+		for (size_t i = 55; i < minos.size(); ++i)
+		{
+			if (minos[i].getPosition().x >= m_p.x && minos[i].getPosition().x <= m_p.x)
+			{
+				if (minos[i].getPosition().y <= gridFloor.y && minos[i].getPosition().y > 0)
+				{
+					gridFloor = minos[i].getPosition();
+				}
+			}
+		}
+	}
+	setPosition(sf::Vector2f(0.f, gridFloor.y - TILE));
+	onFloor = true;
+	
+	do {
+		for (size_t i = 0; i < mino.size(); ++i)
+		{
+			mino[i].handleMovement(sf::Vector2f(0.f, -16.f));
+		}
+	} while(!canMove(minos));
+	
+	t = c.getElapsedTime(); // Time to the pieces go down.
+	std::cout << t.asSeconds() << std::endl;
+}
+
 void Tetromino::handleMovement(Directions d, std::vector<Mino>& Minos)
 {
 	sf::Vector2f direction;
@@ -141,6 +175,8 @@ void Tetromino::handleMovement(Directions d, std::vector<Mino>& Minos)
 		direction = sf::Vector2f(0.f, 16.f);
 	else if (d == Directions::Up) // Debbug purpose only __DELETE__
 		direction = sf::Vector2f(0.f, -16.f);
+	else if (d == Directions::None)
+		direction = sf::Vector2f(0.f, 0.f); // Keep.
 	
 	for (int i = 0; i < 4; ++i) {
         mino[i].handleMovement(direction);
@@ -154,14 +190,13 @@ void Tetromino::handleMovement(Directions d, std::vector<Mino>& Minos)
 		for (int i = 0; i < 4; ++i) {
 			mino[i].handleMovement(direction);
 		}
-		//Minos.push_back(m);// NOTE(AloneTheKing): Need to delete the class now.
-		//this->~Tetromino();
 		
-		if (d == Directions::Down) {
+		if (d == Directions::Down && onFloor == false) {
 			onFloor = true;
 		}
+		return;
 	}
-	
+	onFloor = false;
 }
 
 bool Tetromino::canMove(std::vector<Mino>& Minos)
@@ -176,11 +211,10 @@ bool Tetromino::canMove(std::vector<Mino>& Minos)
 }
 
 // ---- Rotate Tetromino
-void Tetromino::rotateTetromino()
+void Tetromino::rotateTetromino(std::vector<Mino>& minos)
 {
     if (Type == TilesType::O)
 		return;
-	
 	
     if (nRotation < 3) {
         nRotation ++;
@@ -190,12 +224,54 @@ void Tetromino::rotateTetromino()
 	}
 	if (Type == TilesType::Z || Type == TilesType::S)
 	{
-		if (nRotation > 1){
+		if (nRotation > 1)
 			nRotation = 0;
-		}
 	}
 	
     updateRotationPosition();
+	Directions movement;
+	bool hasCollided = false;
+	for (size_t i = 0; i < mino.size(); ++i)
+	{
+		if (!mino[i].canMove(minos))
+		{
+			hasCollided = true;
+			short int index = mino[i].getIndex();
+			switch(index)
+			{
+				case 0:
+				movement = Directions::Right;
+				break;
+				case 1:
+				movement = Directions::Down;
+				break;
+				case 2:
+				movement = Directions::Left;
+				break;
+				case 3:
+				movement = Directions::Right;
+				break;
+				case 4:
+				case 5:
+				movement = Directions::Left;
+				break;
+				case 6:
+				movement = Directions::Right;
+				break;
+				case 7:
+				movement = Directions::Up;
+				break;
+				case 8:
+				movement = Directions::Left;
+				break;
+			}
+			break;
+		}
+	}
+	if (hasCollided)
+	{
+		handleMovement(movement, minos);
+	}
 }
 
 void Tetromino::updateRotationPosition()
@@ -238,7 +314,6 @@ void Tetromino::updateRotationPosition()
 
 void Tetromino::checkInput(const std::vector<Tetromino*>& t) // __DELETE__ >? 
 {
-	
 	std::vector<Mino> m;
 	for (size_t i = 0; i < t.size(); ++i) {
 		if (t[i] != this) {
@@ -261,7 +336,6 @@ void Tetromino::checkInput(const std::vector<Tetromino*>& t) // __DELETE__ >?
 		handleMovement(Directions::Up, m); // Debugg purpose only __DELETE__
 	}
 	if (keyboard.checkInput(sf::Keyboard::Key::R)) {
-		rotateTetromino();
 	}
 }
 
@@ -281,8 +355,12 @@ void Tetromino::checkInput(std::vector<Mino>& t)
 		handleMovement(Directions::Up, t); // Debugg purpose only __DELETE__
 	}
 	else if (keyboard.checkInput(sf::Keyboard::Key::R)) {
-		rotateTetromino();
+		rotateTetromino(t);
 	}
+	if (keyboard.checkInput(sf::Keyboard::Key::Space)) {
+		hardDrop(t); // Need to implement
+	}
+	
 }
 
 
@@ -312,6 +390,3 @@ Tetromino& Tetromino::operator=(const Tetromino& t)
 	
 	return *this;
 }
-
-
-

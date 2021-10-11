@@ -104,9 +104,7 @@ int main()
 	sf::RenderWindow window(sf::VideoMode(36 *TILE , 26 * TILE), "Mandioca");
 	Keyboard k;
 	
-	
-	Tetromino tetromino(TilesType::I, sf::Vector2f(18 * TILE, TILE));
-	Tetromino tTmino(TilesType::I, sf::Vector2f(18 * TILE, 13 * TILE)); // Mino for test.
+	Tetromino tetromino(TilesType::L, sf::Vector2f(18 * TILE, TILE));
 	
 	// ---------
 	std::array<Mino, 56> Playfield;
@@ -123,11 +121,10 @@ int main()
 	}
 	
 	std::vector<Tetromino*> tetrominos;
-	window.setFramerateLimit(60);
+	//window.setFramerateLimit(60);
 	while(window.isOpen())
 	{
 		
-		tetrominos.push_back(&tTmino);
 		tetrominos.push_back(&tetromino);
 		
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Escape)){
@@ -135,7 +132,10 @@ int main()
 			return EXIT_SUCCESS;
 		}
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::X)) {
-			tetromino = Tetromino(TilesType::L, sf::Vector2f(18 * TILE, TILE));
+			tetromino = Tetromino(TilesType::Z, sf::Vector2f(18 * TILE, TILE));
+		}
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Z)) {
+			tetromino = Tetromino(TilesType::S, sf::Vector2f(18 * TILE, TILE));
 		}
 		
 		sf::Event event;
@@ -152,6 +152,7 @@ int main()
 		//tetromino.checkInput(gridSize);
 		///////////////////////////////////
 		tetromino.Update(gridSize);
+		
 		for (size_t i = 0; i < tetrominos.size(); ++i) // __DELETE__
 		{
 			tetrominos[i]->updateMinoPosition(&window);
@@ -168,7 +169,8 @@ int main()
 				gridSize.push_back(tetromino.getMino()[i]);
 			}
 			
-			tetromino = Tetromino(getRandomTetromino(), sf::Vector2f(18 * TILE, TILE));
+			//tetromino = Tetromino(getRandomTetromino(), sf::Vector2f(18 * TILE, TILE));
+			tetromino = Tetromino(TilesType::L, sf::Vector2f(18 * TILE, TILE));
 			tetrominos.clear();
 		}
 		//std::cout << gridSize.size() << std::endl;
@@ -193,7 +195,6 @@ int main()
 			}
 			
 		}
-		
 		window.display();
 		window.clear();
 		

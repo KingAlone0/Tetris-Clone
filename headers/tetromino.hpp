@@ -39,13 +39,13 @@ class Tetromino
 	
     void handleMovement(Directions d, std::vector<Mino>& Minos); // d = direction
     bool canMove(std::vector<Mino>& Minos);
-	void checkInput(const std::vector<Tetromino*>& t); // NOTE(AloneTheKing): Pass as reference to not make a copy maybe. __DELETE__
-	void checkInput(std::vector<Mino>& t); // NOTE(AloneTheKing): Pass as reference to not make a copy maybe.
+	void checkInput(const std::vector<Tetromino*>& t); //__DELETE__
+	void checkInput(std::vector<Mino>& t);
 	
 	std::vector<Mino> getMino() const { return mino; };
 	
     //-------- Rotate Tetromino
-    void rotateTetromino();
+    void rotateTetromino(std::vector<Mino>& minos);
 	
 	//-------- Update
 	void Update(std::vector<Mino>& Minos);
@@ -55,6 +55,7 @@ class Tetromino
     void updateRotationPosition();
     void setTetrominoGeometry();
 	void setMinoType();
+	void hardDrop(std::vector<Mino>& minos);
 	
 	//----------
 	public:

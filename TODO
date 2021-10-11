@@ -1,6 +1,4 @@
-TODO: Need to pass other std::vector to update Tetromino, because the grid is with the playfield so, probably I can't erase the line because will erase de Playfield too. --Maybe not because I can check if the position of the mino is bigger than 11 * TILES and less than 24 * TILES(this is the x position of the grid walls).
-
-TODO: Rotation of Z is broken is flip before rotating, so when rotate it look like mino S.
+TODO: Wall Kick n' Floor Kick
 
 TODO: See if can use array instead of vector on tetrominos class : Row:27
 
@@ -24,3 +22,6 @@ TODO: Make a menu for the game, UI Class. Note: Made a simple fuction to buttons
 +TODO: Game logic, make the pieces fall, and fix on the grid // Need to make the tetromino collide with the grid 
 +TODO: Made the Update function who make handle the movement and make the tetrominos moves down, need to know how to know when the tetromino is on the floor and fix it to the ground adding to one Vector of minos -  also need to make the
 spawn function who will be called after that, and at the beginning of the game.
++TODO: HardDrop is so fucking slow
++TODO: Rotation of Z is broken is flip before rotating, so when rotate it look like mino S. Kinda fixed it but now the 
+first rotation ins't working on S and Z, just rotate at second time pressed, need to know how to fix it.
