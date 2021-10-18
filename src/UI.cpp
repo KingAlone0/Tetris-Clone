@@ -3,8 +3,16 @@
 
 UI::UI()
 {
+	if (!texture.loadFromFile("../textures/sprite-sheets.png"))// TODO(AloneTheKing): Need to make a way to set this outside the class, if want to load other sheet, whitout changing here, maybe turn static 
+		return;
 	rect.setSize(sf::Vector2f(150.f, 50.f));
 	rect.setFillColor(sf::Color::Green);
+}
+
+UI::UI(V2 position, sf::IntRect sprPlace): position(position), sprPlace(sprPlace)
+{
+	if (!texture.loadFromFile("../textures/sprite-sheets.png"))// TODO(AloneTheKing): Need to make a way to set this outside the class, if want to load other sheet, whitout changing here, maybe turn static 
+		return;
 }
 
 

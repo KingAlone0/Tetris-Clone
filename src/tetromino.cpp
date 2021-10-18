@@ -150,13 +150,14 @@ void Tetromino::hardDrop(std::vector<Mino>& minos)
 			}
 		}
 	}
-	setPosition(sf::Vector2f(0.f, gridFloor.y - TILE));
+	// NOTE(AloneTheKing): The hardDrop isn't working sometimes, maybe it passing through the grid, or isn't passing to the vector of minos
+	setPosition(sf::Vector2f(0.f, gridFloor.y - 2 * TILE));// TODO(AloneTheKing): The hard drop is so fucking slow when has  a lot of minos os screen.
 	onFloor = true;
 	
 	do {
 		for (size_t i = 0; i < mino.size(); ++i)
 		{
-			mino[i].handleMovement(sf::Vector2f(0.f, -16.f));
+			mino[i].handleMovement(sf::Vector2f(0.f, -16.f)); // NOTE(AloneTheKing): Handle movement after Loop? like on Row 234, at Wall n' Floor Kick mechanics probably will be faster, Dunno maybe this is actually "optimized" already.
 		}
 	} while(!canMove(minos));
 	
@@ -266,7 +267,7 @@ void Tetromino::rotateTetromino(std::vector<Mino>& minos)
 				break;
 			}
 			break;
-		}
+		}// TODO(AloneTheKing): Probably this is actually not right. Dunno just try.
 	}
 	if (hasCollided)
 	{

@@ -1,4 +1,6 @@
-TODO: Wall Kick n' Floor Kick
+TODO: make UI classes (Button, Texture(?Image(?)), Animation ...)
+
+TODO: make a font.
 
 TODO: See if can use array instead of vector on tetrominos class : Row:27
 
@@ -25,3 +27,5 @@ spawn function who will be called after that, and at the beginning of the game.
 +TODO: HardDrop is so fucking slow
 +TODO: Rotation of Z is broken is flip before rotating, so when rotate it look like mino S. Kinda fixed it but now the 
 first rotation ins't working on S and Z, just rotate at second time pressed, need to know how to fix it.
++TODO: Wall Kick n' Floor Kick
++TODO: Create a fuction to make the pontuation multiplier

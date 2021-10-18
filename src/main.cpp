@@ -1,142 +1,31 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
-
-#include "tetromino.hpp"
-#include "renderWindow.hpp"
-
-#include <ctime>
-#include <random>
-
+#include "game.hpp"
+#include "UI.hpp"
+#include "button.hpp"
+#include "image.hpp"
 #define TILE 16
-
-TilesType getRandomTetromino()
-{
-	std::mt19937 mersenne { static_cast<std::mt19937::result_type>(std::time(nullptr)) };
-	std::uniform_int_distribution<> n {0, 6};
-	unsigned short int t = n(mersenne);
-	TilesType type;
-	switch(t)
-	{
-		case 0:
-		type = TilesType::I;
-		break;
-		case 1:
-		type = TilesType::J;
-		break;
-		case 2:
-		type = TilesType::L;
-		break;
-		case 3:
-		type = TilesType::O;
-		break;
-		case 4:
-		type = TilesType::S;
-		break;
-		case 5:
-		type = TilesType::T;
-		case 6:
-		type = TilesType::Z;
-		break;
-	}
-	return type;
-}
-
-void deleteRowAt(std::vector<Mino>& grid, int h) // Delete a line.
-{
-	for (size_t i = 0; i < grid.size(); ++i)
-	{
-		if (grid[i].getPosition().y == h)
-		{
-			if (grid[i].getPosition().x != 11 * TILE && grid[i].getPosition().x != 22 * TILE) {
-				grid.erase(grid.cbegin() + i);
-				i--;
-			}
-		}
-	}
-	for (size_t i = 0; i < grid.size(); ++i) // Move the minos down for after delete a line.
-	{
-		if (grid[i].getPosition().y < h)
-		{
-			if (grid[i].getPosition().x != 11 * TILE && grid[i].getPosition().x != 22 * TILE) {
-				grid[i].setPosition(sf::Vector2f(grid[i].getPosition().x, grid[i].getPosition().y + TILE));
-			}
-		}
-	}
-}
-
-// TODO(AloneTheKing): Need to make the score system, and make it show at screen
-bool isFullRowAt(const std::vector<Mino>& grid, unsigned short int h)
-{
-	int p = 0;
-	for (size_t i = 0; i <= grid.size(); ++i)
-	{ 
-		if (grid[i].getPosition().y == h)
-		{
-			if (grid[i].getPosition().x != 11 * TILE && grid[i].getPosition().x != 22 * TILE) {
-				p++;
-			}
-		}
-	}
-	return p >= 10 ? true : false;
-}
-//Grid 12 x 22
-
-void setGrid(std::array<Mino, 56>& g)
-{
-	int i = 0;
-	for (int x = 11; x < 23; ++x) {
-		for (int y = 2; y < 25; ++y) {
-			if (x == 11 || x == 22 || y == 24)
-			{
-				if (g[i].getPosition().x == 0.f && g[i].getPosition().x != x)
-				{
-					g[i].setMinoType(TilesType::Grid);
-					g[i].setPosition(x * TILE, y * TILE);
-					i++;
-				}
-			}
-		}
-	}
-}
 
 int main()
 {
-	sf::RenderWindow window(sf::VideoMode(36 *TILE , 26 * TILE), "Mandioca");
-	Keyboard k;
+	sf::RenderWindow window(sf::VideoMode(36 *TILE , 26 * TILE), "Mandioca"); // 576 x 416
 	
-	Tetromino tetromino(TilesType::L, sf::Vector2f(18 * TILE, TILE));
+	sf::RectangleShape background;
+	background.setSize(sf::Vector2f(36 *TILE , 26 * TILE));
+	background.setPosition(0.f, 0.f);
+	background.setFillColor(sf::Color::Blue);
 	
-	// ---------
-	std::array<Mino, 56> Playfield;
-	//Mino Playfield[56];
+	Button start(V2(10.f, 10.f), sf::IntRect(0.f, 45.f, 32.f, 16.f));
+	Image logo(V2(214.f, 15.f), sf::IntRect(0.f, 0.f, 40.f, 23.f), 8, .2f);
 	
-	setGrid(Playfield);
-	// ---------
-	std::vector<Mino> gridSize;
-	unsigned short int sizeOfGrid = 0;
-	
-	for (size_t i = 0; i < Playfield.size(); ++i)
-	{
-		gridSize.push_back(Playfield[i]);
-	}
-	
-	std::vector<Tetromino*> tetrominos;
-	//window.setFramerateLimit(60);
 	while(window.isOpen())
 	{
-		
-		tetrominos.push_back(&tetromino);
-		
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Escape)){
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::T))
+		{
 			window.clear();
-			return EXIT_SUCCESS;
+			Tetris(window);
 		}
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::X)) {
-			tetromino = Tetromino(TilesType::Z, sf::Vector2f(18 * TILE, TILE));
-		}
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Z)) {
-			tetromino = Tetromino(TilesType::S, sf::Vector2f(18 * TILE, TILE));
-		}
+		
 		
 		sf::Event event;
 		while (window.pollEvent(event))
@@ -146,62 +35,16 @@ int main()
 				window.close();
 			}
 		}
+		// ----------------------
+		window.draw(background);
+		window.draw(start.spr);
+		logo.update();
+		window.draw(logo.spr);
 		
-		///////////////////////////////////
-		//tetromino.checkInput(tetrominos);
-		//tetromino.checkInput(gridSize);
-		///////////////////////////////////
-		tetromino.Update(gridSize);
+		// ----------------------
 		
-		for (size_t i = 0; i < tetrominos.size(); ++i) // __DELETE__
-		{
-			tetrominos[i]->updateMinoPosition(&window);
-		}
-		
-		for (int i = 0; i < 56; ++i)
-		{
-			window.draw(Playfield[i].getSprite());
-		}
-		
-		if (tetromino.isOnFloor()) {
-			for (size_t i = 0; i < tetromino.getMino().size(); ++i)
-			{
-				gridSize.push_back(tetromino.getMino()[i]);
-			}
-			
-			//tetromino = Tetromino(getRandomTetromino(), sf::Vector2f(18 * TILE, TILE));
-			tetromino = Tetromino(TilesType::L, sf::Vector2f(18 * TILE, TILE));
-			tetrominos.clear();
-		}
-		//std::cout << gridSize.size() << std::endl;
-		
-		for (size_t i = 0; i < gridSize.size(); ++i)
-		{
-			window.draw(gridSize[i].getSprite());
-		}
-		
-		if (sizeOfGrid != (int)gridSize.size())
-		{
-			sizeOfGrid = gridSize.size();
-			if (sizeOfGrid != 0)
-			{
-				for (int h = 0; h < 24; h++)
-				{
-					if (isFullRowAt(gridSize, h * TILE))
-					{
-						deleteRowAt(gridSize, h * TILE);
-					}
-				}
-			}
-			
-		}
 		window.display();
 		window.clear();
-		
-		//gridSize.clear(); //Clear the Vector all "frames"
-		tetrominos.clear(); // Clear the vector of minos.
 	}
-	
-	
 	return EXIT_SUCCESS;
 }
