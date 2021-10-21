@@ -5,7 +5,10 @@
 #include "button.hpp"
 #include "image.hpp"
 #include "keyboard.hpp"
+
 #define TILE 16
+
+#include "types.hpp"
 
 int main()
 {
@@ -29,8 +32,6 @@ int main()
 			Tetris(window);
 			c.restart();
 		}
-		
-		
 		
 		sf::Event event;
 		while (window.pollEvent(event))

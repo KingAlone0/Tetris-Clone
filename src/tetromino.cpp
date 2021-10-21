@@ -81,13 +81,13 @@ void Tetromino::setTetrominoGeometry()
         mino[3].setIndex(0, 3);
         break;
         case TilesType::L:
-        mino[0].setSpriteLocation(sf::Vector2f(0.f * TILE, 1.f * TILE));
+        mino[0].setSpriteLocation(sf::Vector2f(0.f * TILE, 0.f * TILE));
         mino[0].setIndex(0, 3);
-        mino[1].setSpriteLocation(sf::Vector2f(1.f * TILE, 1.f * TILE));
+        mino[1].setSpriteLocation(sf::Vector2f(1.f * TILE, 0.f * TILE));
         mino[1].setIndex(1, 3);
-        mino[2].setSpriteLocation(sf::Vector2f(2.f * TILE, 1.f * TILE));
+        mino[2].setSpriteLocation(sf::Vector2f(2.f * TILE, 0.f * TILE));
         mino[2].setIndex(2, 3);
-        mino[3].setSpriteLocation(sf::Vector2f(0.f * TILE, 2.f * TILE));
+        mino[3].setSpriteLocation(sf::Vector2f(2.f * TILE, 1.f * TILE));
         mino[3].setIndex(5, 3);
         break;
         case TilesType::Z:

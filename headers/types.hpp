@@ -35,7 +35,6 @@ struct Index
 		updateCoordinates();
 	}
 	
-	
 	Index& operator=(const Index& index)
 	{
 		if (this == &index)
@@ -50,114 +49,27 @@ struct Index
 	{
 		if (based == 4)
 		{
-			switch(i)
-			{
-				case 0:
-				x = 0;
-				y = 0;
-				break;
-				case 1:
-				x = 1;
-				y = 0;
-				break;
-				case 2:
-				x = 2;
-				y = 0;
-				break;
-				case 3:
-				x = 3;
-				y = 0;
-				break;
-				case 4:
-				x = 0;
-				y = 1;
-				break;
-				case 5:
-				x = 1;
-				y = 1;
-				break;
-				case 6:
-				x = 2;
-				y = 1;
-				break;
-				case 7:
-				x = 3;
-				y = 1;
-				break;
-				case 8:
-				x = 0;
-				y = 2;
-				break;
-				case 9:
-				x = 1;
-				y = 2;
-				break;
-				case 10:
-				x = 2;
-				y = 2;
-				break;
-				case 11:
-				x = 3;
-				y = 2;
-				break;
-				case 12:
-				x = 0;
-				y = 3;
-				break;
-				case 13:
-				x = 1;
-				y = 3;
-				break;
-				case 14:
-				x = 2;
-				y = 3;
-				break;
-				case 15:
-				x = 3;
-				y = 3;
-				break;
+			unsigned short int test[4][4] = { {0, 1, 2, 3}, {4, 5, 6, 7}, {8, 9, 10, 11}, {12, 13, 14, 15} };
+			for (int n = 0; n < 4; ++n) {
+				for (int t = 0; t < 4; ++t) {
+					if (test[n][t] == i) {
+						x = t;
+						y = n;
+					}
+				}
+				
 			}
 		}
 		else if (based == 3)
 		{
-			switch(i)
-			{
-				case 0:
-				x = 0;
-				y = 0;
-				break;
-				case 1:
-				x = 1;
-				y = 0;
-				break;
-				case 2:
-				x = 2;
-				y = 0;
-				break;
-				case 3:
-				x = 0;
-				y = 1;
-				break;
-				case 4:
-				x = 1;
-				y = 1;
-				break;
-				case 5:
-				x = 2;
-				y = 1;
-				break;
-				case 6:
-				x = 0;
-				y = 2;
-				break;
-				case 7:
-				x = 1;
-				y = 2;
-				break;
-				case 8:
-				x = 2;
-				y = 2;
-				break;
+			unsigned short int test[3][3] = { {0, 1, 2}, {3, 4, 5}, {6, 7, 8} };
+			for (int n = 0; n < 3; ++n) {
+				for (int t = 0; t < 3; ++t) {
+					if (test[n][t] == i) {
+						x = t;
+						y = n;
+					}
+				}
 			}
 		}
 	}

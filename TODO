@@ -1,6 +1,6 @@
 TODO: make UI classes (Button, Texture(?Image(?)), Animation ...)
 
-TODO: Need to implement rotation based on 4 to I Tetromino(Long) and 3 based index for the others.
++TODO: Need to implement rotation based on 4 to I Tetromino(Long) and 3 based index for the others.
 
 TODO: make Wall kick again.
 
@@ -17,6 +17,8 @@ TODO: Clean the code.
 NOTE: Test rotation with 4 width, maybe with 3 width can't make t-spin/S-Spo etc
 
 NOTE: See if can create a class named Tile to use.
+
+NOTE: Use Rotation based on center of mino or center of grid? Check tetromino L and Tetromino J to see difereces.
 
 TODO: Need to create a render class. --maybe. I made a simple class who can create a window, but fo now i don't think it will be useful
 TODO: Make a menu for the game, UI Class. Note: Made a simple fuction to buttons
