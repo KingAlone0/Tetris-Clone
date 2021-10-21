@@ -5,6 +5,7 @@
 #include <iostream>
 
 
+
 class Mino
 {
     private:
@@ -12,12 +13,13 @@ class Mino
     sf::Sprite spr;
     TilesType Type;
     sf::IntRect sprPlace;
-	short int index;
+	Index index;
+	Index rIndex;
 	unsigned char tIndex;
     sf::Vector2i position_index;
 	sf::Vector2i rotatedPosition;
-    
-    public:
+	
+	public:
     BoxCollision Collision;
 	
     
@@ -46,15 +48,17 @@ class Mino
     bool canMove(std::vector<Mino> Minos); // Could use a static vector of Mino and at the construction add a mino to it
     void updateCollision();
     
-    void setIndex(short int i, short int x, short int y);
-	short int getIndex() const;
-	unsigned char updateIndexPosition(short int degree);
+    void setIndex(uint8_t i);
+	Index getIndex() const { return index; }
+	Index getRotatedIndex() const { return rIndex; }
+	Index updateIndexPosition(short int degree);
 	unsigned char getIndexRotation() const { return tIndex; }
 	void moveDown();
     
     // void testIndexUpdate();
     private:
     void updateIndex(unsigned char nIndex);
+	// NOTE(AloneTheKing): Need to debug the rotation to know what tha fuck is going wrong
     
     
 };

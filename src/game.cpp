@@ -10,7 +10,8 @@ void Tetris(sf::RenderWindow& window)
 	font.loadFromFile("../textures/SourceCode.ttf");
 	
 	short int Score = 0;
-	Tetromino tetromino(getRandomTetromino(), sf::Vector2f(14 * TILE, TILE));
+	//Tetromino tetromino(getRandomTetromino(), sf::Vector2f(15 * TILE, TILE));
+	Tetromino tetromino(TilesType::I, sf::Vector2f(15 * TILE, TILE));
 	
 	std::array<Mino, 56> Playfield;
 	
@@ -35,10 +36,10 @@ void Tetris(sf::RenderWindow& window)
 			break;
 		}
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::X)) {
-			tetromino = Tetromino(TilesType::Z, sf::Vector2f(18 * TILE, TILE));
+			tetromino = Tetromino(TilesType::J, sf::Vector2f(18 * TILE, TILE));
 		}
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Z)) {
-			tetromino = Tetromino(TilesType::O, sf::Vector2f(18 * TILE, TILE));
+			tetromino = Tetromino(TilesType::L, sf::Vector2f(18 * TILE, TILE));
 		}
 		
 		sf::Event event;
@@ -68,7 +69,7 @@ void Tetris(sf::RenderWindow& window)
 				gridSize.push_back(tetromino.getMino()[i]);
 			}
 			
-			//tetromino = Tetromino(getRandomTetromino(), sf::Vector2f(18 * TILE, TILE));
+			//tetromino = Tetromino(getRandomTetromino(), sf::Vector2f(15 * TILE, TILE));
 			tetromino = Tetromino(TilesType::T, sf::Vector2f(18 * TILE, TILE));
 			tetrominos.clear();
 		}
@@ -181,7 +182,6 @@ void deleteRowAt(std::vector<Mino>& grid, int h) // Delete a line.
 	}
 }
 
-// TODO(AloneTheKing): Need to make the score system, and make it show at screen
 bool isFullRowAt(const std::vector<Mino>& grid, unsigned short int h)
 {
 	int p = 0;
@@ -196,8 +196,8 @@ bool isFullRowAt(const std::vector<Mino>& grid, unsigned short int h)
 	}
 	return p >= 10 ? true : false;
 }
-//Grid 12 x 22
 
+//Grid 12 x 22
 void setGrid(std::array<Mino, 56>& g)
 {
 	int i = 0;

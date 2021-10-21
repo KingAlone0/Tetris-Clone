@@ -37,7 +37,7 @@ class Tetromino
 	
     bool isOnFloor() const { return onFloor; }
 	
-    void handleMovement(Directions d, std::vector<Mino>& Minos); // d = direction
+    void handleMovement(Directions d, std::vector<Mino>& Minos, bool Collided = false); // d = direction
     bool canMove(std::vector<Mino>& Minos);
 	void checkInput(const std::vector<Tetromino*>& t); //__DELETE__
 	void checkInput(std::vector<Mino>& t);

@@ -41,74 +41,74 @@ void Tetromino::setTetrominoGeometry()
     switch (Type)
     {
         case TilesType::I:
-        mino[0].setSpriteLocation(sf::Vector2f(0.f , 0.f));
-        mino[0].setIndex(0, 0, 0);
-        mino[1].setSpriteLocation(sf::Vector2f(16.f, 0.f));
-        mino[1].setIndex(1, 0, 1);
-        mino[2].setSpriteLocation(sf::Vector2f(32.f, 0.f));
-        mino[2].setIndex(2, 0, 2);
-        mino[3].setSpriteLocation(sf::Vector2f(48.f, 0.f));
-        mino[3].setIndex(3, 0, 3);
+        mino[0].setSpriteLocation(sf::Vector2f(0.f * TILE, 2.f * TILE));
+        mino[0].setIndex(8);
+        mino[1].setSpriteLocation(sf::Vector2f(1.f * TILE, 2.f * TILE));
+        mino[1].setIndex(9);
+        mino[2].setSpriteLocation(sf::Vector2f(2.f * TILE, 2.f * TILE));
+        mino[2].setIndex(10);
+        mino[3].setSpriteLocation(sf::Vector2f(3.f * TILE, 2.f * TILE));
+        mino[3].setIndex(11);
         break;
         case TilesType::O:
         mino[0].setSpriteLocation(sf::Vector2f(0.f, 0.f));
-        mino[0].setIndex(0, 0, 0);
-        mino[1].setSpriteLocation(sf::Vector2f(16.f, 0.f));
-        mino[1].setIndex(1, 0, 1);
-        mino[2].setSpriteLocation(sf::Vector2f(0.f, 16.f));
-        mino[2].setIndex(3, 1, 0);
-        mino[3].setSpriteLocation(sf::Vector2f(16.f, 16.f));
-        mino[3].setIndex(4, 0, 1);
+        mino[0].setIndex(0);
+        mino[1].setSpriteLocation(sf::Vector2f(1.f * TILE, 0.f * TILE));
+        mino[1].setIndex(1);
+        mino[2].setSpriteLocation(sf::Vector2f(0.f * TILE, 1.f * TILE));
+        mino[2].setIndex(4);
+        mino[3].setSpriteLocation(sf::Vector2f(1.f * TILE, 1.f * TILE));
+        mino[3].setIndex(5);
         break;
         case TilesType::T:
-        mino[0].setSpriteLocation(sf::Vector2f(0.f, 16.f));
-        mino[0].setIndex(3, 0, 1);
-        mino[1].setSpriteLocation(sf::Vector2f(16.f, 16.f));
-        mino[1].setIndex(4, 1, 1);
-        mino[2].setSpriteLocation(sf::Vector2f(32.f, 16.f));
-        mino[2].setIndex(5, 2, 1);
-        mino[3].setSpriteLocation(sf::Vector2f(16.f, 0.f));
-        mino[3].setIndex(1, 1, 0);
+        mino[0].setSpriteLocation(sf::Vector2f(0.f * TILE, 2.f * TILE));
+        mino[0].setIndex(8);
+        mino[1].setSpriteLocation(sf::Vector2f(1.f * TILE, 2.f * TILE));
+        mino[1].setIndex(9);
+        mino[2].setSpriteLocation(sf::Vector2f(2.f * TILE, 2.f * TILE));
+        mino[2].setIndex(10);
+        mino[3].setSpriteLocation(sf::Vector2f(1.f * TILE, 1.f * TILE));
+        mino[3].setIndex(5);
         break;
         case TilesType::J:
-        mino[0].setSpriteLocation(sf::Vector2f(0.f, 0.f));
-        mino[0].setIndex(3, 0, 1);
-        mino[1].setSpriteLocation(sf::Vector2f(32.f, 0.f));
-        mino[1].setIndex(4, 1, 1);
-        mino[2].setSpriteLocation(sf::Vector2f(16.f, 0.f));
-        mino[2].setIndex(5, 2, 1);
-        mino[3].setSpriteLocation(sf::Vector2f(32.f, 16.f));
-        mino[3].setIndex(8, 2, 2);
+        mino[0].setSpriteLocation(sf::Vector2f(0.f * TILE, 2.f * TILE));
+        mino[0].setIndex(8);
+        mino[1].setSpriteLocation(sf::Vector2f(1.f * TILE, 2.f * TILE));
+        mino[1].setIndex(9);
+        mino[2].setSpriteLocation(sf::Vector2f(2.f * TILE, 2.f * TILE));
+        mino[2].setIndex(10);
+        mino[3].setSpriteLocation(sf::Vector2f(0.f * TILE, 1.f * TILE));
+        mino[3].setIndex(4);
         break;
         case TilesType::L:
-        mino[0].setSpriteLocation(sf::Vector2f(0.f, 16.f));
-        mino[0].setIndex(3, 0, 1);
-        mino[1].setSpriteLocation(sf::Vector2f(32.f, 16.f));
-        mino[1].setIndex(4, 1, 1);
-        mino[2].setSpriteLocation(sf::Vector2f(16.f, 16.f));
-        mino[2].setIndex(5, 2, 1);
-        mino[3].setSpriteLocation(sf::Vector2f(32.f, 0.f));
-        mino[3].setIndex(2, 2, 0);
+        mino[0].setSpriteLocation(sf::Vector2f(0.f * TILE, 1.f * TILE));
+        mino[0].setIndex(4);
+        mino[1].setSpriteLocation(sf::Vector2f(1.f * TILE, 1.f * TILE));
+        mino[1].setIndex(5);
+        mino[2].setSpriteLocation(sf::Vector2f(2.f * TILE, 1.f * TILE));
+        mino[2].setIndex(6);
+        mino[3].setSpriteLocation(sf::Vector2f(0.f * TILE, 2.f * TILE));
+        mino[3].setIndex(8);
         break;
         case TilesType::Z:
-        mino[0].setSpriteLocation(sf::Vector2f(16.f, 0.f));
-        mino[0].setIndex(7, 2, 1);
-        mino[1].setSpriteLocation(sf::Vector2f(16.f, 16.f));
-        mino[1].setIndex(4, 1, 1);
-        mino[2].setSpriteLocation(sf::Vector2f(0.f, 16.f));
-        mino[2].setIndex(3, 1, 0);
-        mino[3].setSpriteLocation(sf::Vector2f(32.f, 0.f));
-        mino[3].setIndex(9, 2, 2);
+        mino[0].setSpriteLocation(sf::Vector2f(0.f * TILE, 2.f * TILE));
+        mino[0].setIndex(8);
+        mino[1].setSpriteLocation(sf::Vector2f(1.f * TILE, 2.f * TILE));
+        mino[1].setIndex(9);
+        mino[2].setSpriteLocation(sf::Vector2f(1.f * TILE, 1.f * TILE));
+        mino[2].setIndex(5);
+        mino[3].setSpriteLocation(sf::Vector2f(2.f * TILE, 1.f * TILE));
+        mino[3].setIndex(6);
         break;
         case TilesType::S:
-        mino[0].setSpriteLocation(sf::Vector2f(0.f, 0.f));
-        mino[0].setIndex(6, 2, 0);
-        mino[1].setSpriteLocation(sf::Vector2f(16.f, 16.f));
-        mino[1].setIndex(4, 1, 1);
-        mino[2].setSpriteLocation(sf::Vector2f(16.f, 0.f));
-        mino[2].setIndex(7, 2, 1);
-        mino[3].setSpriteLocation(sf::Vector2f(32.f, 16.f));
-        mino[3].setIndex(5, 1, 2);
+        mino[0].setSpriteLocation(sf::Vector2f(0.f * TILE, 1.f * TILE));
+        mino[0].setIndex(4);
+        mino[1].setSpriteLocation(sf::Vector2f(1.f * TILE, 1.f * TILE));
+        mino[1].setIndex(5);
+        mino[2].setSpriteLocation(sf::Vector2f(1.f * TILE, 2.f * TILE));
+        mino[2].setIndex(9);
+        mino[3].setSpriteLocation(sf::Vector2f(2.f * TILE, 2.f * TILE));
+        mino[3].setIndex(10);
         break;
 		case TilesType::Grid:
 		break;
@@ -123,7 +123,7 @@ void Tetromino::updateMinoPosition(sf::RenderWindow *window)
     }
 }
 
-void Tetromino::setPosition(sf::Vector2f newPosition = sf::Vector2f(0.f, 0.f))
+void Tetromino::setPosition(sf::Vector2f newPosition)
 {
 	for (int i = 0; i < 4; ++i) {
         mino[i].setSpriteLocation(newPosition + mino[i].getSprite().getPosition());
@@ -165,7 +165,7 @@ void Tetromino::hardDrop(std::vector<Mino>& minos)
 	std::cout << t.asSeconds() << std::endl;
 }
 
-void Tetromino::handleMovement(Directions d, std::vector<Mino>& Minos)
+void Tetromino::handleMovement(Directions d, std::vector<Mino>& Minos, bool Collided)
 {
 	sf::Vector2f direction;
 	if (d == Directions::Left)
@@ -183,7 +183,7 @@ void Tetromino::handleMovement(Directions d, std::vector<Mino>& Minos)
         mino[i].handleMovement(direction);
 	}
 	
-	if (!canMove(Minos)) {
+	if (!canMove(Minos) && !Collided) {
 		direction = d == Directions::Left ? sf::Vector2f(16.f, 0.f) : sf::Vector2f(-16.f, 0.f);
 		if (d != Directions::Left && d != Directions::Right) {
 			direction = d == Directions::Down ? sf::Vector2f(0.f, -16.f) : sf::Vector2f(0.f, 16.f);
@@ -214,6 +214,8 @@ bool Tetromino::canMove(std::vector<Mino>& Minos)
 // ---- Rotate Tetromino
 void Tetromino::rotateTetromino(std::vector<Mino>& minos)
 {
+	sf::Clock c;
+	sf::Time t;
     if (Type == TilesType::O)
 		return;
 	
@@ -223,94 +225,78 @@ void Tetromino::rotateTetromino(std::vector<Mino>& minos)
     else if (nRotation == 3) {
         nRotation = 0;
 	}
-	if (Type == TilesType::Z || Type == TilesType::S)
+	/*if (Type == TilesType::Z || Type == TilesType::S)
 	{
 		if (nRotation > 1)
 			nRotation = 0;
-	}
+	}*/
+	bool doubleCheck = false;
 	
     updateRotationPosition();
 	Directions movement;
 	bool hasCollided = false;
-	for (size_t i = 0; i < mino.size(); ++i)
-	{
-		if (!mino[i].canMove(minos))
+	unsigned int times = 0;
+	do {
+		times++;
+		for (size_t i = 0; i < mino.size(); ++i)
 		{
-			hasCollided = true;
-			short int index = mino[i].getIndex();
-			switch(index)
+			if (!mino[i].canMove(minos))
 			{
-				case 0:
-				movement = Directions::Right;
-				break;
-				case 1:
-				movement = Directions::Down;
-				break;
-				case 2:
-				movement = Directions::Left;
-				break;
-				case 3:
-				movement = Directions::Right;
-				break;
-				case 4:
-				case 5:
-				movement = Directions::Left;
-				break;
-				case 6:
-				movement = Directions::Right;
-				break;
-				case 7:
-				movement = Directions::Up;
-				break;
-				case 8:
-				movement = Directions::Left;
-				break;
+				hasCollided = true;
+				unsigned short int index = mino[i].getRotatedIndex().i;
+				std::cout << "Index: " << index << std::endl;
+				if (index == 0 || index == 4 || index == 8 ||index == 12) {
+					movement = Directions::Right;
+					break;
+				}
+				else if (index == 3 || index == 7 || index == 11 || index == 15) {
+					movement = Directions::Left;
+					doubleCheck = false;
+					break;
+				}
+				else if (index == 13 || index == 14) {
+					movement = Directions::Up;
+					doubleCheck = false;
+					break;
+				}
+				else if (index == 2 ||index == 6 || index == 10) {
+					movement = Directions::Left;
+					doubleCheck = true;
+				}
+				else if (index == 1 || index == 5 || index == 9) {
+					movement = Directions::Right;
+					doubleCheck = true;
+				}
+				
 			}
-			break;
-		}// TODO(AloneTheKing): Probably this is actually not right. Dunno just try.
-	}
-	if (hasCollided)
-	{
-		handleMovement(movement, minos);
-	}
+		}
+		if (hasCollided)
+		{
+			handleMovement(movement, minos, true);
+		}
+	} while (doubleCheck == true && times <= 1);
+	t = c.getElapsedTime();// TODO(AloneTheKing): So fucking slow
+	// std::cout << t.asSeconds() << std::endl; // check Time
 }
 
 void Tetromino::updateRotationPosition()
 {
-    sf::Vector2f pivot = mino[1].getSprite().getPosition();
-    for (int i = 0; i < 4; ++i)
-    {
-        unsigned char index = mino[i].updateIndexPosition(nRotation);
-        switch (index)
-        {
-            case 0:
-            mino[i].setPosition(pivot.x - 16.f, pivot.y - 16.f);
-            break;
-            case 1:
-            mino[i].setPosition(pivot.x, pivot.y - 16.f);
-            break;
-            case 2:
-            mino[i].setPosition(pivot.x + 16.f, pivot.y - 16.f);
-            break;
-            case 3:
-            mino[i].setPosition(pivot.x - 16.f, pivot.y);
-            break;
-            case 4:
-            break;
-            case 5:
-            mino[i].setPosition(pivot.x + 16.f, pivot.y);
-            break;
-            case 6:
-            mino[i].setPosition(pivot.x - 16.f, pivot.y + 16.f);
-			break;
-            case 7:
-            mino[i].setPosition(pivot.x, pivot.y + 16.f);
-            break;
-            case 8:
-            mino[i].setPosition(pivot.x + 16.f, pivot.y + 16.f);
-			break;
-        }
-    }
+	for (int i = 0; i < 4; ++i)
+	{
+		sf::Vector2f position = mino[i].getPosition();
+		//index.updateCoordinates();
+		//index.i = mino[i].getRotatedIndex().i; // old index.
+		Index index = mino[i].getRotatedIndex();
+		index.updateCoordinates();
+		Index n_index = mino[i].updateIndexPosition(nRotation); // new index.
+		short int n_x, n_y;
+		n_x = n_index.x - index.x;
+		n_y = n_index.y - index.y;
+		
+		mino[i].setPosition(position.x + n_x * TILE , position.y + n_y * TILE);
+		// Almost there.
+		
+	}
 }
 
 void Tetromino::checkInput(const std::vector<Tetromino*>& t) // __DELETE__ >? 

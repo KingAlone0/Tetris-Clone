@@ -1,5 +1,9 @@
 TODO: make UI classes (Button, Texture(?Image(?)), Animation ...)
 
+TODO: Need to implement rotation based on 4 to I Tetromino(Long) and 3 based index for the others.
+
+TODO: make Wall kick again.
+
 TODO: make a font.
 
 TODO: See if can use array instead of vector on tetrominos class : Row:27
