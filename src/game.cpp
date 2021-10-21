@@ -11,7 +11,7 @@ void Tetris(sf::RenderWindow& window)
 	
 	short int Score = 0;
 	//Tetromino tetromino(getRandomTetromino(), sf::Vector2f(15 * TILE, TILE));
-	Tetromino tetromino(TilesType::I, sf::Vector2f(15 * TILE, TILE));
+	Tetromino tetromino(TilesType::S, sf::Vector2f(15 * TILE, TILE));
 	
 	std::array<Mino, 56> Playfield;
 	
@@ -69,8 +69,8 @@ void Tetris(sf::RenderWindow& window)
 				gridSize.push_back(tetromino.getMino()[i]);
 			}
 			
-			//tetromino = Tetromino(getRandomTetromino(), sf::Vector2f(15 * TILE, TILE));
-			tetromino = Tetromino(TilesType::T, sf::Vector2f(18 * TILE, TILE));
+			tetromino = Tetromino(getRandomTetromino(), sf::Vector2f(15 * TILE, TILE));
+			//tetromino = Tetromino(TilesType::T, sf::Vector2f(18 * TILE, TILE));
 			tetrominos.clear();
 		}
 		//std::cout << gridSize.size() << std::endl;

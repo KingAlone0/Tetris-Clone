@@ -145,12 +145,14 @@ bool Mino::canMove(std::vector<Mino> Minos)
     return true;
 }
 
-
-void Mino::setIndex(uint8_t i)
+void Mino::setIndex(unsigned short int i, unsigned short int based)
 {
 	index.i = i;
+	index.based = based;
 	index.updateCoordinates();
+	// NOTE(AloneTheKing): index = Index(i, based) ? maybe?
 	rIndex.i = i;
+	rIndex.based = based;
 	index.updateCoordinates();
 	tIndex = i;
 }
@@ -170,21 +172,35 @@ Index Mino::updateIndexPosition(short int degree)
 {
 	rIndex.i = tIndex;
 	rIndex.updateCoordinates();
+	unsigned short int indexs[3];
+	if (index.based == 4)
+	{
+		indexs[0] = 12;
+		indexs[1] = 15;
+		indexs[2] = 3;
+	}
+	else if (index.based == 3)
+	{
+		indexs[0] = 6;
+		indexs[1] = 8;
+		indexs[2] = 2;
+	}
+	
     if (degree == 0) 
     {
-		tIndex = index.y * 4 + index.x;
+		tIndex = index.y * index.based + index.x;
     }
     if (degree == 1)
     {
-		tIndex = 12 + index.y - (4 * index.x);
+		tIndex = indexs[0] + index.y - (index.based * index.x);
     }
     if(degree == 2)
     {
-		tIndex = 15 - (index.y * 4) - index.x;
+		tIndex = indexs[1] - (index.y * index.based) - index.x;
     }
     if (degree == 3)
     {
-		tIndex = 3 - index.y + (index.x * 4);
+		tIndex = indexs[2] - index.y + (index.x * index.based);
     }
 	Index n_Index(tIndex);
 	

@@ -48,7 +48,7 @@ class Mino
     bool canMove(std::vector<Mino> Minos); // Could use a static vector of Mino and at the construction add a mino to it
     void updateCollision();
     
-    void setIndex(uint8_t i);
+    void setIndex(unsigned short int i, unsigned short int based = 4);
 	Index getIndex() const { return index; }
 	Index getRotatedIndex() const { return rIndex; }
 	Index updateIndexPosition(short int degree);

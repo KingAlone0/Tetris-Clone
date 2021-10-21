@@ -4,10 +4,12 @@
 #include "UI.hpp"
 #include "button.hpp"
 #include "image.hpp"
+#include "keyboard.hpp"
 #define TILE 16
 
 int main()
 {
+	sf::Clock c;
 	sf::RenderWindow window(sf::VideoMode(36 *TILE , 26 * TILE), "Mandioca"); // 576 x 416
 	
 	sf::RectangleShape background;
@@ -18,13 +20,16 @@ int main()
 	Button start(V2(10.f, 10.f), sf::IntRect(0.f, 45.f, 32.f, 16.f));
 	Image logo(V2(214.f, 15.f), sf::IntRect(0.f, 0.f, 40.f, 23.f), 8, .2f);
 	
+	Keyboard k;
+	
 	while(window.isOpen())
 	{
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::T))
-		{
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::T)) {
 			window.clear();
 			Tetris(window);
+			c.restart();
 		}
+		
 		
 		
 		sf::Event event;
@@ -34,6 +39,9 @@ int main()
 			{
 				window.close();
 			}
+		}
+		if (k.justPressed(sf::Keyboard::Key::Escape) && c.getElapsedTime().asSeconds() >= 0.2f) {
+			window.close();
 		}
 		// ----------------------
 		window.draw(background);

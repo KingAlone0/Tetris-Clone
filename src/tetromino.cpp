@@ -61,54 +61,54 @@ void Tetromino::setTetrominoGeometry()
         mino[3].setIndex(5);
         break;
         case TilesType::T:
-        mino[0].setSpriteLocation(sf::Vector2f(0.f * TILE, 2.f * TILE));
-        mino[0].setIndex(8);
-        mino[1].setSpriteLocation(sf::Vector2f(1.f * TILE, 2.f * TILE));
-        mino[1].setIndex(9);
-        mino[2].setSpriteLocation(sf::Vector2f(2.f * TILE, 2.f * TILE));
-        mino[2].setIndex(10);
-        mino[3].setSpriteLocation(sf::Vector2f(1.f * TILE, 1.f * TILE));
-        mino[3].setIndex(5);
+        mino[0].setSpriteLocation(sf::Vector2f(0.f * TILE, 1.f * TILE));
+        mino[0].setIndex(3, 3);
+        mino[1].setSpriteLocation(sf::Vector2f(1.f * TILE, 1.f * TILE));
+        mino[1].setIndex(4, 3);
+        mino[2].setSpriteLocation(sf::Vector2f(2.f * TILE, 1.f * TILE));
+        mino[2].setIndex(5, 3);
+        mino[3].setSpriteLocation(sf::Vector2f(1.f * TILE, 0.f * TILE));
+        mino[3].setIndex(1, 3);
         break;
         case TilesType::J:
         mino[0].setSpriteLocation(sf::Vector2f(0.f * TILE, 2.f * TILE));
-        mino[0].setIndex(8);
+        mino[0].setIndex(3, 3);
         mino[1].setSpriteLocation(sf::Vector2f(1.f * TILE, 2.f * TILE));
-        mino[1].setIndex(9);
+        mino[1].setIndex(4, 3);
         mino[2].setSpriteLocation(sf::Vector2f(2.f * TILE, 2.f * TILE));
-        mino[2].setIndex(10);
+        mino[2].setIndex(5, 3);
         mino[3].setSpriteLocation(sf::Vector2f(0.f * TILE, 1.f * TILE));
-        mino[3].setIndex(4);
+        mino[3].setIndex(0, 3);
         break;
         case TilesType::L:
         mino[0].setSpriteLocation(sf::Vector2f(0.f * TILE, 1.f * TILE));
-        mino[0].setIndex(4);
+        mino[0].setIndex(0, 3);
         mino[1].setSpriteLocation(sf::Vector2f(1.f * TILE, 1.f * TILE));
-        mino[1].setIndex(5);
+        mino[1].setIndex(1, 3);
         mino[2].setSpriteLocation(sf::Vector2f(2.f * TILE, 1.f * TILE));
-        mino[2].setIndex(6);
+        mino[2].setIndex(2, 3);
         mino[3].setSpriteLocation(sf::Vector2f(0.f * TILE, 2.f * TILE));
-        mino[3].setIndex(8);
+        mino[3].setIndex(5, 3);
         break;
         case TilesType::Z:
         mino[0].setSpriteLocation(sf::Vector2f(0.f * TILE, 2.f * TILE));
-        mino[0].setIndex(8);
+        mino[0].setIndex(3, 3);
         mino[1].setSpriteLocation(sf::Vector2f(1.f * TILE, 2.f * TILE));
-        mino[1].setIndex(9);
+        mino[1].setIndex(4, 3);
         mino[2].setSpriteLocation(sf::Vector2f(1.f * TILE, 1.f * TILE));
-        mino[2].setIndex(5);
+        mino[2].setIndex(1, 3);
         mino[3].setSpriteLocation(sf::Vector2f(2.f * TILE, 1.f * TILE));
-        mino[3].setIndex(6);
+        mino[3].setIndex(2, 3);
         break;
         case TilesType::S:
         mino[0].setSpriteLocation(sf::Vector2f(0.f * TILE, 1.f * TILE));
-        mino[0].setIndex(4);
+        mino[0].setIndex(0, 3);
         mino[1].setSpriteLocation(sf::Vector2f(1.f * TILE, 1.f * TILE));
-        mino[1].setIndex(5);
+        mino[1].setIndex(1, 3);
         mino[2].setSpriteLocation(sf::Vector2f(1.f * TILE, 2.f * TILE));
-        mino[2].setIndex(9);
+        mino[2].setIndex(4, 3);
         mino[3].setSpriteLocation(sf::Vector2f(2.f * TILE, 2.f * TILE));
-        mino[3].setIndex(10);
+        mino[3].setIndex(5, 3);
         break;
 		case TilesType::Grid:
 		break;
@@ -225,11 +225,11 @@ void Tetromino::rotateTetromino(std::vector<Mino>& minos)
     else if (nRotation == 3) {
         nRotation = 0;
 	}
-	/*if (Type == TilesType::Z || Type == TilesType::S)
+	if (Type == TilesType::Z || Type == TilesType::S)
 	{
 		if (nRotation > 1)
 			nRotation = 0;
-	}*/
+	}
 	bool doubleCheck = false;
 	
     updateRotationPosition();
@@ -284,18 +284,15 @@ void Tetromino::updateRotationPosition()
 	for (int i = 0; i < 4; ++i)
 	{
 		sf::Vector2f position = mino[i].getPosition();
-		//index.updateCoordinates();
-		//index.i = mino[i].getRotatedIndex().i; // old index.
 		Index index = mino[i].getRotatedIndex();
 		index.updateCoordinates();
 		Index n_index = mino[i].updateIndexPosition(nRotation); // new index.
+		
 		short int n_x, n_y;
 		n_x = n_index.x - index.x;
 		n_y = n_index.y - index.y;
 		
 		mino[i].setPosition(position.x + n_x * TILE , position.y + n_y * TILE);
-		// Almost there.
-		
 	}
 }
 

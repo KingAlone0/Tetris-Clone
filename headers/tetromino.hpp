@@ -17,14 +17,6 @@ class Tetromino
 	
 	sf::Vector2f tPos;
 	
-	
-	
-	
-	// ------------Working*
-	//Mino test[4];
-	//std::array<Mino, 4> test;
-	// ------------
-    
     public:
     Tetromino(TilesType Type);
     Tetromino(TilesType Type, sf::Vector2f Position);
