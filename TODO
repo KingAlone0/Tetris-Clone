@@ -1,8 +1,8 @@
 TODO: make UI classes (Button, Texture(?Image(?)), Animation ...)
 
-+TODO: Need to implement rotation based on 4 to I Tetromino(Long) and 3 based index for the others.
-
 TODO: make Wall kick again.
+
+TODO: make an array of the rects to change the frame, could make a vector but its too heavy for just some frames.
 
 TODO: make a font.
 
@@ -35,3 +35,4 @@ spawn function who will be called after that, and at the beginning of the game.
 first rotation ins't working on S and Z, just rotate at second time pressed, need to know how to fix it.
 +TODO: Wall Kick n' Floor Kick
 +TODO: Create a fuction to make the pontuation multiplier
++TODO: Need to implement rotation based on 4 to I Tetromino(Long) and 3 based index for the others.3

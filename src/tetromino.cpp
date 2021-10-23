@@ -216,6 +216,7 @@ void Tetromino::rotateTetromino(std::vector<Mino>& minos)
 {
 	sf::Clock c;
 	sf::Time t;
+	
     if (Type == TilesType::O)
 		return;
 	
@@ -235,46 +236,44 @@ void Tetromino::rotateTetromino(std::vector<Mino>& minos)
     updateRotationPosition();
 	Directions movement;
 	bool hasCollided = false;
-	unsigned int times = 0;
-	do {
-		times++;
-		for (size_t i = 0; i < mino.size(); ++i)
+	wallKick(minos);
+#if 0
+	for (size_t i = 0; i < mino.size(); ++i)
+	{
+		if (!mino[i].canMove(minos))
 		{
-			if (!mino[i].canMove(minos))
-			{
-				hasCollided = true;
-				unsigned short int index = mino[i].getRotatedIndex().i;
-				std::cout << "Index: " << index << std::endl;
-				if (index == 0 || index == 4 || index == 8 ||index == 12) {
-					movement = Directions::Right;
-					break;
-				}
-				else if (index == 3 || index == 7 || index == 11 || index == 15) {
-					movement = Directions::Left;
-					doubleCheck = false;
-					break;
-				}
-				else if (index == 13 || index == 14) {
-					movement = Directions::Up;
-					doubleCheck = false;
-					break;
-				}
-				else if (index == 2 ||index == 6 || index == 10) {
-					movement = Directions::Left;
-					doubleCheck = true;
-				}
-				else if (index == 1 || index == 5 || index == 9) {
-					movement = Directions::Right;
-					doubleCheck = true;
-				}
-				
+			hasCollided = true;
+			unsigned short int index = mino[i].getRotatedIndex().i;
+			std::cout << "Index: " << index << std::endl;
+			if (index == 0 || index == 4 || index == 8 ||index == 12) {
+				movement = Directions::Right;
+				break;
 			}
+			else if (index == 3 || index == 7 || index == 11 || index == 15) {
+				movement = Directions::Left;
+				doubleCheck = false;
+				break;
+			}
+			else if (index == 13 || index == 14) {
+				movement = Directions::Up;
+				doubleCheck = false;
+				break;
+			}
+			else if (index == 2 ||index == 6 || index == 10) {
+				movement = Directions::Left;
+				doubleCheck = true;
+			}
+			else if (index == 1 || index == 5 || index == 9) {
+				movement = Directions::Right;
+				doubleCheck = true;
+			}
+			
 		}
-		if (hasCollided)
-		{
-			handleMovement(movement, minos, true);
-		}
-	} while (doubleCheck == true && times <= 1);
+	}
+	if (hasCollided)
+	{
+	}
+#endif
 	t = c.getElapsedTime();// TODO(AloneTheKing): So fucking slow
 	// std::cout << t.asSeconds() << std::endl; // check Time
 }
@@ -294,6 +293,38 @@ void Tetromino::updateRotationPosition()
 		
 		mino[i].setPosition(position.x + n_x * TILE , position.y + n_y * TILE);
 	}
+}
+
+void Tetromino::wallKick(std::vector<Mino>& minos)
+{
+	sf::Clock c;
+	bool b_WK = false;
+	
+	V2 WK[7] = { V2(0, 0), V2(0, -16), V2(-16, 0), V2(16, 0), V2(-16, -16), V2(0, 32), V2(-16, 32) };
+	
+	for (int i = 0; i < 7; ++i) {
+		for (size_t m = 0; m < mino.size(); ++m) {
+			mino[m].handleMovement(WK[i]);
+		}
+		if (canMove(minos)) {
+			std::cout << "offset: " << i << " X: " << WK[i].x << " Y: " << WK[i].y << std::endl;
+			b_WK = true;
+			break;
+		}
+		else {
+			V2 v2t = WK[i] * -1;
+			for (size_t m = 0; m < mino.size(); ++m) {
+				mino[m].handleMovement(v2t);
+			}
+		}
+	}
+	if (!b_WK)
+	{
+		updateRotationPosition(); // NOTE(AloneTheKing): Don't know if this is realy necessary.
+		nRotation--;
+	}
+	
+	// std::cout << "Execution Time " << c.getElapsedTime().asSeconds() << std::endl;
 }
 
 void Tetromino::checkInput(const std::vector<Tetromino*>& t) // __DELETE__ >? 

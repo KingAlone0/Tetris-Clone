@@ -123,8 +123,14 @@ bool Mino::canMove(BoxCollision box)
 
 void Mino::handleMovement(sf::Vector2f direction)
 {
-    //sf::Vector2f movement = i == 0 ? sf::Vector2f(-16.0f, 0.0f) : sf::Vector2f(16.0f, 0.0f);
     spr.move(direction);
+    updateCollision();
+}
+
+void Mino::handleMovement(V2 direction)
+{
+	sf::Vector2f m(direction.x, direction.y);
+    spr.move(m);
     updateCollision();
 }
 

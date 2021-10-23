@@ -1,8 +1,8 @@
 #include "animation.hpp"
 #include <iostream>
 
-Animation::Animation(sf::Sprite* spr, sf::IntRect sprPlace, int8 frames, float fps = 0.2f)
-:a_spr(spr), rect(sprPlace), frames(frames), fps(fps)
+Animation::Animation(sf::Sprite* spr, sf::IntRect sprPlace, int8 frames, float fps, bool repeat)
+:a_spr(spr), rect(sprPlace), frames(frames), fps(fps), repeat(repeat)
 {
 	clock.restart();
 }
@@ -32,6 +32,22 @@ void Animation::update()
 		}
 	}
 }
+
+void Animation::changeFrame(int8 n_frame)
+{
+	if (n_frame == currentFrame)
+		return;
+	currentFrame = n_frame;
+	if (n_frame != 0) {
+		sf::IntRect next_frame = rect;
+		next_frame.left += rect.width * n_frame;
+		a_spr->setTextureRect(next_frame);
+	}
+	else if (n_frame == 0) {
+		a_spr->setTextureRect(rect);
+	}
+}
+
 
 void Animation::setAnimationState(bool State)
 {

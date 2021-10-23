@@ -1,38 +1,7 @@
 #ifndef UI_HPP
 #define UI_HPP
 #include <SFML/Graphics.hpp>
-
-struct V2
-{
-	float x = 0, y = 0;
-	
-	V2() {}
-	V2(float x, float y): x(x), y(y) {}
-	V2(sf::Vector2f vector): x(vector.x), y(vector.y) {}
-	V2(sf::Vector2i vector): x((float)vector.x), y((float)vector.y) {}
-	
-	V2& operator=(const V2& vector) {
-		if (this == &vector)
-			return *this;
-		this->x = vector.x;
-		this->y = vector.y;
-		return *this;
-	}
-	V2& operator=(const sf::Vector2f& vector) {
-		this->x = vector.x;
-		this->y = vector.y;
-		return *this;
-	}
-	V2& operator-(V2& vector) {
-		if (this == &vector)
-			return *this;
-		this->x -= vector.x;
-		this->y -= vector.y;
-		
-		return *this;
-	}
-	
-};
+#include "types.hpp"
 
 class UI
 {

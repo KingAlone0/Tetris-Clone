@@ -42,7 +42,8 @@ class Mino
 	
     void setMinoType(TilesType nType);
     void setSpriteLocation(sf::Vector2f pos) { spr.setPosition(pos); }
-	void handleMovement(sf::Vector2f direction); // if 0 move left, if 1 move right
+	void handleMovement(sf::Vector2f direction);
+	void handleMovement(V2 direction);
     void setPosition(sf::Vector2f newPosition);
     void setPosition(float x, float y);
     bool canMove(std::vector<Mino> Minos); // Could use a static vector of Mino and at the construction add a mino to it

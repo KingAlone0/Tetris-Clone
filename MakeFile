@@ -28,16 +28,17 @@ all: $(PROJ_NAME)
 
 $(PROJ_NAME): $(OBJ)
 	@ echo 'Building binary using GPP linker : $@'
-	$(CC) $^ $(SFML) $(INC) $(LIB) -o "$(BUILD_DIR)$@"
+	@ $(CC) $^ $(SFML) $(INC) $(LIB) -o "$(BUILD_DIR)$@"
 	@ echo 'Finished build binary: $@'
 
 $(OBJ_DIR)/%.o: src/%.cpp headers/%.hpp
+	@ echo '_____________________________________'
 	@ echo 'Building target using GCC compiler: $<'
-	$(CC) $< $(CC_FLAGS) $(INC) -o $@
+	@ $(CC) $< $(CC_FLAGS) $(INC) -o $@
 
 obj/main.o: src/main.cpp $(HPP_SOURCE)
 	@ echo 'Building target using GCC compiler $<'
-	$(CC) $< $(CC_FLAGS) $(INC) -o $@
+	@ $(CC) $< $(CC_FLAGS) $(INC) -o $@
 
 clean:
 	@ $(RM) obj\*.o

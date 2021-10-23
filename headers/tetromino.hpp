@@ -11,7 +11,7 @@ class Tetromino
     private:
     std::vector<Mino> mino;
     TilesType Type;
-    short int nRotation = 0;
+    short int nRotation = 0; // NOTE(AloneTheKing): Firt rotation never works don't fucking know why.
 	Keyboard keyboard;
 	bool onFloor = false;
 	
@@ -24,7 +24,6 @@ class Tetromino
     
     void updateMinoPosition(sf::RenderWindow *window);
     void setPosition(sf::Vector2f newPosition);
-    void setEachMinoPosition(); // Private?
     std::vector<sf::FloatRect> getMinosBounds();
 	
     bool isOnFloor() const { return onFloor; }
@@ -48,6 +47,7 @@ class Tetromino
     void setTetrominoGeometry();
 	void setMinoType();
 	void hardDrop(std::vector<Mino>& minos);
+	void wallKick(std::vector<Mino>& minos);
 	
 	//----------
 	public:

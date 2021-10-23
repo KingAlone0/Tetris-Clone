@@ -20,10 +20,11 @@ int main()
 	background.setPosition(0.f, 0.f);
 	background.setFillColor(sf::Color::Blue);
 	
-	Button start(V2(10.f, 10.f), sf::IntRect(0.f, 45.f, 32.f, 16.f));
+	Button start(V2(10.f, 10.f), sf::IntRect(0.f, 45.f, 32.f, 16.f), 4);
 	Image logo(V2(214.f, 15.f), sf::IntRect(0.f, 0.f, 40.f, 23.f), 8, .2f);
 	
 	Keyboard k;
+	V2 Oldm(sf::Mouse::getPosition(window));
 	
 	while(window.isOpen())
 	{
@@ -41,6 +42,9 @@ int main()
 				window.close();
 			}
 		}
+		
+		start.mouseIsOver(sf::Mouse::getPosition(window));
+		
 		if (k.justPressed(sf::Keyboard::Key::Escape) && c.getElapsedTime().asSeconds() >= 0.2f) {
 			window.close();
 		}
