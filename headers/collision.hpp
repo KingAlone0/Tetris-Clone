@@ -1,7 +1,6 @@
 #pragma once
 #include <iostream>
 
-
 struct BoxCollision
 {
     unsigned short int v0, v1, v2, v3; // v0 = x, v1 = x + width, v2 = y, v3 = y + height.
@@ -13,6 +12,7 @@ struct BoxCollision
     void updateCollision(unsigned int x, unsigned int y, unsigned int width, unsigned int height);
 	
     bool checkBoxCollision(BoxCollision box);
+	bool checkGridCollision(BoxCollision box);
 	
 	/**Funcion to check collision outside class*/
     static bool checkBoxCollision(BoxCollision box0, BoxCollision box1);

@@ -81,14 +81,14 @@ void Tetromino::setTetrominoGeometry()
         mino[3].setIndex(0, 3);
         break;
         case TilesType::L:
-        mino[0].setSpriteLocation(sf::Vector2f(0.f * TILE, 0.f * TILE));
-        mino[0].setIndex(0, 3);
-        mino[1].setSpriteLocation(sf::Vector2f(1.f * TILE, 0.f * TILE));
-        mino[1].setIndex(1, 3);
-        mino[2].setSpriteLocation(sf::Vector2f(2.f * TILE, 0.f * TILE));
-        mino[2].setIndex(2, 3);
-        mino[3].setSpriteLocation(sf::Vector2f(2.f * TILE, 1.f * TILE));
-        mino[3].setIndex(5, 3);
+        mino[0].setSpriteLocation(sf::Vector2f(0.f * TILE, 1.f * TILE));
+        mino[0].setIndex(3, 3);
+        mino[1].setSpriteLocation(sf::Vector2f(1.f * TILE, 1.f * TILE));
+        mino[1].setIndex(4, 3);
+        mino[2].setSpriteLocation(sf::Vector2f(2.f * TILE, 1.f * TILE));
+        mino[2].setIndex(5, 3);
+        mino[3].setSpriteLocation(sf::Vector2f(2.f * TILE, 2.f * TILE));
+        mino[3].setIndex(8, 3);
         break;
         case TilesType::Z:
         mino[0].setSpriteLocation(sf::Vector2f(0.f * TILE, 2.f * TILE));
@@ -126,7 +126,8 @@ void Tetromino::updateMinoPosition(sf::RenderWindow *window)
 void Tetromino::setPosition(sf::Vector2f newPosition)
 {
 	for (int i = 0; i < 4; ++i) {
-        mino[i].setSpriteLocation(newPosition + mino[i].getSprite().getPosition());
+		sf::Vector2f n_pos(newPosition.x + mino[i].getPosition().x, newPosition.y + mino[i].getPosition().y);
+        mino[i].setSpriteLocation(n_pos);
     }
 }
 
@@ -134,35 +135,46 @@ void Tetromino::hardDrop(std::vector<Mino>& minos)
 {
 	sf::Clock c;
 	sf::Time  t;
-	auto m_p = mino[1].getPosition(); // Tetromino position based on first mino poisition.
-	sf::Vector2f gridFloor(0.f, 24.f * TILE);
 	
-	if (minos.size() >= 55)
+	V2 gridFloor(0.f, 24 * TILE);
+	float ttt[3] = {0.f, 0.f, 0.f};
+	// Create a transform with these variables ? As a pointer to not need to keep updating
+	for (Mino m : mino) {
+		if (ttt[0] == 0.f || m.getPosition().x < ttt[0]) { // 0 = Minor x
+			ttt[0] = m.getPosition().x;
+		}
+		if (ttt[1] == 0.f || m.getPosition().x > ttt[1]) { // 1 = Bigger x
+			ttt[1] = m.getPosition().x;
+		}
+		if (ttt[2] == 0.f || m.getPosition().y > ttt[2]) { // 2 = Minor y
+			ttt[2] = m.getPosition().y;
+		}
+	}
+	
+	if (minos.size() > 56)
 	{
 		for (size_t i = 55; i < minos.size(); ++i)
 		{
-			if (minos[i].getPosition().x >= m_p.x && minos[i].getPosition().x <= m_p.x)
+			if (minos[i].getPosition().x >= ttt[0] && minos[i].getPosition().x <= ttt[1])
 			{
-				if (minos[i].getPosition().y <= gridFloor.y && minos[i].getPosition().y > 0)
+				if (minos[i].getPosition().y < gridFloor.y)
 				{
 					gridFloor = minos[i].getPosition();
 				}
 			}
 		}
 	}
-	// NOTE(AloneTheKing): The hardDrop isn't working sometimes, maybe it passing through the grid, or isn't passing to the vector of minos
-	setPosition(sf::Vector2f(0.f, gridFloor.y - 2 * TILE));// TODO(AloneTheKing): The hard drop is so fucking slow when has  a lot of minos os screen.
-	onFloor = true;
+	sf::Vector2f n_pos(0.f , gridFloor.y - ttt[2] - TILE); // The new position is equal floor - one tile.
 	
-	do {
-		for (size_t i = 0; i < mino.size(); ++i)
-		{
-			mino[i].handleMovement(sf::Vector2f(0.f, -16.f)); // NOTE(AloneTheKing): Handle movement after Loop? like on Row 234, at Wall n' Floor Kick mechanics probably will be faster, Dunno maybe this is actually "optimized" already.
-		}
-	} while(!canMove(minos));
+	for (size_t i = 0; i < mino.size(); ++i) {
+		mino[i].handleMovement(n_pos);
+	}
+	
+	onFloor = true;
+	// handleMovement(Directions::Down, minos);
 	
 	t = c.getElapsedTime(); // Time to the pieces go down.
-	std::cout << t.asSeconds() << std::endl;
+	std::cout << "Execution Time: " << t.asSeconds() << std::endl;
 }
 
 void Tetromino::handleMovement(Directions d, std::vector<Mino>& Minos, bool Collided)
@@ -237,43 +249,7 @@ void Tetromino::rotateTetromino(std::vector<Mino>& minos)
 	Directions movement;
 	bool hasCollided = false;
 	wallKick(minos);
-#if 0
-	for (size_t i = 0; i < mino.size(); ++i)
-	{
-		if (!mino[i].canMove(minos))
-		{
-			hasCollided = true;
-			unsigned short int index = mino[i].getRotatedIndex().i;
-			std::cout << "Index: " << index << std::endl;
-			if (index == 0 || index == 4 || index == 8 ||index == 12) {
-				movement = Directions::Right;
-				break;
-			}
-			else if (index == 3 || index == 7 || index == 11 || index == 15) {
-				movement = Directions::Left;
-				doubleCheck = false;
-				break;
-			}
-			else if (index == 13 || index == 14) {
-				movement = Directions::Up;
-				doubleCheck = false;
-				break;
-			}
-			else if (index == 2 ||index == 6 || index == 10) {
-				movement = Directions::Left;
-				doubleCheck = true;
-			}
-			else if (index == 1 || index == 5 || index == 9) {
-				movement = Directions::Right;
-				doubleCheck = true;
-			}
-			
-		}
-	}
-	if (hasCollided)
-	{
-	}
-#endif
+	
 	t = c.getElapsedTime();// TODO(AloneTheKing): So fucking slow
 	// std::cout << t.asSeconds() << std::endl; // check Time
 }
@@ -307,7 +283,6 @@ void Tetromino::wallKick(std::vector<Mino>& minos)
 			mino[m].handleMovement(WK[i]);
 		}
 		if (canMove(minos)) {
-			std::cout << "offset: " << i << " X: " << WK[i].x << " Y: " << WK[i].y << std::endl;
 			b_WK = true;
 			break;
 		}
@@ -323,7 +298,6 @@ void Tetromino::wallKick(std::vector<Mino>& minos)
 		updateRotationPosition(); // NOTE(AloneTheKing): Don't know if this is realy necessary.
 		nRotation--;
 	}
-	
 	// std::cout << "Execution Time " << c.getElapsedTime().asSeconds() << std::endl;
 }
 

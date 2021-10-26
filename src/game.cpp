@@ -11,7 +11,7 @@ void Tetris(sf::RenderWindow& window)
 	
 	short int Score = 0;
 	//Tetromino tetromino(getRandomTetromino(), sf::Vector2f(15 * TILE, TILE));
-	Tetromino tetromino(TilesType::S, sf::Vector2f(15 * TILE, TILE));
+	Tetromino tetromino(TilesType::I, sf::Vector2f(15 * TILE, TILE));
 	
 	std::array<Mino, 56> Playfield;
 	
@@ -36,10 +36,10 @@ void Tetris(sf::RenderWindow& window)
 			break;
 		}
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::X)) {
-			tetromino = Tetromino(TilesType::J, sf::Vector2f(18 * TILE, TILE));
+			tetromino = Tetromino(TilesType::L, sf::Vector2f(15 * TILE, TILE));
 		}
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Z)) {
-			tetromino = Tetromino(TilesType::L, sf::Vector2f(18 * TILE, TILE));
+			tetromino = Tetromino(TilesType::J, sf::Vector2f(15 * TILE, TILE));
 		}
 		
 		sf::Event event;

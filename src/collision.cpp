@@ -29,6 +29,11 @@ bool BoxCollision::checkBoxCollision(BoxCollision box0, BoxCollision box1)
     return false;
 }
 
+bool BoxCollision::checkGridCollision(BoxCollision box) // Implement this
+{
+	return false;
+}
+
 void BoxCollision::updateCollision(unsigned int x, unsigned int y, unsigned int width, unsigned int height)
 {
     v0 = x;
