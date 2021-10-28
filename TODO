@@ -1,6 +1,10 @@
-TODO: see HardDrop fuction, it's not working sometimes, and so fucking slow
+TODO: use array [] of mino instead on Tetromino class.
 
-TODO: make an array of the rects to change the frame, could make a vector but its too heavy for just some frames.
+TODO: onClick(frame) onOver(frame) implement on Button Class
+
+TODO: void MainMenu(&window) then settingMenu(&window) etc...
+
+TODO: make an array of the rects to change the frame, could make a vector but its too heavy for just some frames.~
 
 TODO: make a font.
 
@@ -20,7 +24,7 @@ NOTE: Use Rotation based on center of mino or center of grid? Check tetromino L 
 
 NOTE: Tetromino I rotation is broken
 
-TODO: Need to create a render class. --maybe. I made a simple class who can create a window, but fo now i don't think it will be useful
+TODO: Need to create a render class. --maybe. I made a simple class who can create a window, but for now i don't think it will be useful
 TODO: Make a menu for the game, UI Class. Note: Made a simple fuction to buttons
 
 //  ----------------------------------------------
@@ -38,3 +42,4 @@ first rotation ins't working on S and Z, just rotate at second time pressed, nee
 +TODO: Need to implement rotation based on 4 to I Tetromino(Long) and 3 based index for the others.3
 +TODO: make UI classes (Button, Texture(?Image(?)), Animation ...)
 +TODO: make Wall kick again.
++TODO: see HardDrop fuction, it's not working sometimes, and so fucking slow

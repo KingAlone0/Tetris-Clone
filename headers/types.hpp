@@ -1,4 +1,5 @@
 #pragma once
+#include <SFML/Graphics.hpp>
 
 enum TilesType
 {
@@ -112,5 +113,40 @@ struct V2
 		return *this;
 	}
 	
+	bool operator==(const sf::Vector2f vector)
+	{
+		return (this->x == vector.x) && (this->y == vector.y);
+	}
+	
+	bool operator!=(const sf::Vector2f vector)
+	{
+		return (this->x != vector.x) && (this->y != vector.y);
+	}
+	
+	bool operator!=(const V2& vector)
+	{
+		return (this->x != vector.x) && (this->y != vector.y);
+	}
+	
 };
 
+struct V4
+{
+	float x, y, width, height;
+	
+	V4() {}
+	V4(float x, float y, float width, float height): x(x), y(y), width(width), height(height) {}
+	
+	V4& operator=(const V4& v)
+	{
+		if (this == &v)
+			return *this;
+		
+		this->x = v.x;
+		this->y = v.y;
+		this->width = v.width;
+		this->height = v.height;
+		
+		return *this;
+	}
+};

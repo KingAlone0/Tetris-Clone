@@ -1,10 +1,12 @@
 #pragma once
 #include <iostream>
+#include "types.hpp"
 
-struct BoxCollision
+struct BoxCollision // Should be a class? probably YES
 {
-    unsigned short int v0, v1, v2, v3; // v0 = x, v1 = x + width, v2 = y, v3 = y + height.
-	
+    unsigned short int v0, v1, v2, v3; // Should be float? YES probably
+	bool hasArea = false;
+	V4 playable_area;
 	
     BoxCollision();
     BoxCollision(unsigned int x, unsigned int y, unsigned int width, unsigned int height);
@@ -12,7 +14,10 @@ struct BoxCollision
     void updateCollision(unsigned int x, unsigned int y, unsigned int width, unsigned int height);
 	
     bool checkBoxCollision(BoxCollision box);
+	bool checkLimitCollision();
 	bool checkGridCollision(BoxCollision box);
+	
+	void addAreaPlayable(float x, float y, float width, float height);
 	
 	/**Funcion to check collision outside class*/
     static bool checkBoxCollision(BoxCollision box0, BoxCollision box1);

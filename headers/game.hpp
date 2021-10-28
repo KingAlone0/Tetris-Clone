@@ -12,7 +12,7 @@ short int scoreMultiplier(short int row);
 TilesType getRandomTetromino();
 void deleteRowAt(std::vector<Mino>& grid, int h);
 bool isFullRowAt(const std::vector<Mino>& grid, unsigned short int);
-void setGrid(std::array<Mino, 56>& g);
+void setGrid(std::array<sf::Sprite, 56>& g);
 
 void Tetris(sf::RenderWindow& window);
 

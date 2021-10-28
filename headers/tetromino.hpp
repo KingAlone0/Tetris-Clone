@@ -13,7 +13,7 @@ class Tetromino
     TilesType Type;
     short int nRotation = 0; // NOTE(AloneTheKing): Firt rotation never works don't fucking know why.
 	Keyboard keyboard;
-	bool onFloor = false;
+	bool on_floor = false;
 	
 	sf::Vector2f tPos;
 	
@@ -26,7 +26,7 @@ class Tetromino
     void setPosition(sf::Vector2f newPosition);
     std::vector<sf::FloatRect> getMinosBounds();
 	
-    bool isOnFloor() const { return onFloor; }
+    bool isOnFloor() const { return on_floor; }
 	
     void handleMovement(Directions d, std::vector<Mino>& Minos, bool Collided = false); // d = direction
     bool canMove(std::vector<Mino>& Minos);

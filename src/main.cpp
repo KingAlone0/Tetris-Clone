@@ -24,8 +24,6 @@ int main()
 	Image logo(V2(214.f, 15.f), sf::IntRect(0.f, 0.f, 40.f, 23.f), 8, .2f);
 	
 	Keyboard k;
-	V2 Oldm(sf::Mouse::getPosition(window));
-	
 	while(window.isOpen())
 	{
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::T)) {

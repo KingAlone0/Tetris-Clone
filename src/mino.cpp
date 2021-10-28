@@ -14,6 +14,7 @@ Mino::Mino()
 	
     spr.setPosition(sf::Vector2f(0.f, 0.f));
 	updateCollision();
+	Collision.addAreaPlayable(176.f, 0.f, 182.f, 384.f);
 }
 
 Mino::Mino(TilesType Type) : Type(Type)
@@ -30,6 +31,7 @@ Mino::Mino(TilesType Type) : Type(Type)
     spr.setTextureRect(sprPlace);
     spr.setPosition(193, 32);
     updateCollision();
+	Collision.addAreaPlayable(176.f, 0.f, 182.f, 384.f);
 }
 
 Mino::Mino(TilesType Type, sf::Vector2f pos) : Type(Type)
@@ -46,6 +48,7 @@ Mino::Mino(TilesType Type, sf::Vector2f pos) : Type(Type)
     spr.setTextureRect(sprPlace);
     spr.setPosition(pos);
     updateCollision();
+	Collision.addAreaPlayable(176.f, 0.f, 182.f, 384.f);
 	
 }
 
@@ -121,6 +124,25 @@ bool Mino::canMove(BoxCollision box)
     return true;
 }
 
+
+bool Mino::canMove(std::vector<Mino>& minos)
+{
+	if (minos.size() == NULL && Collision.checkLimitCollision()) {
+		return false;
+	}
+	else
+	{
+		for (size_t i = 0; i < minos.size(); ++i)
+		{
+			if (Collision.checkBoxCollision(minos[i].Collision)){
+				return false;
+			}
+		}
+	}
+    return true;
+}
+
+
 void Mino::handleMovement(sf::Vector2f direction)
 {
     spr.move(direction);
@@ -138,17 +160,6 @@ void Mino::moveDown()
 {
 	spr.move(sf::Vector2f(0.f, 16.f));
 	updateCollision();
-}
-
-bool Mino::canMove(std::vector<Mino> Minos)
-{
-    for (size_t i = 0; i < Minos.size(); ++i)
-    {
-		if (Collision.checkBoxCollision(Minos[i].Collision)){
-            return false;
-        }
-    }
-    return true;
 }
 
 void Mino::setIndex(unsigned short int i, unsigned short int based)

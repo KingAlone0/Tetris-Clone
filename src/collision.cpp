@@ -8,6 +8,16 @@ v0(x), v1(x + width), v2(y), v3(y + height)
 {
 }
 
+bool BoxCollision::checkLimitCollision()
+{
+	if (hasArea) {
+		if (v0 <= playable_area.x || v1 >= playable_area.x + playable_area.width || v2 <= playable_area.y || v2 >= playable_area.y + playable_area.height) {
+			return true;
+		}
+	}
+	return false;
+}
+
 bool BoxCollision::checkBoxCollision(BoxCollision box)
 {
     if (v0 >= box.v0 && v0 <= box.v1 - 16) {
@@ -15,6 +25,11 @@ bool BoxCollision::checkBoxCollision(BoxCollision box)
             return true;
         }
     }
+	if (hasArea) {
+		if (v0 <= playable_area.x || v1 >= playable_area.x + playable_area.width || v2 <= playable_area.y || v2 >= playable_area.y + playable_area.height) {
+			return true;
+		}
+	}
     return false;
 }
 
@@ -40,4 +55,13 @@ void BoxCollision::updateCollision(unsigned int x, unsigned int y, unsigned int 
     v1 = x + width;
     v2 = y;
     v3 = y + height;
+}
+
+void BoxCollision::addAreaPlayable(float x, float y, float width, float height)
+{
+	hasArea = true;
+	playable_area.x = x;
+	playable_area.y = y;
+	playable_area.width = width;
+	playable_area.height = height;
 }

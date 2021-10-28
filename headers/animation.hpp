@@ -1,7 +1,6 @@
 #ifndef ANIMATION_HPP
 #define ANIMATION_HPP
 #include <SFML/Graphics.hpp>
-#include <memory>
 
 typedef uint8_t int8;
 
@@ -18,7 +17,7 @@ class Animation
 	sf::Sprite* a_spr = nullptr;
 	sf::IntRect rect;
 	int8 frames = 0;
-	float fps;
+	float fps; // change to frameRate, private? and add setter and getter.
 	
 	public:
 	Animation() {};
@@ -34,6 +33,11 @@ class Animation
 	
 	Animation& operator=(const Animation& anim);
 	
+	
+	
+	//private:
+	//sf::Rect<int>[]; ? Initialize with the number of frames.
+	//
 };
 
 #endif /* Animation_HPP */

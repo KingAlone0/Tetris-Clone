@@ -71,13 +71,13 @@ void Tetromino::setTetrominoGeometry()
         mino[3].setIndex(1, 3);
         break;
         case TilesType::J:
-        mino[0].setSpriteLocation(sf::Vector2f(0.f * TILE, 2.f * TILE));
+        mino[0].setSpriteLocation(sf::Vector2f(0.f * TILE, 1.f * TILE));
         mino[0].setIndex(3, 3);
-        mino[1].setSpriteLocation(sf::Vector2f(1.f * TILE, 2.f * TILE));
+        mino[1].setSpriteLocation(sf::Vector2f(1.f * TILE, 1.f * TILE));
         mino[1].setIndex(4, 3);
-        mino[2].setSpriteLocation(sf::Vector2f(2.f * TILE, 2.f * TILE));
+        mino[2].setSpriteLocation(sf::Vector2f(2.f * TILE, 1.f * TILE));
         mino[2].setIndex(5, 3);
-        mino[3].setSpriteLocation(sf::Vector2f(0.f * TILE, 1.f * TILE));
+        mino[3].setSpriteLocation(sf::Vector2f(0.f * TILE, 0.f * TILE));
         mino[3].setIndex(0, 3);
         break;
         case TilesType::L:
@@ -87,8 +87,8 @@ void Tetromino::setTetrominoGeometry()
         mino[1].setIndex(4, 3);
         mino[2].setSpriteLocation(sf::Vector2f(2.f * TILE, 1.f * TILE));
         mino[2].setIndex(5, 3);
-        mino[3].setSpriteLocation(sf::Vector2f(2.f * TILE, 2.f * TILE));
-        mino[3].setIndex(8, 3);
+        mino[3].setSpriteLocation(sf::Vector2f(2.f * TILE, 0.f * TILE));
+        mino[3].setIndex(2, 3);
         break;
         case TilesType::Z:
         mino[0].setSpriteLocation(sf::Vector2f(0.f * TILE, 2.f * TILE));
@@ -137,25 +137,26 @@ void Tetromino::hardDrop(std::vector<Mino>& minos)
 	sf::Time  t;
 	
 	V2 gridFloor(0.f, 24 * TILE);
-	float ttt[3] = {0.f, 0.f, 0.f};
+	
+	V2 ttt[3];
 	// Create a transform with these variables ? As a pointer to not need to keep updating
 	for (Mino m : mino) {
-		if (ttt[0] == 0.f || m.getPosition().x < ttt[0]) { // 0 = Minor x
-			ttt[0] = m.getPosition().x;
+		if (ttt[0].x == 0.f || m.getPosition().x < ttt[0].x) { // 0 = Minor x
+			ttt[0] = m.getPosition();
 		}
-		if (ttt[1] == 0.f || m.getPosition().x > ttt[1]) { // 1 = Bigger x
-			ttt[1] = m.getPosition().x;
+		if (ttt[1].x == 0.f || m.getPosition().x > ttt[1].x) { // 1 = Bigger x
+			ttt[1] = m.getPosition();
 		}
-		if (ttt[2] == 0.f || m.getPosition().y > ttt[2]) { // 2 = Minor y
-			ttt[2] = m.getPosition().y;
+		if (ttt[2].y == 0.f || m.getPosition().y > ttt[2].y) { // 2 = Minor y
+			ttt[2] = m.getPosition();
 		}
 	}
-	
-	if (minos.size() > 56)
+	V2 m_collided(0.f, 0.f);
+	for (size_t i = 0; i < minos.size(); ++i)
 	{
-		for (size_t i = 55; i < minos.size(); ++i)
+		for (size_t m = 0; m < mino.size(); ++m) 
 		{
-			if (minos[i].getPosition().x >= ttt[0] && minos[i].getPosition().x <= ttt[1])
+			if (minos[i].getPosition().x == mino[m].getPosition().x)
 			{
 				if (minos[i].getPosition().y < gridFloor.y)
 				{
@@ -164,15 +165,28 @@ void Tetromino::hardDrop(std::vector<Mino>& minos)
 			}
 		}
 	}
-	sf::Vector2f n_pos(0.f , gridFloor.y - ttt[2] - TILE); // The new position is equal floor - one tile.
-	
 	for (size_t i = 0; i < mino.size(); ++i) {
-		mino[i].handleMovement(n_pos);
+		if (mino[i].getPosition().x == gridFloor.x)
+		{
+			if (m_collided.y == 0.f) {
+				m_collided = mino[i].getPosition();
+			}
+			else if (m_collided.y < mino[i].getPosition().y) {
+				m_collided = mino[i].getPosition();
+			}
+		}
+	}
+	if (m_collided.x == 0.f && m_collided.y == 0.f) {
+		m_collided.y = ttt[2].y;
 	}
 	
-	onFloor = true;
-	// handleMovement(Directions::Down, minos);
+	sf::Vector2f n_pos(0.f , gridFloor.y - m_collided.y); // The new position is equal floor - one tile.
 	
+	for (size_t i = 0; i < mino.size(); ++i) {
+		mino[i].handleMovement(sf::Vector2f(n_pos.x, n_pos.y - TILE));
+	}
+	
+	on_floor = true;
 	t = c.getElapsedTime(); // Time to the pieces go down.
 	std::cout << "Execution Time: " << t.asSeconds() << std::endl;
 }
@@ -192,7 +206,7 @@ void Tetromino::handleMovement(Directions d, std::vector<Mino>& Minos, bool Coll
 		direction = sf::Vector2f(0.f, 0.f); // Keep.
 	
 	for (int i = 0; i < 4; ++i) {
-        mino[i].handleMovement(direction);
+		mino[i].handleMovement(direction);
 	}
 	
 	if (!canMove(Minos) && !Collided) {
@@ -204,23 +218,22 @@ void Tetromino::handleMovement(Directions d, std::vector<Mino>& Minos, bool Coll
 			mino[i].handleMovement(direction);
 		}
 		
-		if (d == Directions::Down && onFloor == false) {
-			onFloor = true;
+		if (d == Directions::Down && on_floor == false) {
+			on_floor = true;
 		}
 		return;
 	}
-	onFloor = false;
+	on_floor = false;
 }
 
 bool Tetromino::canMove(std::vector<Mino>& Minos)
 {
-    //for (int i = 0; i < 4; ++i){
-    for (Mino m : mino) {
-        if(!m.canMove(Minos)) {
-            return false;
-        }
-    }
-    return true;
+	for (size_t i = 0; i < mino.size(); ++i) {
+		if(!mino[i].canMove(Minos)) {
+			return false;
+		}
+	}
+	return true;
 }
 
 // ---- Rotate Tetromino
@@ -229,14 +242,14 @@ void Tetromino::rotateTetromino(std::vector<Mino>& minos)
 	sf::Clock c;
 	sf::Time t;
 	
-    if (Type == TilesType::O)
+	if (Type == TilesType::O)
 		return;
 	
-    if (nRotation < 3) {
-        nRotation ++;
+	if (nRotation < 3) {
+		nRotation ++;
 	}
-    else if (nRotation == 3) {
-        nRotation = 0;
+	else if (nRotation == 3) {
+		nRotation = 0;
 	}
 	if (Type == TilesType::Z || Type == TilesType::S)
 	{
@@ -245,7 +258,7 @@ void Tetromino::rotateTetromino(std::vector<Mino>& minos)
 	}
 	bool doubleCheck = false;
 	
-    updateRotationPosition();
+	updateRotationPosition();
 	Directions movement;
 	bool hasCollided = false;
 	wallKick(minos);
@@ -352,12 +365,10 @@ void Tetromino::checkInput(std::vector<Mino>& t)
 	
 }
 
-
-// NOTE(AloneTheKing): Need to make a fuction canMove how will move down and check if canMove if can't return false; and put mino[,] in std::vector of Minos, probably so i'll need to not pass as const, just as reference
 void Tetromino::Update(std::vector<Mino>& Minos)
 {
 	checkInput(Minos);
-	if (!onFloor) {
+	if (!on_floor) {
 		//handleMovement(Directions::Down, Minos);
 	}
 }
@@ -371,7 +382,7 @@ Tetromino& Tetromino::operator=(const Tetromino& t)
 	mino.clear();
 	
 	Type = t.Type;
-	onFloor = false;
+	on_floor = false;
 	setMinoType();
 	setTetrominoGeometry();
 	setPosition(t.tPos);

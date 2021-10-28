@@ -16,10 +16,10 @@ void Animation::update()
 		if (frames > 0)
 		{
 			currentFrame++;
-			if ((int)currentFrame > frames){
+			if (currentFrame > frames){
 				currentFrame = 0;
 			}
-			if ((int)currentFrame < frames) 
+			if (currentFrame < frames) 
 			{
 				sf::IntRect n_frame(a_spr->getTextureRect());
 				n_frame.left += rect.width;

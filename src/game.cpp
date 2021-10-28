@@ -8,27 +8,38 @@ void Tetris(sf::RenderWindow& window)
 	bool start = true;
 	sf::Font font;
 	font.loadFromFile("../textures/SourceCode.ttf");
+	sf::Texture texture;
+	texture.loadFromFile("../textures/textures_mino.png");
+	texture.setRepeated(true);
 	
 	short int Score = 0;
-	//Tetromino tetromino(getRandomTetromino(), sf::Vector2f(15 * TILE, TILE));
+	Tetromino te(getRandomTetromino(), sf::Vector2f(20 * TILE, TILE));
 	Tetromino tetromino(TilesType::I, sf::Vector2f(15 * TILE, TILE));
 	
-	std::array<Mino, 56> Playfield;
-	
-	setGrid(Playfield);
-	std::vector<Mino> gridSize;
-	
-	unsigned short int sizeOfGrid = 0;
-	
+	std::array<sf::Sprite, 56> Playfield;
 	for (size_t i = 0; i < Playfield.size(); ++i)
 	{
-		gridSize.push_back(Playfield[i]);
+		Playfield[i].setTexture(texture);
+		Playfield[i].setTextureRect(sf::Rect<int>(48, 16, 16, 16));
+		Playfield[i].setPosition(0.f, 0.f);
 	}
+	setGrid(Playfield);
+	
+	
+	std::vector<Mino> minos_grid;
+	unsigned short int sizeOfGrid = 0;
 	
 	std::vector<Tetromino*> tetrominos;
+	for (Mino m: te.getMino())
+	{
+		//minos_grid.push_back(m);
+	}
 	
 	while (start == true)
 	{
+		for (size_t i = 0; i < Playfield.size(); ++i) {
+			window.draw(Playfield[i]);
+		}
 		tetrominos.push_back(&tetromino);
 		
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Escape)) {
@@ -51,47 +62,46 @@ void Tetris(sf::RenderWindow& window)
 			}
 		}
 		
-		tetromino.Update(gridSize);
+		tetromino.Update(minos_grid);
 		
 		for (size_t i = 0; i < tetrominos.size(); ++i) // __DELETE__
 		{
 			tetrominos[i]->updateMinoPosition(&window);
 		}
 		
-		for (int i = 0; i < 56; ++i)
+		/*for (int i = 0; i < 56; ++i)
 		{
 			window.draw(Playfield[i].getSprite());
-		}
+		}*/
 		
 		if (tetromino.isOnFloor()) {
 			for (size_t i = 0; i < tetromino.getMino().size(); ++i)
 			{
-				gridSize.push_back(tetromino.getMino()[i]);
+				minos_grid.push_back(tetromino.getMino()[i]);
 			}
 			
 			tetromino = Tetromino(getRandomTetromino(), sf::Vector2f(15 * TILE, TILE));
 			//tetromino = Tetromino(TilesType::T, sf::Vector2f(18 * TILE, TILE));
 			tetrominos.clear();
 		}
-		//std::cout << gridSize.size() << std::endl;
 		
-		for (size_t i = 0; i < gridSize.size(); ++i)
+		for (size_t i = 0; i < minos_grid.size(); ++i)
 		{
-			window.draw(gridSize[i].getSprite());
+			window.draw(minos_grid[i].getSprite());
 		}
 		
-		if (sizeOfGrid != (int)gridSize.size())
+		if (sizeOfGrid != (int)minos_grid.size())
 		{
-			sizeOfGrid = gridSize.size();
+			sizeOfGrid = minos_grid.size();
 			if (sizeOfGrid != 0)
 			{
 				short int rows = 0;
 				for (int h = 0; h < 24; h++)
 				{
-					if (isFullRowAt(gridSize, h * TILE))
+					if (isFullRowAt(minos_grid, h * TILE))
 					{
 						rows++;
-						deleteRowAt(gridSize, h * TILE);
+						deleteRowAt(minos_grid, h * TILE);
 					}
 				}
 				if (rows != 0) {
@@ -115,7 +125,6 @@ void Tetris(sf::RenderWindow& window)
 		window.display();
 		window.clear();
 		
-		//gridSize.clear(); //Clear the Vector all "frames"
 		tetrominos.clear(); // Clear the vector of minos.
 		
 	}
@@ -198,7 +207,7 @@ bool isFullRowAt(const std::vector<Mino>& grid, unsigned short int h)
 }
 
 //Grid 12 x 22
-void setGrid(std::array<Mino, 56>& g)
+void setGrid(std::array<sf::Sprite, 56>& g)
 {
 	int i = 0;
 	for (int x = 11; x < 23; ++x) {
@@ -207,7 +216,6 @@ void setGrid(std::array<Mino, 56>& g)
 			{
 				if (g[i].getPosition().x == 0.f && g[i].getPosition().x != x)
 				{
-					g[i].setMinoType(TilesType::Grid);
 					g[i].setPosition(x * TILE, y * TILE);
 					i++;
 				}

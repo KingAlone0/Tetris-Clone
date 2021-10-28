@@ -46,7 +46,7 @@ class Mino
 	void handleMovement(V2 direction);
     void setPosition(sf::Vector2f newPosition);
     void setPosition(float x, float y);
-    bool canMove(std::vector<Mino> Minos); // Could use a static vector of Mino and at the construction add a mino to it
+    bool canMove(std::vector<Mino>& Minos); // Could use a static vector of Mino and at the construction add a mino to it
     void updateCollision();
     
     void setIndex(unsigned short int i, unsigned short int based = 4);
