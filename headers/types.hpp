@@ -105,26 +105,23 @@ struct V2
 		
 		return *this;
 	}
-	V2& operator*(short int mp)
-	{
+	V2& operator*(short int mp) {
 		this->x = x * mp;
 		this->y = y * mp;
 		
 		return *this;
 	}
 	
-	bool operator==(const sf::Vector2f vector)
-	{
+	bool operator==(const V2& vector) {
 		return (this->x == vector.x) && (this->y == vector.y);
 	}
-	
-	bool operator!=(const sf::Vector2f vector)
-	{
+	bool operator==(const sf::Vector2f vector) {
+		return (this->x == vector.x) && (this->y == vector.y);
+	}
+	bool operator!=(const sf::Vector2f vector) {
 		return (this->x != vector.x) && (this->y != vector.y);
 	}
-	
-	bool operator!=(const V2& vector)
-	{
+	bool operator!=(const V2& vector) {
 		return (this->x != vector.x) && (this->y != vector.y);
 	}
 	

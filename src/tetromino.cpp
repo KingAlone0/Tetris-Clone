@@ -26,13 +26,10 @@ void Tetromino::setMinoType()
 {
 	if (Type != TilesType::Grid)
     {
-        Mino* tMino;
-		for (int x = 0; x < 4; x++)
+		for (size_t i = 0; i < 4; ++i)
 		{
-			tMino = new Mino(Type);
-			mino.push_back(*tMino);
+			mino[i] = Mino(Type);
 		}
-		
     }
 }
 
@@ -91,23 +88,23 @@ void Tetromino::setTetrominoGeometry()
         mino[3].setIndex(2, 3);
         break;
         case TilesType::Z:
-        mino[0].setSpriteLocation(sf::Vector2f(0.f * TILE, 2.f * TILE));
+        mino[0].setSpriteLocation(sf::Vector2f(0.f * TILE, 1.f * TILE));
         mino[0].setIndex(3, 3);
-        mino[1].setSpriteLocation(sf::Vector2f(1.f * TILE, 2.f * TILE));
+        mino[1].setSpriteLocation(sf::Vector2f(1.f * TILE, 1.f * TILE));
         mino[1].setIndex(4, 3);
-        mino[2].setSpriteLocation(sf::Vector2f(1.f * TILE, 1.f * TILE));
+        mino[2].setSpriteLocation(sf::Vector2f(1.f * TILE, 0.f * TILE));
         mino[2].setIndex(1, 3);
-        mino[3].setSpriteLocation(sf::Vector2f(2.f * TILE, 1.f * TILE));
+        mino[3].setSpriteLocation(sf::Vector2f(2.f * TILE, 0.f * TILE));
         mino[3].setIndex(2, 3);
         break;
         case TilesType::S:
-        mino[0].setSpriteLocation(sf::Vector2f(0.f * TILE, 1.f * TILE));
+        mino[0].setSpriteLocation(sf::Vector2f(0.f, 0.f));
         mino[0].setIndex(0, 3);
-        mino[1].setSpriteLocation(sf::Vector2f(1.f * TILE, 1.f * TILE));
+        mino[1].setSpriteLocation(sf::Vector2f(1.f * TILE, 0.f * TILE));
         mino[1].setIndex(1, 3);
-        mino[2].setSpriteLocation(sf::Vector2f(1.f * TILE, 2.f * TILE));
+        mino[2].setSpriteLocation(sf::Vector2f(1.f * TILE, 1.f * TILE));
         mino[2].setIndex(4, 3);
-        mino[3].setSpriteLocation(sf::Vector2f(2.f * TILE, 2.f * TILE));
+        mino[3].setSpriteLocation(sf::Vector2f(2.f * TILE, 1.f * TILE));
         mino[3].setIndex(5, 3);
         break;
 		case TilesType::Grid:
@@ -138,34 +135,38 @@ void Tetromino::hardDrop(std::vector<Mino>& minos)
 	
 	V2 gridFloor(0.f, 24 * TILE);
 	
-	V2 ttt[3];
+	V2 minor_mino;
 	// Create a transform with these variables ? As a pointer to not need to keep updating
 	for (Mino m : mino) {
-		if (ttt[0].x == 0.f || m.getPosition().x < ttt[0].x) { // 0 = Minor x
-			ttt[0] = m.getPosition();
-		}
-		if (ttt[1].x == 0.f || m.getPosition().x > ttt[1].x) { // 1 = Bigger x
-			ttt[1] = m.getPosition();
-		}
-		if (ttt[2].y == 0.f || m.getPosition().y > ttt[2].y) { // 2 = Minor y
-			ttt[2] = m.getPosition();
+		if (minor_mino.y == 0.f || m.getPosition().y > minor_mino.y) { // 2 = Minor y
+			minor_mino = m.getPosition();
 		}
 	}
-	V2 m_collided(0.f, 0.f);
+	
+	V2 l_m_c(0.f, 0.f); //Last_Mino_Collided
 	for (size_t i = 0; i < minos.size(); ++i)
 	{
-		for (size_t m = 0; m < mino.size(); ++m) 
+		for (size_t m = 0; m < 4; ++m) 
 		{
-			if (minos[i].getPosition().x == mino[m].getPosition().x)
+			if (minos[i].getPosition().x == mino[m].getPosition().x && minos[i].getPosition().y > mino[m].getPosition().y)
 			{
-				if (minos[i].getPosition().y < gridFloor.y)
-				{
+				if (minos[i].getPosition().y < gridFloor.y) {
 					gridFloor = minos[i].getPosition();
+					l_m_c = mino[m].getPosition();
+				}
+				else if (minos[i].getPosition().y == gridFloor.y) {
+					if (l_m_c.y < mino[m].getPosition().y) {
+						gridFloor = minos[i].getPosition();
+					}
+					l_m_c = mino[m].getPosition();
 				}
 			}
 		}
 	}
-	for (size_t i = 0; i < mino.size(); ++i) {
+	
+	V2 m_collided(0.f, 0.f); //Mino_collided
+	for (size_t i = 0; i < 4; ++i) {
+		std::cout << i << " - " << mino[i].getPosition().x << " : " << mino[i].getPosition().y << std::endl;
 		if (mino[i].getPosition().x == gridFloor.x)
 		{
 			if (m_collided.y == 0.f) {
@@ -176,17 +177,21 @@ void Tetromino::hardDrop(std::vector<Mino>& minos)
 			}
 		}
 	}
+	std::cout << m_collided.x << " : " << m_collided.y << std::endl;
+	std::cout << l_m_c.x << "-:-" << l_m_c.y << std::endl;
+	
+	
 	if (m_collided.x == 0.f && m_collided.y == 0.f) {
-		m_collided.y = ttt[2].y;
+		m_collided.y = minor_mino.y;
 	}
 	
 	sf::Vector2f n_pos(0.f , gridFloor.y - m_collided.y); // The new position is equal floor - one tile.
 	
-	for (size_t i = 0; i < mino.size(); ++i) {
+	for (size_t i = 0; i < 4; ++i) {
 		mino[i].handleMovement(sf::Vector2f(n_pos.x, n_pos.y - TILE));
 	}
 	
-	on_floor = true;
+	//on_floor = true;
 	t = c.getElapsedTime(); // Time to the pieces go down.
 	std::cout << "Execution Time: " << t.asSeconds() << std::endl;
 }
@@ -228,7 +233,7 @@ void Tetromino::handleMovement(Directions d, std::vector<Mino>& Minos, bool Coll
 
 bool Tetromino::canMove(std::vector<Mino>& Minos)
 {
-	for (size_t i = 0; i < mino.size(); ++i) {
+	for (size_t i = 0; i < 4; ++i) {
 		if(!mino[i].canMove(Minos)) {
 			return false;
 		}
@@ -292,7 +297,7 @@ void Tetromino::wallKick(std::vector<Mino>& minos)
 	V2 WK[7] = { V2(0, 0), V2(0, -16), V2(-16, 0), V2(16, 0), V2(-16, -16), V2(0, 32), V2(-16, 32) };
 	
 	for (int i = 0; i < 7; ++i) {
-		for (size_t m = 0; m < mino.size(); ++m) {
+		for (size_t m = 0; m < 4; ++m) {
 			mino[m].handleMovement(WK[i]);
 		}
 		if (canMove(minos)) {
@@ -301,7 +306,7 @@ void Tetromino::wallKick(std::vector<Mino>& minos)
 		}
 		else {
 			V2 v2t = WK[i] * -1;
-			for (size_t m = 0; m < mino.size(); ++m) {
+			for (size_t m = 0; m < 4; ++m) {
 				mino[m].handleMovement(v2t);
 			}
 		}
@@ -319,7 +324,7 @@ void Tetromino::checkInput(const std::vector<Tetromino*>& t) // __DELETE__ >?
 	std::vector<Mino> m;
 	for (size_t i = 0; i < t.size(); ++i) {
 		if (t[i] != this) {
-			for (size_t p = 0; p < t[i]->mino.size(); p++) {
+			for (size_t p = 0; p < 4; p++) {
 				m.push_back(t[i]->mino[p]);
 			}
 		}
@@ -373,16 +378,13 @@ void Tetromino::Update(std::vector<Mino>& Minos)
 	}
 }
 
-
 Tetromino& Tetromino::operator=(const Tetromino& t)
 {
 	if (this == &t)
 		return *this;
 	
-	mino.clear();
-	
-	Type = t.Type;
 	on_floor = false;
+	Type = t.Type;
 	setMinoType();
 	setTetrominoGeometry();
 	setPosition(t.tPos);

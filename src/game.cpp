@@ -30,10 +30,6 @@ void Tetris(sf::RenderWindow& window)
 	unsigned short int sizeOfGrid = 0;
 	
 	std::vector<Tetromino*> tetrominos;
-	for (Mino m: te.getMino())
-	{
-		//minos_grid.push_back(m);
-	}
 	
 	while (start == true)
 	{
@@ -47,10 +43,10 @@ void Tetris(sf::RenderWindow& window)
 			break;
 		}
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::X)) {
-			tetromino = Tetromino(TilesType::L, sf::Vector2f(15 * TILE, TILE));
+			tetromino = Tetromino(TilesType::S, sf::Vector2f(15 * TILE, TILE));
 		}
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Z)) {
-			tetromino = Tetromino(TilesType::J, sf::Vector2f(15 * TILE, TILE));
+			tetromino = Tetromino(TilesType::Z, sf::Vector2f(15 * TILE, TILE));
 		}
 		
 		sf::Event event;
@@ -63,19 +59,10 @@ void Tetris(sf::RenderWindow& window)
 		}
 		
 		tetromino.Update(minos_grid);
-		
-		for (size_t i = 0; i < tetrominos.size(); ++i) // __DELETE__
-		{
-			tetrominos[i]->updateMinoPosition(&window);
-		}
-		
-		/*for (int i = 0; i < 56; ++i)
-		{
-			window.draw(Playfield[i].getSprite());
-		}*/
+		tetromino.updateMinoPosition(&window);
 		
 		if (tetromino.isOnFloor()) {
-			for (size_t i = 0; i < tetromino.getMino().size(); ++i)
+			for (size_t i = 0; i < 4; ++i)
 			{
 				minos_grid.push_back(tetromino.getMino()[i]);
 			}

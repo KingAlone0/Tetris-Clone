@@ -60,6 +60,10 @@ class Mino
     private:
     void updateIndex(unsigned char nIndex);
 	// NOTE(AloneTheKing): Need to debug the rotation to know what tha fuck is going wrong
+	
+	// ---- Overloads ---- //
+	public:
+	Mino& operator=(const Mino& mino);
     
     
 };

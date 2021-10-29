@@ -1,4 +1,4 @@
-TODO: use array [] of mino instead on Tetromino class.
+TODO: minos S/Z hard drop isn't working
 
 TODO: onClick(frame) onOver(frame) implement on Button Class
 
@@ -43,3 +43,4 @@ first rotation ins't working on S and Z, just rotate at second time pressed, nee
 +TODO: make UI classes (Button, Texture(?Image(?)), Animation ...)
 +TODO: make Wall kick again.
 +TODO: see HardDrop fuction, it's not working sometimes, and so fucking slow
++TODO: use array [] of mino instead on Tetromino class.

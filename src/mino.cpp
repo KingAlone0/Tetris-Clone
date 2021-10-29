@@ -80,6 +80,7 @@ void Mino::setRect()
         sprPlace.top = 0;
         break;
         case TilesType::L:
+		sprPlace.left = 0;
         sprPlace.top = 16;
         break;
         case TilesType::S:
@@ -223,4 +224,14 @@ Index Mino::updateIndexPosition(short int degree)
 	
 	return rIndex;
 	//updateIndex(nIndex);
+}
+
+Mino& Mino::operator=(const Mino& mino)
+{
+	this->Type = mino.Type;
+	
+	setRect();
+	spr.setTextureRect(sprPlace);
+	spr.setPosition(193, 32);
+	updateCollision();
 }

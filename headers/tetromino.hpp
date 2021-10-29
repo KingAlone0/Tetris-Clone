@@ -9,7 +9,8 @@
 class Tetromino
 {
     private:
-    std::vector<Mino> mino;
+    //std::vector<Mino> mino;
+	Mino mino[4];
     TilesType Type;
     short int nRotation = 0; // NOTE(AloneTheKing): Firt rotation never works don't fucking know why.
 	Keyboard keyboard;
@@ -22,7 +23,6 @@ class Tetromino
     Tetromino(TilesType Type, sf::Vector2f Position);
     Tetromino(const Tetromino& tetromino);
     
-    void updateMinoPosition(sf::RenderWindow *window);
     void setPosition(sf::Vector2f newPosition);
     std::vector<sf::FloatRect> getMinosBounds();
 	
@@ -33,13 +33,15 @@ class Tetromino
 	void checkInput(const std::vector<Tetromino*>& t); //__DELETE__
 	void checkInput(std::vector<Mino>& t);
 	
-	std::vector<Mino> getMino() const { return mino; };
+	//std::vector<Mino> getMino() const { return mino; }
+	Mino* getMino() { return mino; }
 	
     //-------- Rotate Tetromino
     void rotateTetromino(std::vector<Mino>& minos);
 	
 	//-------- Update
 	void Update(std::vector<Mino>& Minos);
+    void updateMinoPosition(sf::RenderWindow *window);
 	
     
     private:
