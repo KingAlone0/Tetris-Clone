@@ -31,6 +31,10 @@ void Tetris(sf::RenderWindow& window)
 	
 	std::vector<Tetromino*> tetrominos;
 	
+	Keyboard k;
+	
+	Tetromino holded_tetromino;
+	Tetromino next_tetromino(getRandomTetromino(), sf::Vector2f(5 * TILE, TILE), false, true);
 	while (start == true)
 	{
 		for (size_t i = 0; i < Playfield.size(); ++i) {
@@ -48,6 +52,9 @@ void Tetris(sf::RenderWindow& window)
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Z)) {
 			tetromino = Tetromino(TilesType::Z, sf::Vector2f(15 * TILE, TILE));
 		}
+		if (k.justPressed(sf::Keyboard::Key::C)) {
+			holdTetromino(tetromino, holded_tetromino, next_tetromino);
+		}
 		
 		sf::Event event;
 		while (window.pollEvent(event))
@@ -61,13 +68,20 @@ void Tetris(sf::RenderWindow& window)
 		tetromino.Update(minos_grid);
 		tetromino.updateMinoPosition(&window);
 		
+		if (holded_tetromino.isValid()) 
+			holded_tetromino.updateMinoPosition(&window);
+		if (next_tetromino.isValid())
+			next_tetromino.updateMinoPosition(&window);
+		
+		
 		if (tetromino.isOnFloor()) {
 			for (size_t i = 0; i < 4; ++i)
 			{
 				minos_grid.push_back(tetromino.getMino()[i]);
 			}
 			
-			tetromino = Tetromino(getRandomTetromino(), sf::Vector2f(15 * TILE, TILE));
+			nextTetromino(tetromino, next_tetromino);
+			//tetromino = Tetromino(getRandomTetromino(), sf::Vector2f(15 * TILE, TILE));
 			//tetromino = Tetromino(TilesType::T, sf::Vector2f(18 * TILE, TILE));
 			tetrominos.clear();
 		}
@@ -117,11 +131,6 @@ void Tetris(sf::RenderWindow& window)
 	}
 	
 }
-
-
-
-short int scoreMultiplier(short int row);
-
 
 TilesType getRandomTetromino()
 {
@@ -231,4 +240,35 @@ short int scoreMultiplier(short int row)
 		break;
 	}
 	return scr;
+}
+
+void holdTetromino(Tetromino& tetromino, Tetromino& holded_tetromino, Tetromino& next_tetromino)
+{
+	Tetromino temp_tetromino = tetromino;
+	if (holded_tetromino.is_holded) {
+		tetromino = holded_tetromino;
+		tetromino.setPosition(sf::Vector2f(15 * TILE, TILE));
+		tetromino.is_holded = false;
+		tetromino.is_playable = true;
+	}
+	else if (next_tetromino.isValid()){
+		nextTetromino(tetromino, next_tetromino);
+	}
+	
+	holded_tetromino = temp_tetromino;
+	holded_tetromino.is_playable = false;
+	holded_tetromino.is_holded = true;
+	holded_tetromino.setPosition(sf::Vector2f(24 * TILE, TILE));
+}
+
+void nextTetromino(Tetromino& tetromino, Tetromino& next_tetromino)
+{
+	tetromino = next_tetromino;
+	tetromino.setPosition(sf::Vector2f(10 * TILE, TILE));
+	tetromino.is_holded = false;
+	tetromino.is_playable = true;
+	
+	next_tetromino = Tetromino(getRandomTetromino(), sf::Vector2f(5 * TILE, TILE));
+	next_tetromino.is_playable = false;
+	next_tetromino.is_holded = true;
 }

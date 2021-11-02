@@ -41,7 +41,19 @@ int main()
 			}
 		}
 		
-		start.mouseIsOver(sf::Mouse::getPosition(window));
+		start.Update(window);
+		// NOTE(AloneTheKing): Read about function pointer, maybe create function pointer to what do when button is pressed(alias released).
+		if (start.getPressed()) { // make a released, and go only when released
+			sf::Time t = c.getElapsedTime();
+			if (t.asSeconds() > 1.f) {
+				c.restart();
+				continue;
+			}
+			else if (t.asSeconds() >= .08f){
+				window.clear();
+				Tetris(window);
+			}
+		}
 		
 		if (k.justPressed(sf::Keyboard::Key::Escape) && c.getElapsedTime().asSeconds() >= 0.2f) {
 			window.close();

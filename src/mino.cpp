@@ -226,6 +226,11 @@ Index Mino::updateIndexPosition(short int degree)
 	//updateIndex(nIndex);
 }
 
+void Mino::Update(sf::RenderWindow* window)
+{
+	window->draw(spr);
+}
+
 Mino& Mino::operator=(const Mino& mino)
 {
 	this->Type = mino.Type;

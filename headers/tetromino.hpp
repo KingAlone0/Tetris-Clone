@@ -10,17 +10,22 @@ class Tetromino
 {
     private:
     //std::vector<Mino> mino;
+	Mino shadow[4];
 	Mino mino[4];
-    TilesType Type;
+    TilesType Type = TilesType::None;
     short int nRotation = 0; // NOTE(AloneTheKing): Firt rotation never works don't fucking know why.
 	Keyboard keyboard;
+	sf::Vector2f tPos;
 	bool on_floor = false;
 	
-	sf::Vector2f tPos;
+	public:
+	bool is_playable;
+	bool is_holded = false;
 	
     public:
+	Tetromino() { is_playable = false; }
     Tetromino(TilesType Type);
-    Tetromino(TilesType Type, sf::Vector2f Position);
+    Tetromino(TilesType Type, sf::Vector2f Position, bool is_playable = true, bool is_holded = false);
     Tetromino(const Tetromino& tetromino);
     
     void setPosition(sf::Vector2f newPosition);
@@ -43,6 +48,7 @@ class Tetromino
 	void Update(std::vector<Mino>& Minos);
     void updateMinoPosition(sf::RenderWindow *window);
 	
+	bool isValid() { return (Type != TilesType::None); }
     
     private:
     void updateRotationPosition();
@@ -50,6 +56,8 @@ class Tetromino
 	void setMinoType();
 	void hardDrop(std::vector<Mino>& minos);
 	void wallKick(std::vector<Mino>& minos);
+	void setShadow();
+	void setShadowPosition(std::vector<Mino>& grid);
 	
 	//----------
 	public:

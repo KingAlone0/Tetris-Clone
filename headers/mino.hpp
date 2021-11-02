@@ -39,6 +39,7 @@ class Mino
     
     
     sf::Sprite getSprite() const { return spr; }
+	sf::Sprite* getRSprite() { return &spr; }
 	
     void setMinoType(TilesType nType);
     void setSpriteLocation(sf::Vector2f pos) { spr.setPosition(pos); }
@@ -56,7 +57,7 @@ class Mino
 	unsigned char getIndexRotation() const { return tIndex; }
 	void moveDown();
     
-    // void testIndexUpdate();
+	void Update(sf::RenderWindow* window);
     private:
     void updateIndex(unsigned char nIndex);
 	// NOTE(AloneTheKing): Need to debug the rotation to know what tha fuck is going wrong

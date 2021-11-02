@@ -10,7 +10,8 @@ enum TilesType
     S,
     T,
     Z,
-    Grid
+    Grid,
+	None
 };
 
 enum class Directions
@@ -18,7 +19,7 @@ enum class Directions
 	Left = 0,
 	Right = 1,
 	Down = 2,
-	Up = 3, // Debbug purpose only. __DELETE__
+	Up = 3,
 	None = 9
 };
 
@@ -84,6 +85,7 @@ struct V2
 	V2(float x, float y): x(x), y(y) {}
 	V2(sf::Vector2f vector): x(vector.x), y(vector.y) {}
 	V2(sf::Vector2i vector): x((float)vector.x), y((float)vector.y) {}
+	V2(const V2& vector): x(vector.x), y(vector.y) {}
 	
 	V2& operator=(const V2& vector) {
 		if (this == &vector)
@@ -127,6 +129,13 @@ struct V2
 	
 };
 
+// Multiple definition?
+/*
+V2 v2i(float n) // V2 Initialize.
+{
+	return V2(n, n);
+}*/
+
 struct V4
 {
 	float x, y, width, height;
@@ -147,3 +156,4 @@ struct V4
 		return *this;
 	}
 };
+

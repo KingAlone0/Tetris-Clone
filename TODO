@@ -1,6 +1,7 @@
-TODO: minos S/Z hard drop isn't working
+//  ---------------------------------------------- TODO
+TODO: InverseRotation function. 
 
-TODO: onClick(frame) onOver(frame) implement on Button Class
+TODO: renderWindow class need to be chieldren of sf::RenderWindow to use the virtual onResize() function.
 
 TODO: void MainMenu(&window) then settingMenu(&window) etc...
 
@@ -8,13 +9,13 @@ TODO: make an array of the rects to change the frame, could make a vector but it
 
 TODO: make a font.
 
-TODO: See if can use array instead of vector on tetrominos class : Row:27
-
 TODO: Tetromino class has a lot of public fuction who could be private.
 
 TODO: Put a Icon on the window, and to the .exe aswell.
 
 TODO: Clean the code.
+
+//  ---------------------------------------------- NOTES
 
 NOTE: Test rotation with 4 width, maybe with 3 width can't make t-spin/S-Spo etc
 
@@ -27,7 +28,7 @@ NOTE: Tetromino I rotation is broken
 TODO: Need to create a render class. --maybe. I made a simple class who can create a window, but for now i don't think it will be useful
 TODO: Make a menu for the game, UI Class. Note: Made a simple fuction to buttons
 
-//  ----------------------------------------------
+//  ---------------------------------------------- COMPLISHED
 
 +TODO: Need to clean the BoxCollision class, has a lot of parameter that I don't use.
 +TODO: When press two keys, the piece ignore the cooldown need to fix.
@@ -44,3 +45,7 @@ first rotation ins't working on S and Z, just rotate at second time pressed, nee
 +TODO: make Wall kick again.
 +TODO: see HardDrop fuction, it's not working sometimes, and so fucking slow
 +TODO: use array [] of mino instead on Tetromino class.
++TODO: minos S/Z hard drop isn't working
++TODO: onClick(frame) onOver(frame) implement on Button Class
++TODO: See if can use array instead of vector on tetrominos class
++TODO: +NextTetromino stuff, +holdTetromino, +shadowTetromino.

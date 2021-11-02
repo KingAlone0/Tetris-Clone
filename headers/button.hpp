@@ -18,11 +18,15 @@ class Button : public UI
 	Button(V2 position, sf::IntRect sprPlace, unsigned short int frames = 0, float frameRate = .2f);
 	bool getPressed() const { return pressed; };
 	
+	void Update(sf::RenderWindow& window);
+	
 	// void Update(sf::RenderWindow& window) override;
+	
 	
 	void mouseIsOver(V2 mousePos);
 	private:
 	bool buttonPressed(V2 mousePos);
+	bool buttonSelected(V2 mousePos);
 	
 };
 

@@ -6,6 +6,7 @@ Tetromino::Tetromino(TilesType Type): Type(Type)
 {
     setMinoType();
     setTetrominoGeometry();
+	is_playable = true;
 }
 Tetromino::Tetromino(const Tetromino& tetromino)
 {
@@ -13,9 +14,10 @@ Tetromino::Tetromino(const Tetromino& tetromino)
     setMinoType();
     setTetrominoGeometry();
     setPosition(tPos);
+	is_playable = true;
 }
 
-Tetromino::Tetromino(TilesType Type, sf::Vector2f Position): Type(Type), tPos(Position)
+Tetromino::Tetromino(TilesType Type, sf::Vector2f Position, bool is_playable, bool is_holded): Type(Type), tPos(Position), is_playable(is_playable), is_holded(is_holded)
 {
     setMinoType();
     setTetrominoGeometry();
@@ -29,6 +31,7 @@ void Tetromino::setMinoType()
 		for (size_t i = 0; i < 4; ++i)
 		{
 			mino[i] = Mino(Type);
+			shadow[i] = Mino(Type);
 		}
     }
 }
@@ -109,13 +112,29 @@ void Tetromino::setTetrominoGeometry()
         break;
 		case TilesType::Grid:
 		break;
+		case TilesType::None:
+		return;
     }
+}
+
+void Tetromino::setShadow()
+{
+	for (size_t i = 0; i < 4; ++i)
+	{
+		shadow[i].setPosition(mino[i].getPosition());
+		shadow[i].getRSprite()->setColor(sf::Color(50, 50, 50, 255));
+	}
 }
 
 void Tetromino::updateMinoPosition(sf::RenderWindow *window)
 {
-    for (int i = 0; i < 4; ++i){
-        window->draw(mino[i].getSprite());
+	if (is_playable) {
+		for (size_t i = 0; i < 4; ++i) {
+			shadow[i].Update(window);
+		}
+	}
+	for (size_t i = 0; i < 4; ++i){
+		mino[i].Update(window);
 		mino[i].updateCollision();
     }
 }
@@ -164,36 +183,35 @@ void Tetromino::hardDrop(std::vector<Mino>& minos)
 		}
 	}
 	
-	V2 m_collided(0.f, 0.f); //Mino_collided
+	//l_m_c = v2i(0.f);
+	l_m_c = V2(0.f, 0.f);
 	for (size_t i = 0; i < 4; ++i) {
-		std::cout << i << " - " << mino[i].getPosition().x << " : " << mino[i].getPosition().y << std::endl;
+		//std::cout << i << " - " << mino[i].getPosition().x << " : " << mino[i].getPosition().y << std::endl;
 		if (mino[i].getPosition().x == gridFloor.x)
 		{
-			if (m_collided.y == 0.f) {
-				m_collided = mino[i].getPosition();
+			if (l_m_c.y == 0.f) {
+				l_m_c = mino[i].getPosition();
 			}
-			else if (m_collided.y < mino[i].getPosition().y) {
-				m_collided = mino[i].getPosition();
+			else if (l_m_c.y < mino[i].getPosition().y) {
+				l_m_c = mino[i].getPosition();
 			}
 		}
 	}
-	std::cout << m_collided.x << " : " << m_collided.y << std::endl;
-	std::cout << l_m_c.x << "-:-" << l_m_c.y << std::endl;
 	
 	
-	if (m_collided.x == 0.f && m_collided.y == 0.f) {
-		m_collided.y = minor_mino.y;
+	if (l_m_c.x == 0.f && l_m_c.y == 0.f) {
+		l_m_c.y = minor_mino.y;
 	}
 	
-	sf::Vector2f n_pos(0.f , gridFloor.y - m_collided.y); // The new position is equal floor - one tile.
+	sf::Vector2f n_pos(0.f , gridFloor.y - l_m_c.y); // The new position is equal floor - one tile.
 	
 	for (size_t i = 0; i < 4; ++i) {
 		mino[i].handleMovement(sf::Vector2f(n_pos.x, n_pos.y - TILE));
 	}
 	
-	//on_floor = true;
+	on_floor = true;
 	t = c.getElapsedTime(); // Time to the pieces go down.
-	std::cout << "Execution Time: " << t.asSeconds() << std::endl;
+	//std::cout << "Execution Time: " << t.asSeconds() << std::endl;
 }
 
 void Tetromino::handleMovement(Directions d, std::vector<Mino>& Minos, bool Collided)
@@ -372,10 +390,82 @@ void Tetromino::checkInput(std::vector<Mino>& t)
 
 void Tetromino::Update(std::vector<Mino>& Minos)
 {
-	checkInput(Minos);
-	if (!on_floor) {
-		//handleMovement(Directions::Down, Minos);
+	if (is_playable) {
+		checkInput(Minos);
+		if (!on_floor) {
+			//handleMovement(Directions::Down, Minos);
+		}
 	}
+	setShadow();
+	/*for (size_t i = 0; i < 4; ++i)
+	{
+		shadow[i].getRSprite()->setPosition(sf::Vector2f(mino[i].getPosition().x, 0));
+	}*/
+	setShadowPosition(Minos);
+}
+
+void Tetromino::setShadowPosition(std::vector<Mino>& grid)
+{
+	sf::Clock c;
+	sf::Time  t;
+	
+	V2 gridFloor(0.f, 24 * TILE);
+	
+	V2 m_shadow;
+	// Create a transform with these variables ? As a pointer to not need to keep updating
+	for (Mino m : shadow) {
+		if (m_shadow.y == 0.f || m.getPosition().y > m_shadow.y) { // 2 = Minor y
+			m_shadow = m.getPosition();
+		}
+	}
+	
+	V2 l_m_c(0.f, 0.f); //Last_Mino_Collided
+	for (size_t i = 0; i < grid.size(); ++i)
+	{
+		for (size_t m = 0; m < 4; ++m) 
+		{
+			if (grid[i].getPosition().x == shadow[m].getPosition().x && grid[i].getPosition().y > shadow[m].getPosition().y)
+			{
+				if (grid[i].getPosition().y < gridFloor.y) {
+					gridFloor = grid[i].getPosition();
+					l_m_c = shadow[m].getPosition();
+				}
+				else if (grid[i].getPosition().y == gridFloor.y) {
+					if (l_m_c.y < shadow[m].getPosition().y) {
+						gridFloor = grid[i].getPosition();
+					}
+					l_m_c = shadow[m].getPosition();
+				}
+			}
+		}
+	}
+	
+	l_m_c = V2(0.f, 0.f);
+	for (size_t i = 0; i < 4; ++i) {
+		if (shadow[i].getPosition().x == gridFloor.x)
+		{
+			if (l_m_c.y == 0.f) {
+				l_m_c = shadow[i].getPosition();
+			}
+			else if (l_m_c.y < shadow[i].getPosition().y) {
+				l_m_c = shadow[i].getPosition();
+			}
+		}
+	}
+	
+	
+	if (l_m_c.x == 0.f && l_m_c.y == 0.f) {
+		l_m_c.y = m_shadow.y;
+	}
+	
+	sf::Vector2f n_pos(0.f , gridFloor.y - l_m_c.y); // The new position is equal floor - one tile.
+	
+	for (size_t i = 0; i < 4; ++i) {
+		shadow[i].handleMovement(sf::Vector2f(n_pos.x, n_pos.y - TILE));
+	}
+	
+	t = c.getElapsedTime(); // Time to the pieces go down.
+	//std::cout << "Execution Time: " << t.asSeconds() << std::endl;
 }
 
 Tetromino& Tetromino::operator=(const Tetromino& t)
@@ -389,6 +479,8 @@ Tetromino& Tetromino::operator=(const Tetromino& t)
 	setTetrominoGeometry();
 	setPosition(t.tPos);
 	nRotation = 0;
+	is_playable = true;
 	
 	return *this;
 }
+
