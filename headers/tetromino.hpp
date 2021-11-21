@@ -35,7 +35,6 @@ class Tetromino
 	
     void handleMovement(Directions d, std::vector<Mino>& Minos, bool Collided = false); // d = direction
     bool canMove(std::vector<Mino>& Minos);
-	void checkInput(const std::vector<Tetromino*>& t); //__DELETE__
 	void checkInput(std::vector<Mino>& t);
 	
 	//std::vector<Mino> getMino() const { return mino; }

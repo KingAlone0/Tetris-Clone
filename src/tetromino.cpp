@@ -186,7 +186,6 @@ void Tetromino::hardDrop(std::vector<Mino>& minos)
 	//l_m_c = v2i(0.f);
 	l_m_c = V2(0.f, 0.f);
 	for (size_t i = 0; i < 4; ++i) {
-		//std::cout << i << " - " << mino[i].getPosition().x << " : " << mino[i].getPosition().y << std::endl;
 		if (mino[i].getPosition().x == gridFloor.x)
 		{
 			if (l_m_c.y == 0.f) {
@@ -335,33 +334,6 @@ void Tetromino::wallKick(std::vector<Mino>& minos)
 		nRotation--;
 	}
 	// std::cout << "Execution Time " << c.getElapsedTime().asSeconds() << std::endl;
-}
-
-void Tetromino::checkInput(const std::vector<Tetromino*>& t) // __DELETE__ >? 
-{
-	std::vector<Mino> m;
-	for (size_t i = 0; i < t.size(); ++i) {
-		if (t[i] != this) {
-			for (size_t p = 0; p < 4; p++) {
-				m.push_back(t[i]->mino[p]);
-			}
-		}
-	}
-	
-	if (keyboard.checkInput(sf::Keyboard::Key::Left)) {
-		handleMovement(Directions::Left, m);
-	}
-	if (keyboard.checkInput(sf::Keyboard::Key::Right)) {
-		handleMovement(Directions::Right, m);
-	}
-	if (keyboard.checkInput(sf::Keyboard::Key::Down)) {
-		handleMovement(Directions::Down, m);
-	}
-	if (keyboard.checkInput(sf::Keyboard::Key::Up)) {
-		handleMovement(Directions::Up, m); // Debugg purpose only __DELETE__
-	}
-	if (keyboard.checkInput(sf::Keyboard::Key::R)) {
-	}
 }
 
 void Tetromino::checkInput(std::vector<Mino>& t)

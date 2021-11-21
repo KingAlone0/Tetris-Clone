@@ -1,2 +1,5 @@
 *.o
+obj/
+*.exe
 textures/*.aseprite
+screenshots/

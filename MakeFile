@@ -1,5 +1,7 @@
 PROJ_NAME = tetris
 
+SFML_DIR = ../SFML-2.5.1/
+
 BUILD_DIR = build/
 
 OBJ_DIR = obj
@@ -18,13 +20,15 @@ CC_FLAGS =  -c -Wall
 
 SFML = -lsfml-graphics -lsfml-system -lsfml-window 
 
-INC = -I ../SFML-2.5.1/include -I headers/
+INC = -I $(SFML_DIR)include -I headers/
 
-LIB = -L ../SFML-2.5.1/lib
+LIB = -L $(SFML_DIR)lib
 
 RM = del
 
 all: $(PROJ_NAME)
+run:
+	$(BUILD_DIR)tetris.exe
 
 $(PROJ_NAME): $(OBJ)
 	@ echo 'Building binary using GPP linker : $@'

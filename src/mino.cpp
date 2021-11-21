@@ -235,8 +235,10 @@ Mino& Mino::operator=(const Mino& mino)
 {
 	this->Type = mino.Type;
 	
+	sf::Vector2f position = mino.spr.getPosition();
+	
 	setRect();
 	spr.setTextureRect(sprPlace);
-	spr.setPosition(193, 32);
+	spr.setPosition(position);
 	updateCollision();
 }

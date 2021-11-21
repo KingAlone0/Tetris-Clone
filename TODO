@@ -1,13 +1,23 @@
 //  ---------------------------------------------- TODO
-TODO: InverseRotation function. 
 
-TODO: renderWindow class need to be chieldren of sf::RenderWindow to use the virtual onResize() function.
+->TODO: Make a ->+Slider, ->CheckBox and something to choose the resolution[List].
+
+TODO: Make the window zoom when resize, but presenving the aspect ratio
+
+TODO: renderWindow class need to be children of sf::RenderWindow to use the virtual onResize() function.
+NOTE: Actually you can use this as a Event, maybe is better.
+
+TODO: Keep aspect ratio on resize.
+
+TODO: Make V2 struct as template to use float aswell
 
 TODO: void MainMenu(&window) then settingMenu(&window) etc...
 
 TODO: make an array of the rects to change the frame, could make a vector but its too heavy for just some frames.~
 
 TODO: make a font.
+
+TODO: InverseRotation function. 
 
 TODO: Tetromino class has a lot of public fuction who could be private.
 
@@ -26,7 +36,6 @@ NOTE: Use Rotation based on center of mino or center of grid? Check tetromino L 
 NOTE: Tetromino I rotation is broken
 
 TODO: Need to create a render class. --maybe. I made a simple class who can create a window, but for now i don't think it will be useful
-TODO: Make a menu for the game, UI Class. Note: Made a simple fuction to buttons
 
 //  ---------------------------------------------- COMPLISHED
 
@@ -49,3 +58,6 @@ first rotation ins't working on S and Z, just rotate at second time pressed, nee
 +TODO: onClick(frame) onOver(frame) implement on Button Class
 +TODO: See if can use array instead of vector on tetrominos class
 +TODO: +NextTetromino stuff, +holdTetromino, +shadowTetromino.
++TODO: onReleased function on Button Class
++TODO: Add a icon to the Button Class
++TODO: Can't delete the fucking mino don't know why, if deleting backwards it delete, but the minos on grid goes down.

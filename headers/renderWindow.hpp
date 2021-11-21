@@ -1,19 +1,25 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 #include "iostream"
+#include "types.hpp"
 
 
-class renderWindow
+class RenderWindow : public sf::RenderWindow
 {
     public:
     std::string Title;
-    sf::RenderWindow window;
 	unsigned int width;
 	unsigned int height;
+	sf::View view = getView();
 	private:
 	
     public:
-    renderWindow(const std::string& windowTitle, unsigned int width, unsigned int height);
+    RenderWindow(const std::string& windowTitle, unsigned int width, unsigned int height);
+	
+	
+	
     private:
+	
+	void onResize() override;
 	
 };

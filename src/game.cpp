@@ -1,10 +1,18 @@
 #include "game.hpp"
 #include <iostream>
+#include <vector>
+#include <numeric>
 
 #define TILE 16
 
 void Tetris(sf::RenderWindow& window)
 {
+	sf::Texture bg;
+	bg.loadFromFile("../textures/playfield_background.png");
+	sf::Sprite backGround;
+	backGround.setTexture(bg);
+	backGround.setPosition(0.f, 0.f);
+	
 	bool start = true;
 	sf::Font font;
 	font.loadFromFile("../textures/SourceCode.ttf");
@@ -27,9 +35,7 @@ void Tetris(sf::RenderWindow& window)
 	
 	
 	std::vector<Mino> minos_grid;
-	unsigned short int sizeOfGrid = 0;
-	
-	std::vector<Tetromino*> tetrominos;
+	unsigned short int size_of_grid = 0;
 	
 	Keyboard k;
 	
@@ -37,10 +43,10 @@ void Tetris(sf::RenderWindow& window)
 	Tetromino next_tetromino(getRandomTetromino(), sf::Vector2f(5 * TILE, TILE), false, true);
 	while (start == true)
 	{
+		window.draw(backGround);
 		for (size_t i = 0; i < Playfield.size(); ++i) {
 			window.draw(Playfield[i]);
 		}
-		tetrominos.push_back(&tetromino);
 		
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Escape)) {
 			start = false;
@@ -55,6 +61,7 @@ void Tetris(sf::RenderWindow& window)
 		if (k.justPressed(sf::Keyboard::Key::C)) {
 			holdTetromino(tetromino, holded_tetromino, next_tetromino);
 		}
+		
 		
 		sf::Event event;
 		while (window.pollEvent(event))
@@ -77,13 +84,13 @@ void Tetris(sf::RenderWindow& window)
 		if (tetromino.isOnFloor()) {
 			for (size_t i = 0; i < 4; ++i)
 			{
-				minos_grid.push_back(tetromino.getMino()[i]);
+				Mino n_mino = tetromino.getMino()[i];
+				minos_grid.push_back(n_mino);
 			}
 			
 			nextTetromino(tetromino, next_tetromino);
 			//tetromino = Tetromino(getRandomTetromino(), sf::Vector2f(15 * TILE, TILE));
 			//tetromino = Tetromino(TilesType::T, sf::Vector2f(18 * TILE, TILE));
-			tetrominos.clear();
 		}
 		
 		for (size_t i = 0; i < minos_grid.size(); ++i)
@@ -91,28 +98,22 @@ void Tetris(sf::RenderWindow& window)
 			window.draw(minos_grid[i].getSprite());
 		}
 		
-		if (sizeOfGrid != (int)minos_grid.size())
+		if (size_of_grid < minos_grid.size())
 		{
-			sizeOfGrid = minos_grid.size();
-			if (sizeOfGrid != 0)
+			short int rows = 0;
+			
+			for (int h = 0; h < 24; h++)
 			{
-				short int rows = 0;
-				for (int h = 0; h < 24; h++)
+				if (isRowFullAt(minos_grid, h * TILE))
 				{
-					if (isFullRowAt(minos_grid, h * TILE))
-					{
-						rows++;
-						deleteRowAt(minos_grid, h * TILE);
-					}
-				}
-				if (rows != 0) {
-					sf::Clock c;
-					sf::Time t = c. getElapsedTime();
-					Score += scoreMultiplier(rows);
-					std::cout << c.getElapsedTime().asMicroseconds() << std::endl;
+					deleteRowAt(minos_grid, h * TILE);
+					rows++;
 				}
 			}
-			
+			if (rows != 0) {
+				Score += scoreMultiplier(rows);
+			}
+			size_of_grid = minos_grid.size();
 		}
 		// --------------- Score
 		sf::Text Scr(std::to_string(Score), font);
@@ -125,9 +126,6 @@ void Tetris(sf::RenderWindow& window)
 		// --------------- ^Score
 		window.display();
 		window.clear();
-		
-		tetrominos.clear(); // Clear the vector of minos.
-		
 	}
 	
 }
@@ -164,41 +162,36 @@ TilesType getRandomTetromino()
 	return type;
 }
 
-void deleteRowAt(std::vector<Mino>& grid, int h) // Delete a line.
+void deleteRowAt(std::vector<Mino>& grid, unsigned short int h) // Delete a line.
 {
+	// NOTE(AloneTheKing): Could use iteretors here instead of use --i, Clean Code?
 	for (size_t i = 0; i < grid.size(); ++i)
-	{
+	{ 
 		if (grid[i].getPosition().y == h)
 		{
-			if (grid[i].getPosition().x != 11 * TILE && grid[i].getPosition().x != 22 * TILE) {
-				grid.erase(grid.cbegin() + i);
-				i--;
-			}
+			grid.erase(grid.cbegin() + i);
+			i--;
 		}
 	}
 	for (size_t i = 0; i < grid.size(); ++i) // Move the minos down for after delete a line.
 	{
 		if (grid[i].getPosition().y < h)
 		{
-			if (grid[i].getPosition().x != 11 * TILE && grid[i].getPosition().x != 22 * TILE) {
-				grid[i].setPosition(sf::Vector2f(grid[i].getPosition().x, grid[i].getPosition().y + TILE));
-			}
+			grid[i].setPosition(sf::Vector2f(grid[i].getPosition().x, grid[i].getPosition().y + TILE));
 		}
 	}
 }
 
-bool isFullRowAt(const std::vector<Mino>& grid, unsigned short int h)
+bool isRowFullAt(const std::vector<Mino>& grid, unsigned short int h)
 {
 	int p = 0;
-	for (size_t i = 0; i <= grid.size(); ++i)
+	for (size_t i = 0; i < grid.size(); ++i)
 	{ 
 		if (grid[i].getPosition().y == h)
 		{
-			if (grid[i].getPosition().x != 11 * TILE && grid[i].getPosition().x != 22 * TILE) {
-				p++;
-			}
+			p++;
 		}
-	}
+	} 
 	return p >= 10 ? true : false;
 }
 

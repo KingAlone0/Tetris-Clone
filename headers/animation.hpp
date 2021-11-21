@@ -26,6 +26,8 @@ class Animation
 	void setAnimationState(bool State); //True animation play, false don't
 	void setFramesPerSeconds(float n_fps) { fps = n_fps; }
 	
+	uint8_t getCurrentFrame() const { return currentFrame; }
+	
 	void update();
 	
 	void changeFrame(int8 n_frame);

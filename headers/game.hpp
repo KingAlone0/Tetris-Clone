@@ -11,8 +11,8 @@
 
 short int scoreMultiplier(short int row);
 TilesType getRandomTetromino();
-void deleteRowAt(std::vector<Mino>& grid, int h);
-bool isFullRowAt(const std::vector<Mino>& grid, unsigned short int);
+void deleteRowAt(std::vector<Mino>& grid, unsigned short int h);
+bool isRowFullAt(const std::vector<Mino>& grid, unsigned short int);
 void setGrid(std::array<sf::Sprite, 56>& g);
 void holdTetromino(Tetromino& tetromino, Tetromino& holded_tetromino, Tetromino& next_tetromino);
 void nextTetromino(Tetromino& tetromino, Tetromino& next_tetromino);

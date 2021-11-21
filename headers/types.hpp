@@ -1,6 +1,12 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 
+#define HEXCOLOR(code) \
+((code) >> (3 * 8)) & 0xFF, \
+((code) >> (2 * 8)) & 0xFF, \
+((code) >> (1 * 8)) & 0xFF, \
+((code) >> (0 * 8)) & 0xFF
+
 enum TilesType
 {
     I,
