@@ -26,9 +26,9 @@ LIB = -L $(SFML_DIR)lib
 
 RM = del
 
-all: $(PROJ_NAME)
+all: obj $(PROJ_NAME)
 run:
-	$(BUILD_DIR)tetris.exe
+	E:\SFML_Projects\Tetris4ed\build\run.bat
 
 $(PROJ_NAME): $(OBJ)
 	@ echo 'Building binary using GPP linker : $@'
@@ -40,9 +40,12 @@ $(OBJ_DIR)/%.o: src/%.cpp headers/%.hpp
 	@ echo 'Building target using GCC compiler: $<'
 	@ $(CC) $< $(CC_FLAGS) $(INC) -o $@
 
-obj/main.o: src/main.cpp $(HPP_SOURCE)
+obj/main.o: src/main.cpp 
 	@ echo 'Building target using GCC compiler $<'
 	@ $(CC) $< $(CC_FLAGS) $(INC) -o $@
+
+obj:
+	mkdir obj
 
 clean:
 	@ $(RM) obj\*.o

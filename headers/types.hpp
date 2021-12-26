@@ -1,4 +1,7 @@
 #pragma once
+#ifndef TYPES_HPP
+#define TYPES_HPP
+
 #include <SFML/Graphics.hpp>
 
 #define HEXCOLOR(code) \
@@ -28,7 +31,17 @@ enum class Directions
 	Up = 3,
 	None = 9
 };
-
+// Multiple file, code is a mess 
+/*
+ * NOTE:
+ * Maybe if create a hpp file to the main resolve the problem
+ * maybe create a gameLoop.hpp and gameLoop.cpp files with the main fuction
+float r_up(float val)
+{
+    float result = (long)(val * 100 + .5);
+    return (float) result / 100;
+}
+*/
 
 struct Index 
 {
@@ -162,4 +175,7 @@ struct V4
 		return *this;
 	}
 };
+
+
+#endif // SLIDER Hpp
 

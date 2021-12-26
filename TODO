@@ -1,6 +1,9 @@
 //  ---------------------------------------------- TODO:
 
-->TODO: Make a ->+Slider, ->CheckBox and something to choose the resolution[List].
+->TODO: Make a +Slider, +CheckBox and something to choose the resolution->[List]. \
+        auto-resize grip
+
+TODO: Singleton to configuration
 
 TODO: Make the window zoom when resize, but presenving the aspect ratio
 

@@ -1,6 +1,12 @@
 #include "slider.hpp"
 #include <iostream>
 
+float r_up(float val)
+{
+    float result = (long)(val * 100 + .5);
+    return (float) result / 100;
+}
+
 Slider::Slider()
 {
 	
@@ -37,11 +43,14 @@ Slider::Slider(float x, float y, float width, float height)
 		.height = height,
 	};
 	grip = {
-		.x = x - (grip.width / 2),
-		.y = y - 1,
-		.min = grip.x,
-		.max = slider.x + slider.width,
-	};
+        //.x = x - (r_up((slider.height +2) / 2) / 2),
+        .x = x,
+        .y = y - 1,
+        .width = r_up((slider.height+2) / 2),
+        .height = slider.height + 2,
+        .min = grip.x,
+        .max = slider.x + slider.width,
+    };
 	
 	
 	slider_range = slider.width;
@@ -101,10 +110,10 @@ void Slider::createSlider()
 	slider_body.setTextureRect(sf::IntRect(0, 0, (int)slider.width, (int)slider.height));
 	slider_body.setPosition(sf::Vector2f(slider.x, slider.y));
 	
-	createGrip();
+	// createGrip(); // Grip height = (Slider.height / 16) * 2
 }
 
-void Slider::setGripSize(float width, float height)
+void Slider::setGripSize(float width, float height) // Grip size will be based on Slider Size.
 {
 	grip = {
 		.width = width,
@@ -116,24 +125,45 @@ void Slider::setGripSize(float width, float height)
 void Slider::createGrip()
 {
 	// 304 100
+    // 2w x 6h
 	{
 		sf::Image image;
 		sf::Image img;
 		sf::Image temp;
 		
-		image.create(texture.getSize().x + grip.width, grip.height);
-		img = texture.copyToImage();
-		image.saveToFile("test-texture1.png");
-		image.copy(img, 0, 0);
 		temp.loadFromFile("../textures/sprite-sheets.png");
-		image.copy(temp, slider.width, 0, sf::IntRect(sf::IntRect(304, 100, (int)grip.width, (int)grip.height)));
+		image.create(grip.width, grip.height);
+        { // Upper border
+            image.copy(temp, 0, 0, sf::IntRect(304, 100, 2, 2)); // Top Left 
+            image.copy(temp, grip.width -2, 0, sf::IntRect(304 + 2, 100, 2, 2)); // Top Rigth
+            for (int i = 1; i < grip.width -2; ++i) { // Fill upper border
+                image.copy(temp, i, 0, sf::IntRect(305, 100, 1, 2));
+            }
+        }
+        { // Down border
+            image.copy(temp, 0, grip.height -2, sf::IntRect(304, 104, 2, 2)); // Down left
+            image.copy(temp, grip.width -2, grip.height-2, sf::IntRect(304+2, 104, 2, 2)); //Down Right
+            for (int i = 1; i < grip.width -2; ++i) { // Fill down border
+                image.copy(temp, i, grip.height -2, sf::IntRect(305, 104, 1, 2));
+            }
+        }
+        { // Body
+            for (int i = 1; i < grip.height-2; ++i) {
+                image.copy(image, 0, i, sf::IntRect(0, 1, grip.width, 1));
+            }
+        }
+        img.create(slider.width, slider.height + grip.height);
+		temp = texture.copyToImage();
+        img.copy(temp, 0, 0);
+        img.copy(image, 0, slider.height);
 		
-		image.saveToFile("test-texture2.png");
-		texture.loadFromImage(image);
+
+		img.saveToFile("test-texture2.png");
+		texture.loadFromImage(img);
 	}
 	
 	grip_body.setTexture(texture);
-	grip_body.setTextureRect(sf::IntRect(slider.width, 0, grip.width, grip.height));
+	grip_body.setTextureRect(sf::IntRect(0, slider.height, grip.width, grip.height));
 	grip_body.setPosition(sf::Vector2f(grip.x, grip.y));
 }
 

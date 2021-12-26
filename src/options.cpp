@@ -1,6 +1,4 @@
 #include "options.hpp"
-#include "slider.hpp"
-#include "types.hpp"
 
 void Options(sf::RenderWindow& window)
 {
@@ -8,11 +6,10 @@ void Options(sf::RenderWindow& window)
 	background.setFillColor(sf::Color(HEXCOLOR(0x252525FF)));
 	
 	Slider slider(16.f, 32.f, 100.f, 10.f);
+    CheckBox check(16.f, 50.f);
 	
-	//Slider t_slider(200.f, 32.f, 100.f, 6.f);
 	
-	
-	bool draggin_grip = false;
+    bool draggin_grip = false;
 	bool quit = false;
 	while (!quit)
 	{
@@ -28,10 +25,11 @@ void Options(sf::RenderWindow& window)
 			}
 		}
 		slider.Update(&window);
-		//t_slider.Update(&window);
+        check.Update(&window);
 		
 		window.display();
 		window.clear();
 	}
 	
 }
+

@@ -3,7 +3,6 @@
 #include "UI.hpp"
 
 
-
 class Slider
 {
 	private:

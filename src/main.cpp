@@ -2,14 +2,11 @@
 #include <iostream>
 #include "game.hpp"
 #include "options.hpp"
-#include "UI.hpp"
 #include "button.hpp"
 #include "image.hpp"
 #include "keyboard.hpp"
 
 #define TILE 16
-
-#include "types.hpp"
 #include <functional>
 
 #include "renderWindow.hpp"
@@ -20,8 +17,8 @@ int main()
 	RenderWindow window("Mandioca", 36 * TILE , 26 * TILE); // 576 x 416
 	
 	V2 window_size(window.getSize().x, window.getSize().y);
-	float aspect_ratio = 576 / 416;
-	sf::View view = window.getView();
+	// float aspect_ratio = 576 / 416;
+	// sf::View view = window.getView();
 	
 	sf::RectangleShape background;
 	background.setSize(sf::Vector2f(36 *TILE , 26 * TILE));

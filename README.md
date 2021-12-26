@@ -32,3 +32,6 @@ $ ./tetris.exe
 
 ## OBS2: The game loop isn't set right now for debugs purposes.
 ## OBS3: Game only tested on Windows.
+
+
+.sz
