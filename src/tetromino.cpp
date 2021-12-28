@@ -161,53 +161,11 @@ void Tetromino::hardDrop(std::vector<Mino>& minos)
 			minor_mino = m.getPosition();
 		}
 	}
-	
-	V2 l_m_c(0.f, 0.f); //Last_Mino_Collided
-	for (size_t i = 0; i < minos.size(); ++i)
-	{
-		for (size_t m = 0; m < 4; ++m) 
-		{
-			if (minos[i].getPosition().x == mino[m].getPosition().x && minos[i].getPosition().y > mino[m].getPosition().y)
-			{
-				if (minos[i].getPosition().y < gridFloor.y) {
-					gridFloor = minos[i].getPosition();
-					l_m_c = mino[m].getPosition();
-				}
-				else if (minos[i].getPosition().y == gridFloor.y) {
-					if (l_m_c.y < mino[m].getPosition().y) {
-						gridFloor = minos[i].getPosition();
-					}
-					l_m_c = mino[m].getPosition();
-				}
-			}
-		}
-	}
-	
-	//l_m_c = v2i(0.f);
-	l_m_c = V2(0.f, 0.f);
-	for (size_t i = 0; i < 4; ++i) {
-		if (mino[i].getPosition().x == gridFloor.x)
-		{
-			if (l_m_c.y == 0.f) {
-				l_m_c = mino[i].getPosition();
-			}
-			else if (l_m_c.y < mino[i].getPosition().y) {
-				l_m_c = mino[i].getPosition();
-			}
-		}
-	}
-	
-	
-	if (l_m_c.x == 0.f && l_m_c.y == 0.f) {
-		l_m_c.y = minor_mino.y;
-	}
-	
-	sf::Vector2f n_pos(0.f , gridFloor.y - l_m_c.y); // The new position is equal floor - one tile.
-	
-	for (size_t i = 0; i < 4; ++i) {
-		mino[i].handleMovement(sf::Vector2f(n_pos.x, n_pos.y - TILE));
-	}
-	
+
+    for (size_t i = 0; i < 4; ++i) {
+        mino[i].setPosition(shadow[i].getPosition());
+    }
+
 	on_floor = true;
 	t = c.getElapsedTime(); // Time to the pieces go down.
 	//std::cout << "Execution Time: " << t.asSeconds() << std::endl;
@@ -278,11 +236,8 @@ void Tetromino::rotateTetromino(std::vector<Mino>& minos)
 		if (nRotation > 1)
 			nRotation = 0;
 	}
-	bool doubleCheck = false;
 	
 	updateRotationPosition();
-	Directions movement;
-	bool hasCollided = false;
 	wallKick(minos);
 	
 	t = c.getElapsedTime();// TODO(AloneTheKing): So fucking slow
@@ -398,61 +353,44 @@ void Tetromino::setShadowPosition(std::vector<Mino>& grid)
 		{
 			if (grid[i].getPosition().x == shadow[m].getPosition().x && grid[i].getPosition().y > shadow[m].getPosition().y)
 			{
-				if (grid[i].getPosition().y < gridFloor.y) {
-					gridFloor = grid[i].getPosition();
-					l_m_c = shadow[m].getPosition();
-				}
-				else if (grid[i].getPosition().y == gridFloor.y) {
-					if (l_m_c.y < shadow[m].getPosition().y) {
-						gridFloor = grid[i].getPosition();
-					}
-					l_m_c = shadow[m].getPosition();
-				}
-			}
-		}
-	}
-	
-	l_m_c = V2(0.f, 0.f);
-	for (size_t i = 0; i < 4; ++i) {
-		if (shadow[i].getPosition().x == gridFloor.x)
-		{
-			if (l_m_c.y == 0.f) {
-				l_m_c = shadow[i].getPosition();
-			}
-			else if (l_m_c.y < shadow[i].getPosition().y) {
-				l_m_c = shadow[i].getPosition();
-			}
-		}
-	}
-	
-	
-	if (l_m_c.x == 0.f && l_m_c.y == 0.f) {
-		l_m_c.y = m_shadow.y;
-	}
-	
-	sf::Vector2f n_pos(0.f , gridFloor.y - l_m_c.y); // The new position is equal floor - one tile.
-	
-	for (size_t i = 0; i < 4; ++i) {
-		shadow[i].handleMovement(sf::Vector2f(n_pos.x, n_pos.y - TILE));
-	}
-	
-	t = c.getElapsedTime(); // Time to the pieces go down.
-	//std::cout << "Execution Time: " << t.asSeconds() << std::endl;
+                if (grid[i].getPosition().y - shadow[m].getPosition().y < gridFloor.y - l_m_c.y) {
+                    gridFloor = grid[i].getPosition();
+                    l_m_c = shadow[m].getPosition();
+                }
+            }
+        }
+    }
+
+    if (l_m_c.x == 0.f && l_m_c.y == 0.f) {
+        l_m_c.y = m_shadow.y;
+    }
+
+    sf::Vector2f n_pos(0.f , gridFloor.y - l_m_c.y - TILE); // The new position is equal floor - one tile.
+
+    if (24 * TILE - m_shadow.y < gridFloor.y - l_m_c.y) {
+        n_pos.y = 24 * TILE - m_shadow.y - TILE;
+    }
+    for (size_t i = 0; i < 4; ++i) {
+        shadow[i].handleMovement(sf::Vector2f(0.f, n_pos.y));
+    }
+
+    t = c.getElapsedTime(); // Time to the pieces go down.
+    //std::cout << "Execution Time: " << t.asSeconds() << std::endl;
 }
 
 Tetromino& Tetromino::operator=(const Tetromino& t)
 {
-	if (this == &t)
-		return *this;
-	
-	on_floor = false;
-	Type = t.Type;
-	setMinoType();
-	setTetrominoGeometry();
-	setPosition(t.tPos);
-	nRotation = 0;
-	is_playable = true;
-	
-	return *this;
+    if (this == &t)
+        return *this;
+
+    on_floor = false;
+    Type = t.Type;
+    setMinoType();
+    setTetrominoGeometry();
+    setPosition(t.tPos);
+    nRotation = 0;
+    is_playable = true;
+
+    return *this;
 }
 

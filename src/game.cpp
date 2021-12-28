@@ -52,17 +52,36 @@ void Tetris(sf::RenderWindow& window)
 			start = false;
 			break;
 		}
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::X)) {
-			tetromino = Tetromino(TilesType::S, sf::Vector2f(15 * TILE, TILE));
-		}
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Z)) {
-			tetromino = Tetromino(TilesType::Z, sf::Vector2f(15 * TILE, TILE));
-		}
 		if (k.justPressed(sf::Keyboard::Key::C)) {
 			holdTetromino(tetromino, holded_tetromino, next_tetromino);
 		}
 		
-		
+
+        { // Debug
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Num1)) {
+                tetromino = Tetromino(TilesType::I, sf::Vector2f(15 * TILE, TILE));
+            }
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Num2)) {
+                tetromino = Tetromino(TilesType::O, sf::Vector2f(15 * TILE, TILE));
+            }
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Num3)) {
+                tetromino = Tetromino(TilesType::T, sf::Vector2f(15 * TILE, TILE));
+            }
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Num4)) {
+                tetromino = Tetromino(TilesType::J, sf::Vector2f(15 * TILE, TILE));
+            }
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Num5)) {
+                tetromino = Tetromino(TilesType::L, sf::Vector2f(15 * TILE, TILE));
+            }
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Num6)) {
+                tetromino = Tetromino(TilesType::Z, sf::Vector2f(15 * TILE, TILE));
+            }
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Num7)) {
+                tetromino = Tetromino(TilesType::S, sf::Vector2f(15 * TILE, TILE));
+            }
+        }
+
+
 		sf::Event event;
 		while (window.pollEvent(event))
 		{
