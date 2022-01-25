@@ -1,11 +1,6 @@
 #include "slider.hpp"
 #include <iostream>
 
-float r_up(float val)
-{
-    float result = (long)(val * 100 + .5);
-    return (float) result / 100;
-}
 
 Slider::Slider()
 {
@@ -34,7 +29,8 @@ Slider::Slider()
 	createGrip();
 }
 
-Slider::Slider(float x, float y, float width, float height)
+Slider::Slider(float x, float y, float width, float height):
+    UI(V2(x, y), width, height)
 {
 	slider = {
 		.x = x,
@@ -58,6 +54,7 @@ Slider::Slider(float x, float y, float width, float height)
 	createSlider();
 	texture.setSmooth(false);
 	createGrip();
+    id = ID(ID_TYPE::SLIDER);
 }
 
 
@@ -167,25 +164,36 @@ void Slider::createGrip()
 	grip_body.setPosition(sf::Vector2f(grip.x, grip.y));
 }
 
-void Slider::Update(sf::RenderWindow* window)
+void Slider::Update(RenderWindow* window)
 {
-	V2 mouse_pos(window->mapPixelToCoords(sf::Mouse::getPosition(*window)));
+    V2 mouse_pos = window->getMousePosition();
 	changeGripPosition(mouse_pos);
-	
-	window->draw(slider_body);
+    window->draw(slider_body);
 	window->draw(grip_body);
 }
 
 void Slider::changeGripPosition(V2 mouse_pos)
 {
+    if (Mouse::isActive())
+    {
+        if (Mouse::getID().id != id.id) {
+            draggin_grip = false;
+            return;
+        }
+    }
 	if (!draggin_grip) {
 		if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left)) {
 			if (mouse_pos.x >= grip.x && mouse_pos.x <= grip.x + grip.width && mouse_pos.y >= grip.y && mouse_pos.y <= grip.y + grip.height) {
 				draggin_grip = true;
-			}
+                Mouse::setActive(id);
+			} else if (isPointInside(mouse_pos)) {
+                draggin_grip = true;
+                Mouse::setActive(id);
+            }
 		}
 	} else {
 		if (!sf::Mouse::isButtonPressed(sf::Mouse::Button::Left)) {
+            Mouse::setInactive();
 			draggin_grip = false;
 		} else {
 			if (mouse_pos.x >= grip.min && mouse_pos.x <= grip.max){
@@ -196,3 +204,4 @@ void Slider::changeGripPosition(V2 mouse_pos)
 		}
 	}
 }
+

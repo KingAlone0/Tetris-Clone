@@ -1,8 +1,8 @@
 #include "keyboard.hpp"
 #include <iostream>
 
-#define delay .2f
-// NOTE(AloneTheKing): The movemente is kind werdly, and if pressed both key he don't move smoothly
+#define delay .1f
+// NOTE:  Need to have better times to handle the movements, is kinda slow compared with the jstris 
 bool Keyboard::checkInput(sf::Keyboard::Key k)
 {
 	if (!sf::Keyboard::isKeyPressed(k))
@@ -23,9 +23,9 @@ bool Keyboard::checkInput(sf::Keyboard::Key k)
 		}
 		else
 		{
-			if (lastTimePressed.asSeconds() <= .1f) 
+			if (lastTimePressed.asSeconds() <= .05f) 
 			{
-				if (lastTimePressed.asSeconds() == .1f){
+				if (lastTimePressed.asSeconds() == .05f){
 					timer.restart();
 				}
 				return false;

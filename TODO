@@ -1,7 +1,10 @@
 //  ---------------------------------------------- TODO:
+->TODO: mak the game loop, piece goes down, and make rotation slow.
 
-->TODO: Make a +Slider, +CheckBox and something to choose the resolution->[List]. \
++TODO: Make a +Slider, +CheckBox and something to choose the resolution->[List]. \
         auto-resize grip
+
++TODO: Make a mouse class to know when mouse it's already on use, using static fuctions
 
 TODO: Singleton to configuration
 
@@ -30,13 +33,7 @@ TODO: Clean the code.
 
 //  ---------------------------------------------- NOTES
 
-NOTE: Test rotation with 4 width, maybe with 3 width can't make t-spin/S-Spo etc
-
 NOTE: See if can create a class named Tile to use.
-
-NOTE: Use Rotation based on center of mino or center of grid? Check tetromino L and Tetromino J to see difereces.
-
-NOTE: Tetromino I rotation is broken
 
 TODO: Need to create a render class. --maybe. I made a simple class who can create a window, but for now i don't think it will be useful
 

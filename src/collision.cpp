@@ -1,12 +1,5 @@
 #include "collision.hpp"
 
-BoxCollision::BoxCollision()
-{
-}
-BoxCollision::BoxCollision(unsigned int x, unsigned int y, unsigned int width, unsigned int height):
-v0(x), v1(x + width), v2(y), v3(y + height)
-{
-}
 
 bool BoxCollision::checkLimitCollision()
 {
@@ -31,6 +24,12 @@ bool BoxCollision::checkBoxCollision(BoxCollision box)
 		}
 	}
     return false;
+}
+
+bool BoxCollision::isInside(int x, int y)
+{
+    return (x >= v0 && x <= v1) &&
+           (y >= v2 && y <= v3); 
 }
 
 bool BoxCollision::checkBoxCollision(BoxCollision box0, BoxCollision box1)
@@ -65,3 +64,11 @@ void BoxCollision::addAreaPlayable(float x, float y, float width, float height)
 	playable_area.width = width;
 	playable_area.height = height;
 }
+
+
+bool BoxCollision::isPointInside(BoxCollision box, V2 p)
+{
+    return (p.x >= box.v0 && p.x <= box.v1) &&
+           (p.y >= box.v2 && p.y <= box.v3);
+}
+

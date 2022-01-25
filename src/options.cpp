@@ -1,8 +1,8 @@
 #include "options.hpp"
 
-void Options(sf::RenderWindow& window)
+void Options(RenderWindow& window)
 {
-	sf::RectangleShape background(sf::Vector2f(window.getSize()));
+	sf::RectangleShape background(sf::Vector2f(window.window.getSize()));
 	background.setFillColor(sf::Color(HEXCOLOR(0x252525FF)));
 	
 	Slider slider(16.f, 32.f, 100.f, 10.f);
@@ -16,7 +16,7 @@ void Options(sf::RenderWindow& window)
 		window.draw(background);
 		
 		sf::Event event;
-		while (window.pollEvent(event))
+		while (window.window.pollEvent(event))
 		{
 			if (event.type == sf::Event::Closed)
 			{

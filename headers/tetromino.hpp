@@ -1,7 +1,9 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 #include "mino.hpp"
+#include "sound.hpp"
 #include "keyboard.hpp"
+#include <thread>
 
 #include <iostream>
 #include <array>
@@ -13,10 +15,17 @@ class Tetromino
 	Mino shadow[4];
 	Mino mino[4];
     TilesType Type = TilesType::None;
-    short int nRotation = 0; // NOTE(AloneTheKing): Firt rotation never works don't fucking know why.
+    short int nRotation = 0; 
 	Keyboard keyboard;
 	sf::Vector2f tPos;
 	bool on_floor = false;
+    sf::Clock timer;
+    sf::Clock clock;
+    struct {
+        sf::Time rotation;
+        sf::Time move;
+        sf::Time hardDrop;
+    } timers;
 	
 	public:
 	bool is_playable;
@@ -33,19 +42,17 @@ class Tetromino
 	
     bool isOnFloor() const { return on_floor; }
 	
-    void handleMovement(Directions d, std::vector<Mino>& Minos, bool Collided = false); // d = direction
+    void handleMovement(Directions d, std::vector<Mino>& Minos, bool Collided = false); 
     bool canMove(std::vector<Mino>& Minos);
 	void checkInput(std::vector<Mino>& t);
 	
-	//std::vector<Mino> getMino() const { return mino; }
 	Mino* getMino() { return mino; }
 	
     //-------- Rotate Tetromino
     void rotateTetromino(std::vector<Mino>& minos);
 	
 	//-------- Update
-	void Update(std::vector<Mino>& Minos);
-    void updateMinoPosition(sf::RenderWindow *window);
+    void Update(RenderWindow* window, std::vector<Mino>& Minos);
 	
 	bool isValid() { return (Type != TilesType::None); }
     

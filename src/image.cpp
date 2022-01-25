@@ -9,9 +9,11 @@ Image::Image(V2 position, sf::IntRect sprPlace): UI(position, sprPlace)
 	anim = Animation(&spr, sprPlace, 8, .2f);
 	spr.setTexture(texture);
 	
+    scale = 6.f;
+
 	spr.setTextureRect(sprPlace);
 	spr.setPosition(position.x, position.y);
-	spr.setScale(3.f, 3.f);
+	spr.setScale(scale, scale);
 }
 
 Image::Image(V2 position, sf::IntRect sprPlace, uint8_t frames, float frameRate)
@@ -20,15 +22,17 @@ Image::Image(V2 position, sf::IntRect sprPlace, uint8_t frames, float frameRate)
 	spr.setTexture(texture);
 	
 	spr.setTextureRect(sprPlace);
-	spr.setPosition(position.x, position.y);
+    spr.setPosition(position.x, position.y);
 }
 
-void Image::update()
+void Image::Update(RenderWindow* window)
 {
 	anim.update();
+    window->draw(spr);
 }
 
-void Image::setScale(V2 Scale)
+void Image::setScale(float Scale)
 {
-	spr.setScale(Scale.x, Scale.y);
+    scale = Scale;
+	spr.setScale(scale, scale);
 }

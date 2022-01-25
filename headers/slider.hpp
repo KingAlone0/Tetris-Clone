@@ -2,8 +2,8 @@
 #define SLIDER_HPP
 #include "UI.hpp"
 
-
-class Slider
+// TODO: Make it child of UI 
+class Slider : public UI
 {
 	private:
 	typedef struct {
@@ -16,7 +16,7 @@ class Slider
 	
 	m_slider slider;
 	m_grip grip;
-	sf::Texture texture; // --
+	sf::Texture texture;
 	
 	sf::Sprite slider_body;
 	sf::Sprite grip_body;
@@ -24,6 +24,7 @@ class Slider
 	bool draggin_grip;
 	float slider_range;
 	float value = 0.f;
+    ID id;
 	
 	private:
 	void changeGripPosition(V2 mouse_pos);
@@ -37,9 +38,10 @@ class Slider
 	
 	void setGripSize(float width, float height);
 	
-	void Update(sf::RenderWindow* window);
+	void Update(RenderWindow* window);
 };
 
 
 
 #endif
+

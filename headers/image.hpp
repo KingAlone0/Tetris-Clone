@@ -7,6 +7,7 @@ class Image : public UI
 {
 	private:
 	Animation anim;
+    float scale;
 	
 	public:
 	Image();
@@ -14,8 +15,8 @@ class Image : public UI
 	Image(V2 position, sf::IntRect sprPlace, uint8_t frames, float frameRate);
 	
 	
-	void update();
-	void setScale(V2 Scale);
+	void Update(RenderWindow* window) override;
+	void setScale(float scale);
 };
 
 #endif /* Image_HPP */

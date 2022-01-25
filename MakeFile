@@ -18,7 +18,7 @@ CC = g++
 
 CC_FLAGS =  -c -Wall
 
-SFML = -lsfml-graphics -lsfml-system -lsfml-window 
+SFML = -lsfml-graphics -lsfml-system -lsfml-window -lsfml-audio 
 
 INC = -I $(SFML_DIR)include -I headers/
 

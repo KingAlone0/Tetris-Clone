@@ -226,7 +226,7 @@ Index Mino::updateIndexPosition(short int degree)
 	//updateIndex(nIndex);
 }
 
-void Mino::Update(sf::RenderWindow* window)
+void Mino::Update(RenderWindow* window)
 {
 	window->draw(spr);
 }

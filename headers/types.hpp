@@ -31,17 +31,13 @@ enum class Directions
 	Up = 3,
 	None = 9
 };
-// Multiple file, code is a mess 
-/*
- * NOTE:
- * Maybe if create a hpp file to the main resolve the problem
- * maybe create a gameLoop.hpp and gameLoop.cpp files with the main fuction
-float r_up(float val)
+
+inline float r_up(float val)
 {
-    float result = (long)(val * 100 + .5);
-    return (float) result / 100;
+    int result = (long)(val * 100 + .5) / 100;
+
+    return result;
 }
-*/
 
 struct Index 
 {
@@ -150,6 +146,7 @@ struct V2
 
 // Multiple definition?
 /*
+ * make it inline to work
 V2 v2i(float n) // V2 Initialize.
 {
 	return V2(n, n);
@@ -175,6 +172,38 @@ struct V4
 		return *this;
 	}
 };
+
+enum class ID_TYPE
+{
+    BUTTON,
+    SLIDER,
+    CHECK_BOX,
+    Object
+};
+
+struct ID
+{
+    static int current_ID;
+
+    int id;
+    ID_TYPE type;
+    ID(){};
+    ID(ID_TYPE type): type(type)
+    {
+        id = current_ID;
+        current_ID += 1;
+    }
+
+    ID& operator=(const ID& n_ID)
+    {
+        id = n_ID.id;
+        type = n_ID.type;
+        return *this;
+    }
+};
+// TODO: code is mess 
+// maybe need to make an cpp file to initiliaze the current_ID, for now i initiliaze it on the main function
+//int ID::current_ID = 0;
 
 
 #endif // SLIDER Hpp

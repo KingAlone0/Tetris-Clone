@@ -7,7 +7,7 @@
 #include "slider.hpp"
 #include "checkBox.hpp"
 
-void Options(sf::RenderWindow& window);
+void Options(RenderWindow& window);
 
 
 #endif // OPTIONS_Hpp

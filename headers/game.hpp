@@ -17,6 +17,6 @@ void setGrid(std::array<sf::Sprite, 56>& g);
 void holdTetromino(Tetromino& tetromino, Tetromino& holded_tetromino, Tetromino& next_tetromino);
 void nextTetromino(Tetromino& tetromino, Tetromino& next_tetromino);
 
-void Tetris(sf::RenderWindow& window);
+void Tetris(RenderWindow& window);
 
 #endif //GAME_H

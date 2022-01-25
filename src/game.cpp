@@ -5,7 +5,7 @@
 
 #define TILE 16
 
-void Tetris(sf::RenderWindow& window)
+void Tetris(RenderWindow& window)
 {
 	sf::Texture bg;
 	bg.loadFromFile("../textures/playfield_background.png");
@@ -24,15 +24,6 @@ void Tetris(sf::RenderWindow& window)
 	Tetromino te(getRandomTetromino(), sf::Vector2f(20 * TILE, TILE));
 	Tetromino tetromino(TilesType::I, sf::Vector2f(15 * TILE, TILE));
 	
-	std::array<sf::Sprite, 56> Playfield;
-	for (size_t i = 0; i < Playfield.size(); ++i)
-	{
-		Playfield[i].setTexture(texture);
-		Playfield[i].setTextureRect(sf::Rect<int>(48, 16, 16, 16));
-		Playfield[i].setPosition(0.f, 0.f);
-	}
-	setGrid(Playfield);
-	
 	
 	std::vector<Mino> minos_grid;
 	unsigned short int size_of_grid = 0;
@@ -44,9 +35,6 @@ void Tetris(sf::RenderWindow& window)
 	while (start == true)
 	{
 		window.draw(backGround);
-		for (size_t i = 0; i < Playfield.size(); ++i) {
-			window.draw(Playfield[i]);
-		}
 		
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Escape)) {
 			start = false;
@@ -83,21 +71,20 @@ void Tetris(sf::RenderWindow& window)
 
 
 		sf::Event event;
-		while (window.pollEvent(event))
+		while (window.window.pollEvent(event))
 		{
 			if (event.type == sf::Event::Closed)
 			{
-				window.close();
+				window.window.close();
 			}
 		}
 		
-		tetromino.Update(minos_grid);
-		tetromino.updateMinoPosition(&window);
+		tetromino.Update(&window, minos_grid);
 		
 		if (holded_tetromino.isValid()) 
-			holded_tetromino.updateMinoPosition(&window);
+			holded_tetromino.Update(&window, minos_grid);
 		if (next_tetromino.isValid())
-			next_tetromino.updateMinoPosition(&window);
+			next_tetromino.Update(&window, minos_grid);
 		
 		
 		if (tetromino.isOnFloor()) {
@@ -106,11 +93,13 @@ void Tetris(sf::RenderWindow& window)
 				Mino n_mino = tetromino.getMino()[i];
 				minos_grid.push_back(n_mino);
 			}
-			
 			nextTetromino(tetromino, next_tetromino);
-			//tetromino = Tetromino(getRandomTetromino(), sf::Vector2f(15 * TILE, TILE));
-			//tetromino = Tetromino(TilesType::T, sf::Vector2f(18 * TILE, TILE));
 		}
+        if (!tetromino.canMove(minos_grid))
+        {
+            // TODO: Make the game over window, maybe other screen, or something who will be in front of everihing. 
+            return;
+        }
 		
 		for (size_t i = 0; i < minos_grid.size(); ++i)
 		{
@@ -280,7 +269,8 @@ void nextTetromino(Tetromino& tetromino, Tetromino& next_tetromino)
 	tetromino.is_holded = false;
 	tetromino.is_playable = true;
 	
-	next_tetromino = Tetromino(getRandomTetromino(), sf::Vector2f(5 * TILE, TILE));
+	next_tetromino = Tetromino(getRandomTetromino(), sf::Vector2f(5 * TILE, TILE), false, true);
 	next_tetromino.is_playable = false;
 	next_tetromino.is_holded = true;
 }
+

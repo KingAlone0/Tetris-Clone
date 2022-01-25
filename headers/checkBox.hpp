@@ -2,6 +2,7 @@
 #define CHECK_BOX_HPP
 #include "UI.hpp"
 
+// TODO: Make it child of UI class
 class CheckBox
 {
     private:
@@ -9,10 +10,11 @@ class CheckBox
     sf::RectangleShape box;
     bool pressed = false;
     sf::Clock pressedTime;
+    ID id;
 
     public:
     CheckBox(float x, float y);
-    void Update(sf::RenderWindow* window);
+    void Update(RenderWindow* window);
 
     private:
     void setBox();

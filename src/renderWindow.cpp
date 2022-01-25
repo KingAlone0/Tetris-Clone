@@ -2,17 +2,21 @@
 
 RenderWindow::RenderWindow(const std::string& windowTitle, unsigned int width, unsigned int height) : Title(windowTitle), width(width), height(height)
 {
-	create(sf::VideoMode(width, height), Title);
+    window.create(sf::VideoMode(width, height), Title);
 }
 
+V2 RenderWindow::getMousePosition()
+{
+    return V2(window.mapPixelToCoords(sf::Mouse::getPosition(window)));
+}
 
 void RenderWindow::onResize()
 {
+    /*
 	if (getSize().x != width || getSize().y != height) {
 		setSize(sf::Vector2u(width, height));
 	}
 	
-	/*
 	float n_width = getSize().x;
 	float n_height = getSize().y;
 	float aspect_ratio = (float)width / height;

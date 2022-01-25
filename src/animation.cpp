@@ -1,7 +1,7 @@
 #include "animation.hpp"
 #include <iostream>
 
-Animation::Animation(sf::Sprite* spr, sf::IntRect sprPlace, int8 frames, float fps, bool repeat)
+Animation::Animation(sf::Sprite* spr, sf::IntRect sprPlace, uint8_t frames, float fps, bool repeat)
 :a_spr(spr), rect(sprPlace), frames(frames), fps(fps), repeat(repeat)
 {
 	clock.restart();
@@ -33,7 +33,7 @@ void Animation::update()
 	}
 }
 
-void Animation::changeFrame(int8 n_frame)
+void Animation::changeFrame(uint8_t n_frame)
 {
 	if (n_frame == currentFrame)
 		return;

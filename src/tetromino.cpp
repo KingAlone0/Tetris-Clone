@@ -126,13 +126,26 @@ void Tetromino::setShadow()
 	}
 }
 
-void Tetromino::updateMinoPosition(sf::RenderWindow *window)
+void Tetromino::Update(RenderWindow* window, std::vector<Mino>& Minos) 
 {
 	if (is_playable) {
+        checkInput(Minos);
+        if (timer.getElapsedTime().asSeconds() > .5) {
+            if (!on_floor) {
+                handleMovement(Directions::Down, Minos);
+                timer.restart();
+            }
+        }
 		for (size_t i = 0; i < 4; ++i) {
 			shadow[i].Update(window);
 		}
 	}
+    if (on_floor) {
+        std::thread drop_sound(SoundTrack::play, Sounds::Drop);
+        drop_sound.detach();
+    }
+    setShadow();
+    setShadowPosition(Minos);
 	for (size_t i = 0; i < 4; ++i){
 		mino[i].Update(window);
 		mino[i].updateCollision();
@@ -151,9 +164,11 @@ void Tetromino::hardDrop(std::vector<Mino>& minos)
 {
 	sf::Clock c;
 	sf::Time  t;
+    if (clock.getElapsedTime().asSeconds() - timers.hardDrop.asSeconds() < 0.1f) {
+        return;
+    }
 	
 	V2 gridFloor(0.f, 24 * TILE);
-	
 	V2 minor_mino;
 	// Create a transform with these variables ? As a pointer to not need to keep updating
 	for (Mino m : mino) {
@@ -167,8 +182,10 @@ void Tetromino::hardDrop(std::vector<Mino>& minos)
     }
 
 	on_floor = true;
-	t = c.getElapsedTime(); // Time to the pieces go down.
-	//std::cout << "Execution Time: " << t.asSeconds() << std::endl;
+    timers.hardDrop = clock.getElapsedTime();
+    t = c.getElapsedTime(); // Time to the pieces go down.
+    timers.move = clock.getElapsedTime();
+    // std::cout << "Execution Time: " << t.asSeconds() << std::endl;
 }
 
 void Tetromino::handleMovement(Directions d, std::vector<Mino>& Minos, bool Collided)
@@ -221,6 +238,7 @@ void Tetromino::rotateTetromino(std::vector<Mino>& minos)
 {
 	sf::Clock c;
 	sf::Time t;
+    if (clock.getElapsedTime().asSeconds() - timers.rotation.asSeconds() < 0.2f) return;
 	
 	if (Type == TilesType::O)
 		return;
@@ -239,7 +257,8 @@ void Tetromino::rotateTetromino(std::vector<Mino>& minos)
 	
 	updateRotationPosition();
 	wallKick(minos);
-	
+    timers.rotation = clock.getElapsedTime();
+
 	t = c.getElapsedTime();// TODO(AloneTheKing): So fucking slow
 	// std::cout << t.asSeconds() << std::endl; // check Time
 }
@@ -293,66 +312,55 @@ void Tetromino::wallKick(std::vector<Mino>& minos)
 
 void Tetromino::checkInput(std::vector<Mino>& t)
 {
-	
-	if (keyboard.checkInput(sf::Keyboard::Key::Left)) {
-		handleMovement(Directions::Left, t);
-	}
-	else if (keyboard.checkInput(sf::Keyboard::Key::Right)) {
-		handleMovement(Directions::Right, t);
-	}
-	else if (keyboard.checkInput(sf::Keyboard::Key::Down)) {
-		handleMovement(Directions::Down, t);
-	}
-	else if (keyboard.checkInput(sf::Keyboard::Key::Up)) {
-		handleMovement(Directions::Up, t); // Debugg purpose only __DELETE__
-	}
-	else if (keyboard.checkInput(sf::Keyboard::Key::R)) {
-		rotateTetromino(t);
-	}
-	if (keyboard.checkInput(sf::Keyboard::Key::Space)) {
-		hardDrop(t); // Need to implement
-	}
-	
-}
+    if (clock.getElapsedTime().asSeconds() - timers.move.asSeconds() < 0.1f)
+    {
+        if (keyboard.checkInput(sf::Keyboard::Key::Left)) {
+            handleMovement(Directions::Left, t);
+        }
+        else if (keyboard.checkInput(sf::Keyboard::Key::Right)) {
 
-void Tetromino::Update(std::vector<Mino>& Minos)
-{
-	if (is_playable) {
-		checkInput(Minos);
-		if (!on_floor) {
-			//handleMovement(Directions::Down, Minos);
-		}
-	}
-	setShadow();
-	/*for (size_t i = 0; i < 4; ++i)
-	{
-		shadow[i].getRSprite()->setPosition(sf::Vector2f(mino[i].getPosition().x, 0));
-	}*/
-	setShadowPosition(Minos);
+            handleMovement(Directions::Right, t);
+        }
+        else if (keyboard.checkInput(sf::Keyboard::Key::Down)) {
+            handleMovement(Directions::Down, t);
+        }
+        else if (keyboard.checkInput(sf::Keyboard::Key::Up)) {
+            handleMovement(Directions::Up, t); // Debugg purpose only __DELETE__
+        }
+        else if (keyboard.checkInput(sf::Keyboard::Key::Space)) {
+            hardDrop(t);
+        }
+        timers.move = clock.getElapsedTime();
+    }
+    // Is not rotating while moving
+    if (keyboard.checkInput(sf::Keyboard::Key::R)) {
+        rotateTetromino(t);
+    }
+
 }
 
 void Tetromino::setShadowPosition(std::vector<Mino>& grid)
 {
-	sf::Clock c;
-	sf::Time  t;
-	
-	V2 gridFloor(0.f, 24 * TILE);
-	
-	V2 m_shadow;
-	// Create a transform with these variables ? As a pointer to not need to keep updating
-	for (Mino m : shadow) {
-		if (m_shadow.y == 0.f || m.getPosition().y > m_shadow.y) { // 2 = Minor y
-			m_shadow = m.getPosition();
-		}
-	}
-	
-	V2 l_m_c(0.f, 0.f); //Last_Mino_Collided
-	for (size_t i = 0; i < grid.size(); ++i)
-	{
-		for (size_t m = 0; m < 4; ++m) 
-		{
-			if (grid[i].getPosition().x == shadow[m].getPosition().x && grid[i].getPosition().y > shadow[m].getPosition().y)
-			{
+    sf::Clock c;
+    sf::Time  t;
+
+    V2 gridFloor(0.f, 24 * TILE);
+
+    V2 m_shadow;
+    // Create a transform with these variables ? As a pointer to not need to keep updating
+    for (Mino m : shadow) {
+        if (m_shadow.y == 0.f || m.getPosition().y > m_shadow.y) { // 2 = Minor y
+            m_shadow = m.getPosition();
+        }
+    }
+
+    V2 l_m_c(0.f, 0.f); //Last_Mino_Collided
+    for (size_t i = 0; i < grid.size(); ++i)
+    {
+        for (size_t m = 0; m < 4; ++m) 
+        {
+            if (grid[i].getPosition().x == shadow[m].getPosition().x && grid[i].getPosition().y > shadow[m].getPosition().y)
+            {
                 if (grid[i].getPosition().y - shadow[m].getPosition().y < gridFloor.y - l_m_c.y) {
                     gridFloor = grid[i].getPosition();
                     l_m_c = shadow[m].getPosition();

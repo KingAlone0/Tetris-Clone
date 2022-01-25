@@ -3,6 +3,7 @@
 #include "types.hpp"
 #include "collision.hpp"
 #include <iostream>
+#include "renderWindow.hpp"
 
 
 
@@ -57,10 +58,9 @@ class Mino
 	unsigned char getIndexRotation() const { return tIndex; }
 	void moveDown();
     
-	void Update(sf::RenderWindow* window);
+	void Update(RenderWindow* window);
     private:
     void updateIndex(unsigned char nIndex);
-	// NOTE(AloneTheKing): Need to debug the rotation to know what tha fuck is going wrong
 	
 	// ---- Overloads ---- //
 	public:
