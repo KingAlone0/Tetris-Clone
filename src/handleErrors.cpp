@@ -4,11 +4,6 @@ bool Errors::hasErr = false;
 
 void handleErrors(ErrorType err, std::string str)
 {
-    thread_test();
-}
-
-void thread_test()
-{
    RenderWindow errorWindow("ERROR!", 100, 100); 
    sf::RectangleShape background;
    background.setSize(sf::Vector2f(100.f, 100.f));
@@ -27,6 +22,5 @@ void thread_test()
            }
        }
    }
-
 }
 

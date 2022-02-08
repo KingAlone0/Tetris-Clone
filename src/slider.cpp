@@ -170,6 +170,9 @@ void Slider::Update(RenderWindow* window)
 	changeGripPosition(mouse_pos);
     window->draw(slider_body);
 	window->draw(grip_body);
+    if (ptr_value != nullptr) {
+        *ptr_value = value * m_scale;
+    }
 }
 
 void Slider::changeGripPosition(V2 mouse_pos)
@@ -196,12 +199,26 @@ void Slider::changeGripPosition(V2 mouse_pos)
             Mouse::setInactive();
 			draggin_grip = false;
 		} else {
-			if (mouse_pos.x >= grip.min && mouse_pos.x <= grip.max){
+			if (mouse_pos.x > grip.min && mouse_pos.x < grip.max){
 				grip.x = mouse_pos.x - (grip.width / 2) < grip.min ? mouse_pos.x : mouse_pos.x - (grip.width / 2);
 				value = (grip.x - slider.x + grip.width / 2) / slider_range;
 				grip_body.setPosition(sf::Vector2f(grip.x, grip.y));
 			}
 		}
 	}
+}
+
+void Slider::setGripToValue()
+{
+    grip.x = slider.x + slider_range * value;
+    grip_body.setPosition(sf::Vector2f(grip.x, grip.y));
+}
+
+void Slider::setValueTo(float* AdrsToPtr, float scale)
+{
+    ptr_value = AdrsToPtr;
+    m_scale = scale;
+    value = *ptr_value / scale;
+    setGripToValue();
 }
 

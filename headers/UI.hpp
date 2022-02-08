@@ -1,11 +1,14 @@
 #ifndef UI_HPP
 #define UI_HPP
+
 #include <SFML/Graphics.hpp>
 #include "types.hpp"
 #include "collision.hpp" 
 #include "renderWindow.hpp"
 #include "mouse.hpp"
 #include "handleErrors.hpp"
+class Defaults;
+
 
 class UI
 {
@@ -19,8 +22,8 @@ class UI
 	V2 pos;
 	sf::Sprite spr;
 
-	
-	public:
+    // NOTE: Need to change the name of pos -Wreorder
+    public:
 	UI();
 	UI(V2 pos, sf::IntRect sprPlace);
     UI(V2 pos, sf::IntRect sprPlace, bool test);
@@ -38,8 +41,6 @@ class UI
 	virtual void Update(RenderWindow* window){};
     virtual void setScale(float scale);
 };
-
-
 
 #endif /* UI_HPP */
 

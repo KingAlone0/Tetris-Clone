@@ -6,6 +6,7 @@
 #include "button.hpp"
 #include "image.hpp"
 #include "keyboard.hpp"
+#include "thread"
 
 #define TILE 16
 #include <functional>

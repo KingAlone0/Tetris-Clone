@@ -34,9 +34,8 @@ void Tetris(RenderWindow& window)
 	Tetromino next_tetromino(getRandomTetromino(), sf::Vector2f(5 * TILE, TILE), false, true);
 	while (start == true)
 	{
-		window.draw(backGround);
-		
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Escape)) {
+        window.draw(backGround);
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Escape)) {
 			start = false;
 			break;
 		}
@@ -75,6 +74,7 @@ void Tetris(RenderWindow& window)
 		{
 			if (event.type == sf::Event::Closed)
 			{
+                SoundTrack::stopOST();
 				window.window.close();
 			}
 		}

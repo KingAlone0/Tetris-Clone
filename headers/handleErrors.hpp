@@ -19,17 +19,12 @@ class Errors
     static ErrorType getError();
 
     private:
-    Error() {};
+    Error();
     static bool hasErr;
     static std::vector<ErrorType> errors;
 };
 
 void handleErrors(ErrorType err, std::string str);
-
-// HERE!! 
-void thread_test();
-
-
 
 #endif
 

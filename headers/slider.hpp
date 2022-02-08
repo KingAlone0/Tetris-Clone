@@ -1,8 +1,9 @@
 #ifndef SLIDER_HPP
 #define SLIDER_HPP
-#include "UI.hpp"
 
-// TODO: Make it child of UI 
+#include "UI.hpp"
+#include "configs.hpp"
+
 class Slider : public UI
 {
 	private:
@@ -24,12 +25,15 @@ class Slider : public UI
 	bool draggin_grip;
 	float slider_range;
 	float value = 0.f;
+    float* ptr_value;
+    float m_scale;
     ID id;
 	
 	private:
 	void changeGripPosition(V2 mouse_pos);
 	void createSlider();
 	void createGrip();
+    void setGripToValue();
 	
 	public:
 	Slider();
@@ -37,11 +41,11 @@ class Slider : public UI
 	Slider(float x, float y, float width, float height, uint8_t a);
 	
 	void setGripSize(float width, float height);
+    float getValue() { return value; }
+    void setValueTo(float* adrsToPtr, float scale = 1);
 	
-	void Update(RenderWindow* window);
+    void Update(RenderWindow* window);
 };
-
-
 
 #endif
 

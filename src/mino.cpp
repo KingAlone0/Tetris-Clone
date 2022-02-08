@@ -9,7 +9,7 @@ Mino::Mino()
     sprPlace.width = 16;
     sprPlace.height = 16;
     
-    texture.loadFromFile("../textures/textures_mino.png");
+    texture = Defaults::Get().MinoTexture();
     spr.setTexture(texture);
 	
     spr.setPosition(sf::Vector2f(0.f, 0.f));
@@ -24,7 +24,7 @@ Mino::Mino(TilesType Type) : Type(Type)
     sprPlace.width = 16;
     sprPlace.height = 16;
     
-    texture.loadFromFile("../textures/textures_mino.png");
+    texture = Defaults::Get().MinoTexture();
     spr.setTexture(texture);
     
     setRect();
@@ -41,7 +41,7 @@ Mino::Mino(TilesType Type, sf::Vector2f pos) : Type(Type)
     sprPlace.width = 16;
     sprPlace.height = 16;
     
-    texture.loadFromFile("../textures/textures_mino.png");
+    texture = Defaults::Get().MinoTexture();
     spr.setTexture(texture);
     
     setRect();

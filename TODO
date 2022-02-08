@@ -1,12 +1,6 @@
 //  ---------------------------------------------- TODO:
-->TODO: mak the game loop, piece goes down, and make rotation slow.
 
-+TODO: Make a +Slider, +CheckBox and something to choose the resolution->[List]. \
-        auto-resize grip
-
-+TODO: Make a mouse class to know when mouse it's already on use, using static fuctions
-
-TODO: Singleton to configuration
+Doing the background of the menu on the Aseprite.
 
 TODO: Make the window zoom when resize, but presenving the aspect ratio
 

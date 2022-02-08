@@ -5,6 +5,9 @@
 #include <iostream>
 #include "renderWindow.hpp"
 
+// where default texture was initialized.
+#include "configs.hpp"
+
 
 
 class Mino

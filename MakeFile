@@ -16,7 +16,9 @@ T = $(subst *.cpp, *.o, $(OBJ))
 
 CC = g++
 
-CC_FLAGS =  -c -Wall
+CC_FLAGS =  -c -Wall -static-libgcc -static-libstdc++
+
+WN_FLAG = -lole32 -luuid
 
 SFML = -lsfml-graphics -lsfml-system -lsfml-window -lsfml-audio 
 
@@ -32,7 +34,7 @@ run:
 
 $(PROJ_NAME): $(OBJ)
 	@ echo 'Building binary using GPP linker : $@'
-	@ $(CC) $^ $(SFML) $(INC) $(LIB) -o "$(BUILD_DIR)$@"
+	@ $(CC) $^ $(SFML) $(INC) $(LIB) -o "$(BUILD_DIR)$@" $(WN_FLAG)
 	@ echo 'Finished build binary: $@'
 
 $(OBJ_DIR)/%.o: src/%.cpp headers/%.hpp

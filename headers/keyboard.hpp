@@ -11,6 +11,8 @@ class Keyboard
 	sf::Time lastTimePressed;
 	sf::Keyboard::Key lastKeyPressed;
 	bool pressed;
+    static sf::Clock timer_st;
+    static sf::Time lastTimePressed_st;
 	
 	unsigned char moves = 0;
 	public:
@@ -26,6 +28,7 @@ class Keyboard
 	// ----------Test*
 	public:
 	bool justPressed(sf::Keyboard::Key k); // This fuction only return true, if the timer > 0.07, this mean that don't returns if the key still pressed.
+    static bool justPressedGlobal(sf::Keyboard::Key k);
 	// ----------
 	
 	

@@ -1,6 +1,9 @@
 #include "keyboard.hpp"
 #include <iostream>
 
+sf::Clock Keyboard::timer_st;
+sf::Time  Keyboard::lastTimePressed_st;
+
 #define delay .1f
 // NOTE:  Need to have better times to handle the movements, is kinda slow compared with the jstris 
 bool Keyboard::checkInput(sf::Keyboard::Key k)
@@ -61,4 +64,20 @@ bool Keyboard::justPressed(sf::Keyboard::Key k)
 	return true;
 }
 
-// NOTE(AloneTheKing): DAS is kinda implemented, but need to choose the values of the delay
+bool Keyboard::justPressedGlobal(sf::Keyboard::Key k)
+{
+	if (!sf::Keyboard::isKeyPressed(k)) {
+		return false;
+	}
+	
+	lastTimePressed_st = timer_st.getElapsedTime();
+	
+	if (lastTimePressed_st.asSeconds() <= 0.07f) {
+		timer_st.restart();
+		return false;
+	}
+	
+	timer_st.restart();
+	return true;
+}
+

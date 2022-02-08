@@ -3,6 +3,8 @@
 #include "UI.hpp"
 #include "animation.hpp"
 #include <functional>
+#include "sound.hpp"
+#include "configs.hpp"
 
 // float frame = 0.017 seconds
 class Button : public UI

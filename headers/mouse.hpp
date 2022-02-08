@@ -1,5 +1,6 @@
 #ifndef MOUSE_HPP
 #define MOUSE_HPP
+
 #include "types.hpp"
 
 class Mouse

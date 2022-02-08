@@ -259,7 +259,7 @@ void Tetromino::rotateTetromino(std::vector<Mino>& minos)
 	wallKick(minos);
     timers.rotation = clock.getElapsedTime();
 
-	t = c.getElapsedTime();// TODO(AloneTheKing): So fucking slow
+	t = c.getElapsedTime();
 	// std::cout << t.asSeconds() << std::endl; // check Time
 }
 
