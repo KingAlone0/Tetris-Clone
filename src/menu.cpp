@@ -1,4 +1,11 @@
 #include "menu.hpp"
+#include "renderWindow.hpp"
+#include "text.hpp"
+
+void func_test(int a)
+{
+    abort();
+}
 
 void Menu(RenderWindow &window)
 {
@@ -8,57 +15,45 @@ void Menu(RenderWindow &window)
     bg.loadFromFile("../textures/default-background.png");
     background.setTexture(bg);
 
-	Button start(V2(232.f, 133.f), sf::IntRect(0.f, 26.f, 32.f, 16.f), 4, .2f, sf::IntRect(0.f, 223.f, 9.f, 9.f));
-	Button options(V2(232.f, 216.f), sf::IntRect(0.f, 26.f, 32.f, 16.f), 4, .2f, sf::IntRect(0.f, 239.f, 9.f, 9.f));
-	Image logo(V2(214.f, 15.f), sf::IntRect(0.f, 0.f, 40.f, 23.f), 8, .2f);
-    logo.setScale(3.2f);
-    options.setScale(3.f);
+	Button start(V2(232.f, 133.f), sf::IntRect(0.f, 26.f, 32.f, 16.f), 4, 0.2f, sf::IntRect(0.f, 222.f, 9.f, 9.f), "Start");
     start.setScale(3.f);
+    Button options(V2(232.f, 216.f), sf::IntRect(0.f, 26.f, 32.f, 16.f), 4, 0.2f, sf::IntRect(0.f, 231.f, 9.f, 9.f), "Options");
+    options.setScale(3.f);
+	Image logo(V2(214.f, 15.f), sf::IntRect(0.f, 0.f, 40.f, 23.f), 8, 0.2f);
+    logo.setScale(3.2f);
+    options.setOnReleasedFunction([&window]() { Options(window); } );
+    start.setOnReleasedFunction([&window]() { Tetris(window); } );
 
-    { // Play Button
-		std::function<void()> fncPtr = [&window] () { Tetris(window); };
-		start.setOnReleasedFunction(fncPtr);
-	}
-	{ // Options Button
-        
-		std::function<void()> fncPtr = [&window] () { Options(window); };
-		options.setOnReleasedFunction(fncPtr);
-	}
-    std::thread OST(SoundTrack::playOST);	
+    window.playOST();    
     Keyboard k;
 	while(window.isOpen())
 	{
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::T)) {
 			window.clear();
-            if (OST.joinable())
-                OST.detach();
             Tetris(window);
             c.restart();
 		}
         // NOTE: When go to the game em press Escape, is getting out of the game directly.	
         // tried to make a static function but still don't work
         sf::Event event;
-		while (window.window.pollEvent(event))
+		while (window.pollEvent(event))
 		{
 			if (event.type == sf::Event::Closed)
 			{
-                SoundTrack::stopOST();
-                OST.join();
-				window.close();
+                window.Quit();
 			}
 		}
 		
 		if (Keyboard::justPressedGlobal(sf::Keyboard::Key::Escape) && c.getElapsedTime().asSeconds() >= 0.2f) {
-			window.close();
+            window.Quit();
 		}
 		// ----------------------
 		window.draw(background);
 		logo.Update(&window);
 		
-		
 		start.Update(&window);
-		options.Update(&window);
-		// ----------------------
+        options.Update(&window);
+        // ----------------------
 		/*
 		// Preserve Aspect ratio
 		if (window.getSize().x != window_size.x || window.getSize().y != window_size.y) 
@@ -70,11 +65,7 @@ void Menu(RenderWindow &window)
 			}
 			window.setView(view);
 			window_size = sf::Vector2f(window.getSize());
-		}
-		
-		
 		*/
-		window.display();
-		window.clear();
+	    window.Update();	
 	}
 }

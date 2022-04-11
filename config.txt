@@ -1,0 +1,8 @@
+// Configurations of Tetris by AloneTheKing(Jonas Gomes)
+
+Texture_Path: ../textures/sprite-sheets.png
+Mino_Texture: ../textures/textures_mino.png
+
+DAS: 0.2
+OST_Volume: 0.0694444
+Effect_Volume: 0.5

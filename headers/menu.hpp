@@ -12,6 +12,7 @@
 #include <functional>
 
 #include "renderWindow.hpp"
+#include "handleErrors.hpp"
 
 void Menu(RenderWindow &window);
 

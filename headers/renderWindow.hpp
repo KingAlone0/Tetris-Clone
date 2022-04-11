@@ -1,33 +1,37 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 #include "iostream"
 #include "types.hpp"
+#include <thread>
+#include <vector>
+enum class Sounds;
 
+namespace err {
+    struct ErrorMessage;
+}
 
-// Maybe make it child of sf::RenderWindow again
-class RenderWindow
+class RenderWindow : public sf::RenderWindow
 {
     public:
     std::string Title;
 	unsigned int width;
 	unsigned int height;
-	sf::View view = window.getView();
-    sf::RenderWindow window;
 	private:
+    std::thread* m_ost;
+    static std::vector<Sounds> m_play_queue;
 	
     public:
     RenderWindow(const std::string& windowTitle, unsigned int width, unsigned int height);
-    void draw(const sf::Drawable& image) { window.draw(image); }
-    void display() { window.display(); }
-    void clear() { window.clear(); }
-    bool isOpen() { return window.isOpen(); }
-    void close() { window.close(); }
+
     V2 getMousePosition();
 
-	
-	
-    private:
+    void Update();
+    void playOST();
+    void Quit();
 
-    void onResize();
 
+    static void Error(err::type);
+    static void play(Sounds msc);
 };
+

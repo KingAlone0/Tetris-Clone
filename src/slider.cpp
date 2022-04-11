@@ -44,7 +44,7 @@ Slider::Slider(float x, float y, float width, float height):
         .y = y - 1,
         .width = r_up((slider.height+2) / 2),
         .height = slider.height + 2,
-        .min = grip.x,
+        .min = slider.x,
         .max = slider.x + slider.width,
     };
 	

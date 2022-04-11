@@ -14,8 +14,9 @@ class CheckBox
 
     public:
     CheckBox(float x, float y);
-    void Update(RenderWindow* window);
+    bool getPressed() { return pressed; }
 
+    void Update(RenderWindow* window);
     private:
     void setBox();
     void check(V2 mouse_pos);

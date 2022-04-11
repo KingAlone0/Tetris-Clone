@@ -10,6 +10,19 @@
 ((code) >> (1 * 8)) & 0xFF, \
 ((code) >> (0 * 8)) & 0xFF
 
+namespace nil
+{
+    class CLASS {};
+}
+namespace err
+{
+    enum type 
+    {
+        WARNING,
+        MESSAGE
+    };
+}
+
 enum TilesType
 {
     I,
@@ -114,6 +127,18 @@ struct V2
 		this->y = vector.y;
 		return *this;
 	}
+	V2& operator+(int n) {
+		this->x += n;
+		this->y += n;
+		
+		return *this;
+	}
+	V2& operator-(int n) {
+		this->x -= n;
+		this->y -= n;
+		
+		return *this;
+	}
 	V2& operator-(V2& vector) {
 		if (this == &vector)
 			return *this;
@@ -128,6 +153,12 @@ struct V2
 		
 		return *this;
 	}
+    V2& operator+=(float n) {
+        this->x += n;
+        this->y += n;
+        
+        return *this;
+    }
 	
 	bool operator==(const V2& vector) {
 		return (this->x == vector.x) && (this->y == vector.y);
@@ -147,10 +178,15 @@ struct V2
 // Multiple definition?
 /*
  * make it inline to work
-V2 v2i(float n) // V2 Initialize.
+ */
+inline V2 v2i(float n) // V2 Initialize.
 {
 	return V2(n, n);
-}*/
+}
+inline sf::Vector2f V2f(const V2& v2)
+{
+    return sf::Vector2f(v2.x, v2.y);
+}
 
 struct V4
 {
@@ -180,7 +216,7 @@ enum class ID_TYPE
     CHECK_BOX,
     Object
 };
-
+// TODO: make the id a random number and put on a vector 
 struct ID
 {
     static int current_ID;
@@ -204,7 +240,6 @@ struct ID
 // TODO: code is mess 
 // maybe need to make an cpp file to initiliaze the current_ID, for now i initiliaze it on the main function
 //int ID::current_ID = 0;
-
 
 #endif // SLIDER Hpp
 

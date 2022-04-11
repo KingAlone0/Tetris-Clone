@@ -1,19 +1,23 @@
 #include "game.hpp"
+#include "configs.hpp"
 #include <iostream>
 #include <vector>
 #include <numeric>
+#include <thread>
 
 #define TILE 16
 
 void Tetris(RenderWindow& window)
 {
+begin:
 	sf::Texture bg;
 	bg.loadFromFile("../textures/playfield_background.png");
 	sf::Sprite backGround;
 	backGround.setTexture(bg);
 	backGround.setPosition(0.f, 0.f);
 	
-	bool start = true;
+	bool quit = false;
+    bool is_paused = false;
 	sf::Font font;
 	font.loadFromFile("../textures/SourceCode.ttf");
 	sf::Texture texture;
@@ -32,13 +36,9 @@ void Tetris(RenderWindow& window)
 	
 	Tetromino holded_tetromino;
 	Tetromino next_tetromino(getRandomTetromino(), sf::Vector2f(5 * TILE, TILE), false, true);
-	while (start == true)
+	while (!quit)
 	{
         window.draw(backGround);
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Escape)) {
-			start = false;
-			break;
-		}
 		if (k.justPressed(sf::Keyboard::Key::C)) {
 			holdTetromino(tetromino, holded_tetromino, next_tetromino);
 		}
@@ -70,12 +70,11 @@ void Tetris(RenderWindow& window)
 
 
 		sf::Event event;
-		while (window.window.pollEvent(event))
+		while (window.pollEvent(event))
 		{
 			if (event.type == sf::Event::Closed)
 			{
-                SoundTrack::stopOST();
-				window.window.close();
+                window.Quit();
 			}
 		}
 		
@@ -87,7 +86,7 @@ void Tetris(RenderWindow& window)
 			next_tetromino.Update(&window, minos_grid);
 		
 		
-		if (tetromino.isOnFloor()) {
+		if (tetromino.isOnFloor() && tetromino.canMove(minos_grid)) {
 			for (size_t i = 0; i < 4; ++i)
 			{
 				Mino n_mino = tetromino.getMino()[i];
@@ -95,12 +94,6 @@ void Tetris(RenderWindow& window)
 			}
 			nextTetromino(tetromino, next_tetromino);
 		}
-        if (!tetromino.canMove(minos_grid))
-        {
-            // TODO: Make the game over window, maybe other screen, or something who will be in front of everihing. 
-            return;
-        }
-		
 		for (size_t i = 0; i < minos_grid.size(); ++i)
 		{
 			window.draw(minos_grid[i].getSprite());
@@ -132,10 +125,27 @@ void Tetris(RenderWindow& window)
 		
 		window.draw(Scr);
 		// --------------- ^Score
-		window.display();
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Escape)) {
+            is_paused = true;
+            pauseMenu(&window, &is_paused, &quit);
+            // TODO: when pause and continue cant move tretromino don't know why, but can rotate 
+            // now i can ????????
+
+        }
+        if (!tetromino.canMove(minos_grid))
+        {
+            is_paused = true;
+            defeatMenu(&window, Score, &is_paused, &quit);
+            if (quit) {
+                break;
+            } else {
+                goto begin;
+            }
+        }
+		
+        window.Update();
 		window.clear();
 	}
-	
 }
 
 TilesType getRandomTetromino()
@@ -272,5 +282,78 @@ void nextTetromino(Tetromino& tetromino, Tetromino& next_tetromino)
 	next_tetromino = Tetromino(getRandomTetromino(), sf::Vector2f(5 * TILE, TILE), false, true);
 	next_tetromino.is_playable = false;
 	next_tetromino.is_holded = true;
+}
+
+void pauseMenu(RenderWindow* window, bool* is_paused, bool* exit)
+{
+    
+    sf::RectangleShape bg;
+    bg.setFillColor(sf::Color(200, 200, 200, 20));
+    bg.setPosition(sf::Vector2f(115.f, 80.f));
+    bg.setSize(sf::Vector2f(310.f, 190.f));
+
+    Button resume(V2(240.f, 128));
+    resume.setName("Resume");
+    Button quit(V2(240.f, 200.f));
+    quit.setName("Quit");
+    // TODO: Need to make a visual for the menu.
+    // Logic already done
+
+    while (*is_paused == true) {
+        window->draw(bg);
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W)) {
+            *is_paused = false;
+        }
+        
+        sf::Event event;
+        while(window->pollEvent(event)) {
+            if (event.type == sf::Event::Closed) {
+                window->Quit();
+            }
+        }
+        if (resume.hasTriggered()) {
+            *is_paused = false;
+            break;
+        }
+        if (quit.hasTriggered()) {
+            *exit = true;
+            break;
+        }
+
+        resume.Update(window);
+        quit.Update(window);
+        window->Update();
+    }
+
+}
+
+void defeatMenu(RenderWindow* window, int score, bool* is_paused, bool* exit)
+{
+    sf::RectangleShape bg;
+    bg.setFillColor(sf::Color(200, 200, 200, 20));
+    bg.setPosition(115.f, 80.f);
+    bg.setSize(sf::Vector2f(310.f, 190.f));
+
+    Button retry(V2(240.f, 128.f));
+    Button quit(V2(240.f, 200.f));
+    
+    while (*is_paused)
+    {
+        window->draw(bg);
+
+        if (retry.hasTriggered()) {
+            *is_paused = false;
+            *exit = false;
+            break;
+        } else if (quit.hasTriggered()) {
+            *is_paused = false;
+            *exit = true;
+            break;
+        }
+
+        retry.Update(window);
+        quit.Update(window);
+        window->Update();
+    }
 }
 

@@ -2,3 +2,6 @@
 obj/
 *.exe
 textures/*.aseprite
+compile_flags.txt
+.vim
+.tmp.driveupload

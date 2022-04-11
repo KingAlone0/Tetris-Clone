@@ -33,7 +33,6 @@ void CheckBox::check(V2 mouse_pos)
 {
     if (Mouse::isActive()) {
         if (Mouse::getID().id != id.id) {
-            pressed = false;
             return;
         }
     }

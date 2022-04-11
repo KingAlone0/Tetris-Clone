@@ -5,12 +5,7 @@
 UI::UI()
 {
     texture = Defaults::Get().Texture();
-    // if (!texture.loadFromFile("../textures/sprite-sheets.png"))// TODO(AloneTheKing): Need to make a way to set this outside the class, if want to load other sheet, whitout changing here, maybe turn static 
-    // {
-    //     std::thread err(handleErrors, ErrorType::NotLoad, "ads");
-    //     err.join();
-    //     return;
-    // }
+    
     rect.setSize(sf::Vector2f(150.f, 50.f));
     rect.setFillColor(sf::Color::Green);
 }
@@ -23,9 +18,7 @@ UI::UI(V2 pos, float width, float height): pos(pos)
 UI::UI(V2 pos, sf::IntRect sprPlace): pos(pos), sprPlace(sprPlace)
 {
     texture = Defaults::Get().Texture();
-    // if (!texture.loadFromFile("../textures/sprite-sheets.png"))// TODO(AloneTheKing): Need to make a way to set this outside the class, if want to load other sheet, whitout changing here, maybe turn static 
-    //     return;
-    // TODO: Need to handle errors
+
     collision = BoxCollision(pos.x, pos.y, sprPlace.width, sprPlace.height);
 }
 

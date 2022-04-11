@@ -6,7 +6,6 @@
 #include "collision.hpp" 
 #include "renderWindow.hpp"
 #include "mouse.hpp"
-#include "handleErrors.hpp"
 class Defaults;
 
 

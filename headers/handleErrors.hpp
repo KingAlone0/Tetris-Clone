@@ -2,29 +2,35 @@
 #define handleErrors_HPP
 
 #include <string>
+#include <vector>
 #include "renderWindow.hpp"
 #include <thread>
 
-enum class ErrorType
+
+
+namespace err
 {
-    NotLoad,
-    None
-};
+    void handleErrors(RenderWindow* window);
 
-class Errors
-{
-    public:
-    Errors(const &Errors) = delete;
+    struct ErrorMessage {
+        type m_degree;
+        bool m_message_alive = true;
+        bool m_anim = true;
+        bool m_fade_out = false;
+        sf::RectangleShape m_rect;
+        sf::Clock m_clock;
 
-    static ErrorType getError();
 
-    private:
-    Error();
-    static bool hasErr;
-    static std::vector<ErrorType> errors;
-};
+        static void addError();
+        void Update();
+        void DeleteSelf();
+        static std::vector<ErrorMessage*> errors;
 
-void handleErrors(ErrorType err, std::string str);
+        private:
+        ErrorMessage(type degree);
+        ErrorMessage();
+    };
+}
 
 #endif
 

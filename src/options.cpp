@@ -3,19 +3,25 @@
 
 void Options(RenderWindow& window)
 {
-	sf::RectangleShape background(sf::Vector2f(window.window.getSize()));
-	background.setFillColor(sf::Color(HEXCOLOR(0x252525FF)));
-    // TODO:  Need to create a Dialog box to change the texture and make a save file to save/load configs	
-    Slider slider_vol(16.f, 32.f, 100.f, 10.f);
+    sf::Texture bg;
+    bg.loadFromFile("../textures/options-background.png");
+    sf::Sprite background;
+    background.setTexture(bg);
+    Slider slider_vol(67.f, 32.f, 144.f, 11.f);
     slider_vol.setValueTo(&SoundTrack::ost_volume, 100);
-    CheckBox check(16.f, 50.f);
+    CheckBox mute_check(294.f, 32.f);
+    CheckBox res_check[3] = { {125.f, 62.f}, {195.f, 62.f}, {265.f, 62.f} };
+    CheckBox full_check(80.f, 84);
 
-	Button change_texture(V2(232.f, 216.f), sf::IntRect(0.f, 26.f, 32.f, 16.f), 4, .2f, sf::IntRect(0.f, 239.f, 9.f, 9.f));
+	Button change_texture(V2(509.f, 98.f), sf::IntRect(0.f, 26.f, 32.f, 16.f), 4, .2f, sf::IntRect(0.f, 239.f, 9.f, 9.f));
+    Button save_button(V2(10.f, 346.f));
+    Button load_button(V2(80.f, 346.f));
+    change_texture.setOnReleasedFunction(selectTexturePath);
+    save_button.setOnReleasedFunction([] (){ Defaults::Get().saveAsConfig(); });
+    load_button.setOnReleasedFunction([] (){ Defaults::Get().loadConfig(); });
+    Button quit_button(V2(509.f, 18.f));
 
-    {
-        std::function<void()> fncPtr = [] () { selectTexturePath(); };
-        change_texture.setOnReleasedFunction(fncPtr);
-    }
+    
 	
 	bool quit = false;
 	while (!quit)
@@ -23,21 +29,35 @@ void Options(RenderWindow& window)
 		window.draw(background);
 		
 		sf::Event event;
-		while (window.window.pollEvent(event))
+		while (window.pollEvent(event))
 		{
 			if (event.type == sf::Event::Closed)
 			{
 				quit = true;
-				window.close();
+                window.Quit();
 			}
 		}
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W)) {
-            return;
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W) ||
+            quit_button.hasTriggered()) {
+            Mouse::setInactive();
+            quit = true;
         }
+
 		slider_vol.Update(&window);
-        check.Update(&window);
+        load_button.Update(&window);
+        save_button.Update(&window);
         change_texture.Update(&window);
-        // SoundTrack::setVolume(slider_vol.getValue() * 10);
+        for (auto i = 0; i < 3; ++i) {
+            res_check[i].Update(&window);
+        }
+        full_check.Update(&window);
+        quit_button.Update(&window);
+        mute_check.Update(&window);
+        if (mute_check.getPressed()) {
+            SoundTrack::muteOST();
+        } else {
+            SoundTrack::unmuteOST();
+        }
 		
 		window.display();
 		window.clear();

@@ -39,7 +39,6 @@ bool Keyboard::checkInput(sf::Keyboard::Key k)
 	timer.restart();
 	if (lastKeyPressed != k)
 		moves = 0;
-	
 	else
 		moves++;
 	

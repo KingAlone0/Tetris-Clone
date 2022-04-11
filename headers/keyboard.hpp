@@ -1,8 +1,6 @@
 #ifndef KEYBOARD_HPP
 #define KEYBOARD_HPP
 #include <SFML/Graphics.hpp>
-//#include <SFML/System.hpp>
-
 
 class Keyboard
 {

@@ -126,7 +126,7 @@ void Tetromino::setShadow()
 	}
 }
 
-void Tetromino::Update(RenderWindow* window, std::vector<Mino>& Minos) 
+void Tetromino::Update(RenderWindow* window, std::vector<Mino>& Minos)
 {
 	if (is_playable) {
         checkInput(Minos);
@@ -141,8 +141,9 @@ void Tetromino::Update(RenderWindow* window, std::vector<Mino>& Minos)
 		}
 	}
     if (on_floor) {
-        std::thread drop_sound(SoundTrack::play, Sounds::Drop);
-        drop_sound.detach();
+        RenderWindow::play(Sounds::Drop);
+//        std::thread drop_sound(SoundTrack::play, Sounds::Drop);
+//        drop_sound.detach();
     }
     setShadow();
     setShadowPosition(Minos);
@@ -324,19 +325,14 @@ void Tetromino::checkInput(std::vector<Mino>& t)
         else if (keyboard.checkInput(sf::Keyboard::Key::Down)) {
             handleMovement(Directions::Down, t);
         }
-        else if (keyboard.checkInput(sf::Keyboard::Key::Up)) {
-            handleMovement(Directions::Up, t); // Debugg purpose only __DELETE__
-        }
         else if (keyboard.checkInput(sf::Keyboard::Key::Space)) {
             hardDrop(t);
         }
         timers.move = clock.getElapsedTime();
     }
-    // Is not rotating while moving
-    if (keyboard.checkInput(sf::Keyboard::Key::R)) {
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Up)) {
         rotateTetromino(t);
     }
-
 }
 
 void Tetromino::setShadowPosition(std::vector<Mino>& grid)

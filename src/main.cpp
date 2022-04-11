@@ -10,7 +10,7 @@ int main()
 	sf::Clock c;
 	RenderWindow window("Mandioca", 36 * TILE , 26 * TILE); // 576 x 416
 	
-	V2 window_size(window.window.getSize().x, window.window.getSize().y);
+	V2 window_size(window.getSize().x, window.getSize().y);
 	
     Menu(window);
 
